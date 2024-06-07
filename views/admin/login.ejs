@@ -1,0 +1,86 @@
+<style>
+    .admin-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1a;
+}
+
+.admin-login-image {
+    width: 50%;
+    min-height: 100vh;
+}
+
+.admin-login-img {
+    width: 100%;
+    height: 65%;
+}
+
+.login-container {
+    width: 50%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.login-container form {
+    width: 500px;
+    gap: 2rem;
+    margin-right: 35vh;
+    padding: 4rem;
+    color: #fefeeb;
+    background: #232323;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #000000;
+    border-radius: 10px;
+
+}
+
+.login-container form input {
+    padding: 3px;
+    width: 80%;
+    height: 3rem;
+    border: none;
+    outline: none;
+    background: transparent;
+    border-bottom: 1px solid #ffffff;
+    color: #fefeeb;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #fff;
+    transition: background-color 5000s ease-in-out 0s;
+}
+.login-container form button{
+
+    color: #fefeeb;
+    width: 40%;
+    background: #DB4444;
+}
+.login-container form button :hover{
+    background: #CE5252;
+}
+</style>
+
+
+<%- include('navbar') %>
+    <div class="admin-main">
+        <div class="admin-login-image">
+            <img class="admin-login-img" src="/public/assets/admin-background.png">
+        </div>
+        <div class="login-container">
+            <form action="/admin/login" method="post">
+                <h2>Admin Login</h2>
+                <input type="email" name="email" placeholder="Username" required>
+                <input type="password" name="password" placeholder="password" required>
+                <button class="btn btn-danger" type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <%- include('footer') %>

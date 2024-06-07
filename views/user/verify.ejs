@@ -1,0 +1,50 @@
+<style>
+    .otp-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 500px;/
+    }
+    .otp-box{
+        color: #fefeeb;
+        background: #232323;
+        border-radius: 10px;
+        padding: 3%;
+    }
+    .opt-button{
+        color: #fefeeb;
+    }
+    .opt-button:hover{
+        color: #db4437;
+    }
+    .verify-otp{
+        display: flex;
+    padding:15px 0px;
+    }
+</style>
+
+
+
+
+<%- include('navbar') %>
+
+    <div class="otp-container">
+        <div class="otp-box">
+            <h2>Enter OTP Code</h2>
+            <small>One Time Password (OTP) has been sent via Email to</small>
+            <!-- email address from backend -->
+            <b id="OTP-email">
+                <%= email %>
+            </b>
+            <small class="verify-otp">Enter the OTP below to verify it</small>
+            <form action="/user/verify" method="post">
+                <input type="text" name="otp" minlength="6" maxlength="6" class="form-input form-control" required>
+                <small id="otp-timer-box">OTP is valid for <span id="otp-timer"></span></small>
+                <input type="text" class="otp-box" value="<%= otpTime %>" id="otp-sended-time" hidden>
+                <button class="btn opt-button" type="submit" id="otp-btn">Verify OTP</button>
+            </form>
+        </div>
+    </div>
+    
+
+    <%- include('footer') %>

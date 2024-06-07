@@ -1,0 +1,67 @@
+<style>
+    .user-nav {
+        display: flex;
+        justify-content: center;
+    }
+
+    .user-navbar {
+        /* position: fixed; */
+        display: flex;
+        align-items: center;
+        width: 95vw;
+        background: #232323;
+        margin-top: 2vw;
+        height: 5vw;
+        border-radius: 20px;
+        justify-content: space-between;
+    }
+
+    .user-navbar h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-left: 5vw;
+    }
+
+    .search-nav {
+        display: flex;
+        flex-direction: column;
+        background-color: #fefeeb;
+        border-radius: 8px;
+    }
+
+    .form-input {
+        background-color: #fefeeb;
+    }
+
+    .form-input:focus {
+        background-color: #fefeeb;
+    }
+
+    .user-profile-icon svg {
+        margin-right: 2rem;
+        color: #fefeeb;
+        width : 2.5rem;
+        height : 2.5rem;
+    }
+</style>
+
+
+
+
+<div class="user-nav">
+    <div class="user-navbar">
+        <h3 class="text-white">Wuzzy’s Toys</h3>
+        <form action="" class="d-flex align-content-center  search-nav">
+            <input type="text" class="form-input form-control" placeholder="search">
+            <!-- <button type="submit"><i class="bi bi-search"></i></button> -->
+        </form>
+        <a class="user-profile-icon" href="">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"> <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+            </svg>
+            <!-- <i class="bi bi-person-circle"></i> -->
+        </a>
+    </div>
+</div>
+
+<%- include('alert') %>
