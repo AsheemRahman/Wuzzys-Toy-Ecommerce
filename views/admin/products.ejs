@@ -1,137 +1,31 @@
 <style>
-    .admin-product{
+    .admin-product {
         width: 80%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        
     }
-    .product-head{
+
+    .product-head {
         border-radius: 10px;
         margin: 24px;
         background: #232323;
         width: 90%;
     }
-    .product-header{
+
+    .product-header {
         margin-left: 30px;
     }
-    .form-input{
+
+
+    .form-input {
         height: 80%;
     }
-    .form-product{
+
+    .form-product {
         display: flex;
         align-items: center;
     }
-
-    .submit-btn {
-        color: #fefeeb;
-        background: #DB4444;
-        height: 50%;
-        margin: 20px;
-    }
-
-    .submit-btn:hover {
-        background: #CE5252;
-    }
-    .bi.bi-trash3 {
-        color: #FF0000;
-    }
-    .collection-action{
-        display: flex;
-        gap: 10px;
-    }
-    .table-container {
-    width: 90%;
-    background: #232323;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(100, 98, 98, 0.5);
-    border-radius: 10px;
-}
-
-.table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 15px;
-    margin: 20px 0;
-    font-size: 1em;
-    width: 100%;
-}
-
-.table thead th {
-    padding: 12px 15px;
-    background: #1a1a1a;
-    color: #fefeeb;
-    border-style: none;
-}
-
-.table tbody tr {
-    border-bottom: 1px solid #fefeeb;
-    background: #232323;
-    border-radius: 10px;
-    }
-
-.table tbody tr td {
-    padding: 12px 15px;
-    text-align: left;
-    background: #232323;
-    color: #fefeeb;
-}
-
-.status.active {
-    color: #4CAF50;
-}
-
-.status.block {
-    color: #F44336;
-}
-.bi.bi-trash3 {
-    color: #FF0000;
-}
-
-.submit-btn {
-    color: #fefeeb;
-    background: #DB4444;
-    margin: 20px;
-}
-
-.submit-btn:hover {
-    background: #CE5252;
-}
-.products-icon{
-    display: flex;
-    gap: 20px;
-}
-
-@media (max-width: 600px) {
-    .table thead {
-        display: none;
-    }
-
-    .table, .table tbody, .table tr, .table td {
-        display: block;
-        width: 100%;
-    }
-
-    .table tr {
-        margin-bottom: 15px;
-    }
-
-    .table td {
-        text-align: right;
-        padding-left: 50%;
-        position: relative;
-    }
-
-    .table td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0;
-        width: 50%;
-        padding-left: 15px;
-        font-weight: bold;
-        text-align: left;
-    }
-}
 </style>
 
 
@@ -199,27 +93,40 @@
                 </div>
                 <a href="/admin/addproduct" type="button" class="btn submit-btn"> Add Product</a>
             </div>
+
+            <!--------------------------------------- product table ---------------------------------------------------->
+
             <div class="table-container">
                 <table class="table">
                     <thead>
                         <tr scope="row" class="product-table-head">
-                            <th scope="col">SL.No</th>
+                            <th scope="col" class="product-table-first">SL.No</th>
                             <th scope="col">Name</th>
                             <th scope="col">Price</th>
                             <th scope="col">Stock</th>
                             <th scope="col">Collection</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Action</th>
+                            <th scope="col" class="product-table-last">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% products.forEach((product,index)=> { %>
                             <tr scope="row">
-                                <td><%= index + 1 %></td>
-                                <td><%= product.productName %></td>
-                                <td><%= product.productPrice %></td>
-                                <td><%= product.productQuantity %></td>
-                                <td><%= product.productCollection %></td>
+                                <td>
+                                    <%= index + 1 %>
+                                </td>
+                                <td>
+                                    <%= product.productName %>
+                                </td>
+                                <td>
+                                    <%= product.productPrice %>
+                                </td>
+                                <td>
+                                    <%= product.productQuantity %>
+                                </td>
+                                <td>
+                                    <%= product.productCollection %>
+                                </td>
                                 <td>
                                     <% if(product.isActive) { %>
                                         <span class="status active">Active</span>
@@ -228,9 +135,12 @@
                                             <% } %>
                                 </td>
                                 <td class="products-icon">
-                                    <a href="/admin/editproduct/<%= product.id %>"><i class="bi bi-pencil-square product-icons"></i></a>
-                                    <a href="/admin/productstatus?id=<%= product.id %>&&status=<%= product.isActive%>"><i class="bi bi-x-circle product-icons"></i></a>
-                                    <a href="/admin/products/<%= product.id %>" class="sweet-alert-delete"><i class="bi bi-trash3 product-icons"></i></a>
+                                    <a href="/admin/editproduct/<%= product.id %>"><i
+                                            class="bi bi-pencil-square product-icons"></i></a>
+                                    <a href="/admin/productstatus?id=<%= product.id %>&&status=<%= product.isActive%>"><i
+                                            class="bi bi-x-circle product-icons"></i></a>
+                                    <a href="/admin/products/<%= product.id %>" class="sweet-alert-delete"><i
+                                            class="bi bi-trash3 product-icons"></i></a>
                                 </td>
                             </tr>
                             <% }) %>
@@ -238,4 +148,3 @@
                 </table>
             </div>
         </div>
-

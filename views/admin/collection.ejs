@@ -12,38 +12,6 @@
         background: #232323;
         width: 90%;
     }
-    .form-input{
-        height: 80%;
-    }
-
-    .submit-btn {
-        color: #fefeeb;
-        background: #DB4444;
-        height: 50%;
-        margin: 20px;
-    }
-
-    .submit-btn:hover {
-        background: #CE5252;
-    }
-
-    .table-container {
-        width: 90%;
-    }
-
-    .table-container .table th,
-    .table-container .table td {
-        background: #232323;
-        color: #fefeeb;
-    }
-
-    .bi.bi-trash3 {
-        color: #FF0000;
-    }
-    .collection-action{
-        display: flex;
-        gap: 10px;
-    }
 </style>
 
 
@@ -105,29 +73,30 @@
                     </h2>
                     <form action="/admin/collection" method="get" class="form  d-flex align-items-center">
                         <input type="text " name="search" placeholder="search" class="form-input form-control">
-                        <!-- <button><i class="fas fa-arrow-right"></i></button> -->
                         <input type="submit" class="btn submit-btn" value="Search">
                     </form>
                 </div>
                 <button type="button" class="btn submit-btn" data-bs-toggle="modal" data-bs-target="#addCollection">Add Collection</button>
             </div>
 
+        <!----------------------------------------- collection table --------------------------------------------------->
+
             <div class="table-container">
                 <table class="table">
                     <thead>
-                        <tr scope="row">
-                            <th class="collection-th" scope="col">SL.No</th>
+                        <tr scope="row" class="product-table-head">
+                            <th scope="col" class="product-table-first">SL.No</th>
                             <th scope="col">Name</th>
                             <th scope="col">Added On</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Action</th>
+                            <th scope="col" class="product-table-last">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% collection.forEach((collection,index)=> { %>
                             <tr scope="row">
                                 <td>
-                                    <%= index+1 %>
+                                    <%= index + 1 %>
                                 </td>
                                 <td>
                                     <%= collection.collectionName %>

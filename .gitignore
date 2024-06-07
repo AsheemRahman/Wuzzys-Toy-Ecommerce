@@ -1,2 +1,9 @@
+
+
+# env file
+
 .env
-.uploads
+
+# files that is uploads bt admin
+
+uploads/*

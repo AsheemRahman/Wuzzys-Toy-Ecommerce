@@ -48,8 +48,7 @@ const addproductPost = async (req,res) => {
             imgArray.push(img.path)
         })
 
-        const product=
-         {
+        const product={
             productName: req.body.productName,
             productPrice: req.body.productPrice,
             productCollection: req.body.productCollection,
@@ -78,7 +77,7 @@ const addproductPost = async (req,res) => {
 
 
 const editProduct = async (req,res) => {
-   
+    
     try {
     
         const id = req.params.id;
@@ -90,7 +89,6 @@ const editProduct = async (req,res) => {
             res.redirect('/admin/products')
         }
 
-
     } catch (error) {
         console.log(`error while loading edit product page ${error}`)
     }
@@ -101,8 +99,6 @@ const editProductPost = async (req,res)=> {
     try {
         
         const id = req.params.id;
-
-
         productSchema.findByIdAndUpdate(id,{productPrice: req.body.productPrice, productQuantity: req.body.productQuantity, productDescription: req.body.productDescription})
         .then(()=>{
             req.flash('success','Product successfully updated')
@@ -111,7 +107,6 @@ const editProductPost = async (req,res)=> {
             req.flash('error','Error occured while editing the product')
             res.redirect('/admin/products')
         })
-
     } catch (error) {
         console.log(`error while editing product post ${error} `)
         req.flash('error',"Could not edit the product")
