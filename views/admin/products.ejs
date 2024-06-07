@@ -44,7 +44,7 @@
     width: 90%;
     background: #232323;
     padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px rgba(100, 98, 98, 0.5);
     border-radius: 10px;
 }
 
@@ -54,21 +54,18 @@
     border-spacing: 0 15px;
     margin: 20px 0;
     font-size: 1em;
-    min-width: 400px;
-    background-color: #444;
+    width: 100%;
 }
 
 .table thead th {
     padding: 12px 15px;
     background: #1a1a1a;
     color: #fefeeb;
-    /* border-radius: 10px; */
-    /* border-top-right-radius: 10px; */
     border-style: none;
 }
 
 .table tbody tr {
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid #fefeeb;
     background: #232323;
     border-radius: 10px;
     }
@@ -78,14 +75,6 @@
     text-align: left;
     background: #232323;
     color: #fefeeb;
-}
-
-.table tbody tr td:first-child {
-    border-radius: 10px 0 0 10px;
-}
-
-.table tbody tr td:last-child {
-    border-radius: 0 10px 10px 0;
 }
 
 .status.active {
@@ -107,6 +96,10 @@
 
 .submit-btn:hover {
     background: #CE5252;
+}
+.products-icon{
+    display: flex;
+    gap: 20px;
 }
 
 @media (max-width: 600px) {
@@ -138,7 +131,7 @@
         font-weight: bold;
         text-align: left;
     }
-} 
+}
 </style>
 
 
@@ -225,7 +218,8 @@
                                 <td><%= index + 1 %></td>
                                 <td><%= product.productName %></td>
                                 <td><%= product.productPrice %></td>
-                                <td><%= product.productQuantity %></td></td>
+                                <td><%= product.productQuantity %></td>
+                                <td><%= product.productCollection %></td>
                                 <td>
                                     <% if(product.isActive) { %>
                                         <span class="status active">Active</span>
@@ -233,10 +227,10 @@
                                             <span class="status block">Blocked</span>
                                             <% } %>
                                 </td>
-                                <td>
-                                    <a href="/admin/editproduct/<%= product.id %>"><iclass="bi bi-pencil-square"></i></a>
-                                    <a href="/admin/productstatus?id=<%= product.id %>&&status=<%= product.isActive%>"><iclass="bi bi-x-circle"></i></a>
-                                    <a href="/admin/products/<%= product.id %>" class="sweet-alert-delete"><iclass="bi bi-trash3"></i></a>
+                                <td class="products-icon">
+                                    <a href="/admin/editproduct/<%= product.id %>"><i class="bi bi-pencil-square product-icons"></i></a>
+                                    <a href="/admin/productstatus?id=<%= product.id %>&&status=<%= product.isActive%>"><i class="bi bi-x-circle product-icons"></i></a>
+                                    <a href="/admin/products/<%= product.id %>" class="sweet-alert-delete"><i class="bi bi-trash3 product-icons"></i></a>
                                 </td>
                             </tr>
                             <% }) %>

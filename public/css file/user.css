@@ -1,3 +1,27 @@
 body{
     background: #1a1a1a;
 }
+
+/*----------------- button style -------------------------------*/
+
+.submit-btn{
+    background-color: #DB4444;
+    color: #Fefeeb;
+}
+
+.submit-btn:hover{
+    transform: scale(1.02);
+    background-color: #f55;
+    color: #Fefeeb;
+}
+
+.submit-btn-light{
+    background-color: #DB4444;
+    color: #fefeeb;
+}
+
+.submit-btn-light:hover{
+    transform: scale(1.02);
+    background-color: #f55;
+    color: #fefeeb;
+}
