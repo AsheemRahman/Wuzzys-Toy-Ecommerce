@@ -32,11 +32,14 @@
         <div class="otp-box">
             <h2>Enter One Time Password (OTP)</h2>
             <small>One Time Password (OTP) has been sent via Email to</small>
-            <!-- email address from backend -->
+
+            <!--------------- email Address is shown here ------------------->
+
             <b id="OTP-email">
                 <%= email %>
             </b>
-            <small class="verify-otp">Enter the OTP below to verify it</small>
+
+            <small class="verify-otp">Enter the One Time Password</small>
             <form action="/user/verify" method="post">
                 <input type="text" name="otp" minlength="6" maxlength="6" class="form-input form-control" required>
                 <small id="otp-timer-box">OTP is valid for <span id="otp-timer"></span></small>

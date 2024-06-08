@@ -5,7 +5,6 @@
     }
 
     .user-navbar {
-        /* position: fixed; */
         display: flex;
         align-items: center;
         width: 95vw;
@@ -24,7 +23,9 @@
 
     .search-nav {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
         background-color: #fefeeb;
         border-radius: 8px;
     }
@@ -43,25 +44,149 @@
         width : 2.5rem;
         height : 2.5rem;
     }
+
+    .user-nav-icon{
+        display: flex;
+        list-style: none;
+        gap: 4rem;
+        margin-top: 1rem;
+    }
+
+    .user-nav-icon li a {
+    color: #fefeeb;
+    text-decoration: none;
+    font-size: 1.2em;
+    }
+    .user-nav-icon li a:hover{
+        color: #BEBEB6;
+    }
+
+    .user-login-btn{
+        background: #fefeeb;
+        color: #232323;
+        margin-right: 1rem;
+    }
+
+    .user-login-btn:hover {
+        background: #f55;
+        color: #fefeeb;
+    }
+
+
+    /*------------- when user is login then prodile icon ---------------------*/
+    .user-login-icon{
+        color:  #fefeeb;
+        margin-right: 2rem;
+    }
+    .sidebar {
+        height: 100%;
+        width: 250px;
+        position: fixed;
+        top: 0;
+        right: -250px;
+        background-color: black;
+        transition: right 0.3s ease;
+        box-shadow: 0 0 20px #000000;
+        z-index: 10;
+    }
+
+    .sidebar ul {
+        color: rgb(248, 242, 242);
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+
+    }
+
+    .sidebar ul li {
+        width: 90%;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 10px;
+        font-weight: 700;
+        transition: .3s ease-in-out;
+    }
+
+    .sidebar ul li:hover {
+        border: 1px solid white;
+    }
+
+    .sidebar ul li a {
+        display: block;
+        width: 100%;
+        text-decoration: none;
+        color: white;
+    }
+
+    .toggle-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+    }
+
+    #go-back-home {
+        background-color: #707070;
+        color: #ffffff;
+    }
+
 </style>
 
 
-
+<!-------------------------------------------- User Navbar  ------------------------------------------------->
 
 <div class="user-nav">
     <div class="user-navbar">
         <h3 class="text-white">Wuzzy’s Toys</h3>
-        <form action="" class="d-flex align-content-center  search-nav">
+        <form action="" class="search-nav">
             <input type="text" class="form-input form-control" placeholder="search">
             <!-- <button type="submit"><i class="bi bi-search"></i></button> -->
+            <button type="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
-        <a class="user-profile-icon" href="">
-            <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"> <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-            </svg>
-            <!-- <i class="bi bi-person-circle"></i> -->
-        </a>
+        <ul class="user-nav-icon">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Category</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+        </ul>
+
+        <% if (user) { %>
+            <span class="nav-link-items user-login-icon" onclick="toggleSidebar()"><i class="fa-solid fa-user"></i></span>
+            <div class="sidebar" id="sidebar">
+                <ul>
+                    <li id="go-back-home" onclick="toggleSidebar()"><span><i class="fa-solid fa-angles-left"></i> Go
+                            back</span></li>
+                    <li><a href="#"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li><a href="#"><i class="fa-solid fa-box-open"></i> Orders</a></li>
+                    <li><a href="#"><i class="fa-solid fa-trash-can"></i> Canceled Orders</a></li>
+                    <li><a href="#"><i class="fa-solid fa-lock"></i> Reset Password</a></li>
+                    <li><a href="/user/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                </ul>
+            </div>
+            <% } else { %>
+                <a href="/user/login" class="btn btn-outline-secondary user-login-btn">Login</a>
+                <% } %>
     </div>
 </div>
 
 <%- include('alert') %>
+
+
+<script>
+        // toggle side bar
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            if (sidebar.style.right === '' || sidebar.style.right === '-250px') {
+                sidebar.style.right = "0";
+            } else {
+                sidebar.style.right = "-250px";
+            }
+        }
+
+    </script>

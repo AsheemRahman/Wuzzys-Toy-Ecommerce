@@ -3,7 +3,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 20vh;
 }
 
 .register-container {
@@ -78,7 +77,7 @@ input:-webkit-autofill:focus {
     color: #bbb;
 }
 
-button[type="submit"] {
+#register-btn {
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -90,10 +89,7 @@ button[type="submit"] {
 
 <%- include('navbar') %>
 
-
-<div class="user-register">
-
-</div>
+<!-------------------------------------------- User Signup Page ------------------------------------------------->
 
 <div class="register-container">
     <div class="register-user">
@@ -107,12 +103,12 @@ button[type="submit"] {
                 <input class="register-input" type="text" name="phone" placeholder="Phone" required>
                 <input class="register-input" type="email" name="email" placeholder="Email" required>
                 <input class="register-input" type="password" name="password" placeholder="Password" required>
-                <!-- <input type="password" class="register-input" placeholder="Confirm Password" required> -->
+                <input type="password" class="register-input" name="confirmPassword" placeholder="Confirm Password" required>
                 <div class="terms-conditions">
                     <input type="checkbox" id="terms" required>
                     <label for="terms">By Creating An Account You Are Agreeing To Our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
                 </div>
-                <button type="submit">Create Account</button>
+                <button type="submit" id="register-btn">Create Account</button>
             </form>
         </div>
     </div>
@@ -121,15 +117,15 @@ button[type="submit"] {
 <%- include('footer') %>
 
 
-<!-- <script>
+<script>
 
     const registerForm = document.getElementById('register-form')
     const name = document.getElementsByName('name')[0]
+    const phone = document.getElementsByName('phone')[0]
     const email = document.getElementsByName('email')[0]
     const password = document.getElementsByName('password')[0]
     const confirmPassword = document.getElementsByName('confirmPassword')[0]
     const signUpButton = document.getElementById('register-btn')
-
 
     function checkEmail(email) {
         const re = /\S+@\S+\.\s+/;
@@ -153,14 +149,23 @@ button[type="submit"] {
         }
         return true
     }
-
+    function validatePhone(phone) {
+        const phoneRe = /^\d{10}$/;
+        return phoneRe.test(phone);
+    }
 
     registerForm.addEventListener('submit', (e) => {
         e.preventDefault()
-        if (name.value.trim() === "" || name.value.length > 20 || !isNaN(name.value)) {
+        if (name.value.trim() === "" || name.value.length > 25 || name.value.length < 6 || !isNaN(name.value)) {
             Swal.fire({
                 title: "Error",
-                text: "Name must not be empty and must be within 30 charters long and should not contain numbers",
+                text: "Name must not be empty ,Minimum 6 letters , must be within 30 charters long and should not contain numbers",
+                icon: "error"
+            });
+        } else if (!validatePhone(phone.value)) {
+            Swal.fire({
+                title: "Error",
+                text: "Phone number must be 10 digits",
                 icon: "error"
             });
         } else if (checkEmail(email.value)) {
@@ -185,4 +190,4 @@ button[type="submit"] {
             registerForm.submit()
         }
     })
-</script> -->
+</script>
