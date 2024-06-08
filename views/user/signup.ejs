@@ -116,7 +116,7 @@ input:-webkit-autofill:focus {
 
 <%- include('footer') %>
 
-
+<!----------------------------------- Validation ------------------------------------------>
 <script>
 
     const registerForm = document.getElementById('register-form')
@@ -147,6 +147,9 @@ input:-webkit-autofill:focus {
         if(!/\d/.test(password)){
             return false
         }
+        if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+            return false;
+        }
         return true
     }
     function validatePhone(phone) {
@@ -156,7 +159,7 @@ input:-webkit-autofill:focus {
 
     registerForm.addEventListener('submit', (e) => {
         e.preventDefault()
-        if (name.value.trim() === "" || name.value.length > 25 || name.value.length < 6 || !isNaN(name.value)) {
+        if (name.value.trim() === "" || name.value.length > 25 || name.value.length < 5 || !isNaN(name.value)) {
             Swal.fire({
                 title: "Error",
                 text: "Name must not be empty ,Minimum 6 letters , must be within 30 charters long and should not contain numbers",

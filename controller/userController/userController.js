@@ -70,10 +70,10 @@ const signgupPost = async (req, res) => {
 
 const verify = (req, res) => {
   try {
-    res.render('user/verify', {
-      title: 'OTP verify',
+    res.render('user/verify', {title: 'OTP verify',
       email: req.session.email,
-      otpTime: req.session.optTime
+      otpTime: req.session.optTime,
+      user:req.session.user
     })
   } catch (error) {
     console.log(`error while rendering verify page ${error}`)

@@ -55,7 +55,7 @@ user.post('/forgotpassword',forgotPassword.forgotPasswordPost)
 user.get('/forgotpasswordotp',forgotPassword.forgotPasswordOtp)
 user.post('/forgotpasswordotp',forgotPassword.forgotPasswordOtpPost)
 user.post('/resetpassword',forgotPassword.resetPasswordPost)
-
+user.get('/forgotpassword-resend/:email',forgotPassword.forgotResend)
 
 //----------------------------- profile ------------------------------
 

@@ -77,29 +77,30 @@
     .user-login-icon{
         color:  #fefeeb;
         margin-right: 2rem;
+        cursor: pointer;
     }
     .sidebar {
-        height: 100%;
+        height: 70%;
         width: 250px;
         position: fixed;
         top: 0;
-        right: -250px;
-        background-color: black;
+        right: -300px;
+        background-color: #232323;
         transition: right 0.3s ease;
         box-shadow: 0 0 20px #000000;
         z-index: 10;
     }
 
     .sidebar ul {
-        color: rgb(248, 242, 242);
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1rem;
+        list-style-type: none;
         margin-top: 2rem;
+        margin: 0;
+        padding: 0;
+        gap: 1rem;
+        color: #fefeeb;
 
     }
 
@@ -113,14 +114,14 @@
     }
 
     .sidebar ul li:hover {
-        border: 1px solid white;
+        border: 1px solid #fefeeb;
     }
 
     .sidebar ul li a {
         display: block;
         width: 100%;
         text-decoration: none;
-        color: white;
+        color: #fefeeb;
     }
 
     .toggle-btn {
@@ -156,6 +157,8 @@
             <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
         </ul>
 
+<!--------------------------- Check the user is login or not , Based on that the icon will change ----------------------------------->
+
         <% if (user) { %>
             <span class="nav-link-items user-login-icon" onclick="toggleSidebar()"><i class="fa-solid fa-user"></i></span>
             <div class="sidebar" id="sidebar">
@@ -177,15 +180,16 @@
 
 <%- include('alert') %>
 
+<!------------------------ toggle side bar -------------------------------->
 
 <script>
-        // toggle side bar
+        
         function toggleSidebar() {
             var sidebar = document.getElementById("sidebar");
-            if (sidebar.style.right === '' || sidebar.style.right === '-250px') {
+            if (sidebar.style.right === '' || sidebar.style.right === '-300px') {
                 sidebar.style.right = "0";
             } else {
-                sidebar.style.right = "-250px";
+                sidebar.style.right = "-300px";
             }
         }
 
