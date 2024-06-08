@@ -1,5 +1,7 @@
 const userSchema = require('../../model/user.modal')
 
+//----------------------------------- profile page ----------------------------------
+
 const profile = async (req,res)=>{
     
     try {
@@ -11,8 +13,6 @@ const profile = async (req,res)=>{
             req.flash('error','Couldnt find user')
             res.redirect('/user/home')
         }
-
-
     } catch (error) {
         console.log(`error while loading profile ${error}`)
     }

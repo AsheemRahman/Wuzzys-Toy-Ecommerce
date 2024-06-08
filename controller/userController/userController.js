@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt')
 const sendOTP = require('../../services/emailSender')
 const generateOTP = require('../../services/generateOTP')
 
+
+//--------------------------------- user Home page Render ------------------------------
+
 const user = (req, res) => {
   try {
     res.redirect('/user/home')
@@ -11,6 +14,9 @@ const user = (req, res) => {
     console.log(`error while rendering user page ${error}`)
   }
 }
+
+
+//------------------------------------ Render Signup page --------------------------------
 
 const signup = (req, res) => {
   try {
@@ -23,6 +29,9 @@ const signup = (req, res) => {
     console.log(`error while rendering signup page ${error} `)
   }
 }
+
+
+//---------------------------------- Getting Details of User ------------------------------
 
 const signgupPost = async (req, res) => {
   try {
@@ -39,7 +48,6 @@ const signgupPost = async (req, res) => {
       res.redirect('/user/signup')
     } else {
       const otp = generateOTP()
-
       sendOTP(details.email, otp)
       req.flash('success', `OTP sent to the ${details.email} `)
 
@@ -58,6 +66,7 @@ const signgupPost = async (req, res) => {
 }
 
 
+//-------------------------------- Login otp Page Render -----------------------------
 
 const verify = (req, res) => {
   try {
@@ -70,6 +79,9 @@ const verify = (req, res) => {
     console.log(`error while rendering verify page ${error}`)
   }
 }
+
+
+//------------------------------------ verify the otp -------------------------------
 
 const verifyPost = async (req, res) => {
   try {
@@ -102,17 +114,17 @@ const verifyPost = async (req, res) => {
   }
 }
 
+
+//-------------------------------------- Otp Resent ---------------------------------
+
 const otpResend = (req, res) => {
   try {
     const email = req.params.email
-
     const otp = generateOTP()
 
     sendOTP(email, otp)
-
     req.session.otp = otp
     req.session.otpTime = Date.now()
-
     res.status(200)
 
     req.flash('success', 'OTP resend successfully')
@@ -122,6 +134,9 @@ const otpResend = (req, res) => {
   }
 }
 
+
+//------------------------------------ Login Page Render ----------------------------
+ 
 const login = (req, res) => {
   if (req.session.user) {
     res.redirect('/user/home')
@@ -129,6 +144,9 @@ const login = (req, res) => {
     res.render('user/login', { title: 'Login' })
   }
 }
+
+
+//---------------------------------- Verify Login Details -----------------------------
 
 const loginPost = async (req, res) => {
   try {
@@ -156,6 +174,9 @@ const loginPost = async (req, res) => {
     console.log(`error while login post ${error}`)
   }
 }
+
+
+//--------------------------------------- User logout -----------------------------------
 
 const logout = (req, res) => {
   try {

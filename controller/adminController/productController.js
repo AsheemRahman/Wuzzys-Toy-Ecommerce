@@ -3,21 +3,21 @@ const upload = require('../../middleware/multer')
 const collectionSchema = require('../../model/collection.model')
 const fs = require('fs');
 
-const product = async (req,res) => {
 
+//------------------------------ Find Product by Search -----------------------------
+
+const product = async (req,res) => {
     try {
         
         const search = req.query.search || "";
-
         const products = await productSchema.find({productName: {$regex: search, $options: 'i'}})
-
         res.render('admin/products',{title: 'Products',products})
-
     } catch (error) {
         console.log(`error from product page ${error}`)
     }
-
 }
+
+//---------------------------------- Add Product Render---------------------------------
 
 const addProduct = async (req,res) => {
     try {
@@ -32,12 +32,12 @@ const addProduct = async (req,res) => {
 }
 
 
-//multer upload 
+//------------------------------------ Multer upload ---------------------------------
 
 const multer = upload.array('image',3);
 
 
-//addproduct post
+//----------------------------------- add New product --------------------------------
 
 const addproductPost = async (req,res) => {
     try {
@@ -75,6 +75,7 @@ const addproductPost = async (req,res) => {
     }
 }
 
+//----------------------------------- Edit Product page render -----------------------------------
 
 const editProduct = async (req,res) => {
     
@@ -95,6 +96,8 @@ const editProduct = async (req,res) => {
 }
 
 
+//----------------------------------- Edit Product  -----------------------------------
+
 const editProductPost = async (req,res)=> {
     try {
         
@@ -114,6 +117,7 @@ const editProductPost = async (req,res)=> {
     }
 }
 
+//------------------------------------ Product Status ----------------------------------
 
 const status = async (req,res)=> {
     try {
@@ -129,6 +133,7 @@ const status = async (req,res)=> {
 }
 
 
+//------------------------------------ Delete Product -----------------------------------
 
 const deleteProduct =async (req,res)=>{
     try {

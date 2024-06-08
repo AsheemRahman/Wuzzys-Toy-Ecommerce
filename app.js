@@ -1,20 +1,19 @@
+
+//---------- requiring modules -------------------------
+
 const express = require("express")
 const path = require("path")
-require("dotenv").config()
 const nocache = require('nocache')
-//session
 const session = require('express-session')
-//express ejs layouts
 const expressLayouts=require('express-ejs-layouts')
 const {v4: uuidv4} = require('uuid')
-//flash message
 const flash = require('connect-flash')
+require("dotenv").config()
 
 const app = express()
 
 const adminRoutes = require('./routes/adminRoutes')
 const userRoutes = require('./routes/userRoutes')
-
 const connectDB = require("./config/connection")
 
 
@@ -61,7 +60,7 @@ app.use((req,res,next)=>{
 app.use('/admin',adminRoutes)
 app.use('/user',userRoutes)
 
-//first route to render
+//first route
 app.get("/",(req,res)=>{
     try {
         res.redirect('/user')

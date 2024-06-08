@@ -3,6 +3,7 @@ const generatOTP = require('../../services/generateOTP')
 const sendOTP = require('../../services/emailSender')
 const bcrypt = require('bcrypt')
 
+//------------------------------ Forget Page render ---------------------------------
 
 const forgotPassword = (req,res)=>{
     try {
@@ -14,6 +15,8 @@ const forgotPassword = (req,res)=>{
         console.log(`error while rendering forgotpassword page ${error}`)
     }
 }
+
+//------------------------------------- Forget ---------------------------------------
 
 const forgotPasswordPost = async(req,res)=>{
     
@@ -44,12 +47,13 @@ const forgotPasswordPost = async(req,res)=>{
     } catch (error) {
         console.log(`error while forgotpassword post ${error}`)
     }
-
 }
+
+
+//--------------------------------- Otp page is render --------------------------------
 
 const forgotPasswordOtp = (req,res)=>{
     try {
-
         res.render('user/forgotPasswordOtp',{title: 'OTP verification',email:req.session.email,otpTime:req.session.otpTime})
         
     } catch (error) {
@@ -57,10 +61,12 @@ const forgotPasswordOtp = (req,res)=>{
     }
 }
 
+
+//------------------------------------- Otp Getting ----------------------------------
+
 const forgotPasswordOtpPost = async (req,res)=>{
 
     try {
-
         if(req.session.otp !== undefined){
             if(req.body.otp === req.session.otp){
                 res.render('user/resetpassword',{title: 'Reset Password'})
@@ -76,18 +82,16 @@ const forgotPasswordOtpPost = async (req,res)=>{
     } catch (error) {
         console.log(`error while forgot otp verification ${error}`)
     }
-
 }
 
+
+//----------------------------------- New Password -----------------------------------
 
 const resetPasswordPost = async (req,res)=> {
 
     try {
-
         const password = await bcrypt.hash(req.body.password,10)
-
         const update = await userSchema.updateOne({email: req.session.email},{password: password})
-
         if(update){
             req.flash('success','Password updated successfully')
             res.redirect('/user/login')
@@ -95,7 +99,6 @@ const resetPasswordPost = async (req,res)=> {
             req.flash('error','Error while password update')
             res.redirect('/user/login')
         }
-
     } catch (error) {
         console.log(`error while reset password post ${error}`)
     }

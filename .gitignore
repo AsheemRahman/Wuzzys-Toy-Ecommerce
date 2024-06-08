@@ -1,9 +1,8 @@
 
-
 # env file
 
 .env
 
-# files that is uploads bt admin
+# files that is uploads by admin
 
 uploads/*

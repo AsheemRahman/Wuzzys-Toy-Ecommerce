@@ -1,6 +1,9 @@
 
 const userSchema = require('../../model/user.modal')
 
+
+//-------------------------------- User Page Render ----------------------------------
+
 const users = async (req,res)=> {
 
     try {
@@ -15,6 +18,8 @@ const users = async (req,res)=> {
     }
 
 }
+
+//------------------------------------ User Status ---------------------------------
 
 const status = async (req,res)=> {
 

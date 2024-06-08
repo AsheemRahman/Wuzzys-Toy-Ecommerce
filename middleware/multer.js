@@ -3,13 +3,13 @@ const path=require('path')
 
 const storage = multer.diskStorage({
 
-    //location of where the file should be saved
+    //--------------------- files will be saved location -----------------------
 
     destination: function(req,file,cb){
         cb(null,'./uploads')
     },
 
-    //file name of the file to be saved
+    //------------------ file name of the file to be saved ---------------------
 
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)

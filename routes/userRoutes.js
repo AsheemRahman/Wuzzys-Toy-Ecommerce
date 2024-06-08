@@ -8,43 +8,58 @@ const productController = require('../controller/userController/productControlle
 const profileContoller = require('../controller/userController/profileController')
 const forgotPassword = require('../controller/userController/forgotPassword')
 
-//main
+//------------------------------- main -------------------------------
+
 user.get('/',userContoller.user)
 
-//login
+
+//------------------------------ login -------------------------------
+
 user.get('/login',userContoller.login)
 user.post('/login',userContoller.loginPost)
 
-//signup
+
+//----------------------------- signup -------------------------------
+
 user.get('/signup',userContoller.signup)
 user.post('/signup',userContoller.signgupPost)
 
-//otp verify
+
+//--------------------------- otp verify ------------------------------
+
 user.get('/verify',userContoller.verify)
 user.post('/verify',userContoller.verifyPost)
 user.post('/resend/:email',userContoller.otpResend)
 
-//home
+
+//-------------------------------- home -------------------------------
+
 user.get('/home',homeController.home)
 user.get('/explore',homeController.explore)
 
-//product view
+
+//---------------------------- product view ---------------------------
+
 user.get('/product/:id',productController.productView);
 
-//logout 
+
+//----------------------------- logout --------------------------------
+
 user.get('/logout',userContoller.logout)
 
-//profile
 
-user.get('/profile',isUser,profileContoller.profile)
-
-//forgot password
+//------------------------- forgot password ---------------------------
 
 user.get('/forgotpassword',forgotPassword.forgotPassword)
 user.post('/forgotpassword',forgotPassword.forgotPasswordPost)
 user.get('/forgotpasswordotp',forgotPassword.forgotPasswordOtp)
 user.post('/forgotpasswordotp',forgotPassword.forgotPasswordOtpPost)
 user.post('/resetpassword',forgotPassword.resetPasswordPost)
+
+
+//----------------------------- profile ------------------------------
+
+user.get('/profile',isUser,profileContoller.profile)
 
 
 

@@ -1,5 +1,5 @@
 
-//admin routes
+//--------------------------- admin routes ------------------------------
 
 const admin = (req,res)=>{
     try {
@@ -9,7 +9,8 @@ const admin = (req,res)=>{
     }
 }
 
-// login get request
+
+//------------------------- login get request --------------------------
 
 const login = (req,res)=>{
     try {
@@ -25,7 +26,8 @@ const login = (req,res)=>{
     
 }
 
-//admin login post request
+
+//--------------------- admin login post request ----------------------
 
 const loginPost = (req,res)=>{
     try {
@@ -43,7 +45,8 @@ const loginPost = (req,res)=>{
     
 }
 
-//admin home get request
+
+//------------------------- admin home get request --------------------
 
 const home = (req,res)=>{
    try {
@@ -54,7 +57,7 @@ const home = (req,res)=>{
 }
 
 
-//admin logout request
+//-------------------------- admin logout request ---------------------
 
 const logout = (req,res)=>{
     req.session.destroy((err)=>{
@@ -65,9 +68,5 @@ const logout = (req,res)=>{
         }
     })
 }
-
-
-
-//exporting the admin controllers
 
 module.exports={login,loginPost,home,admin,logout}
