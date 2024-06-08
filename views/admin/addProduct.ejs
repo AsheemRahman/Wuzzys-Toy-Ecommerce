@@ -1,48 +1,110 @@
 <style>
-    .container-add-products{
-    width: 100%;
-    background-color: #232323;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 37px;
-    margin-top: 40px;
-    color: #fefeeb
+    .container-add-products {
+        width: 100%;
+        background-color: #232323;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 37px;
+        margin-top: 40px;
+        color: #fefeeb
+    }
 
-}
-.add-products{
-    height: 80%;
-    background-color: #232323;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 10px;
-}
+    .add-products {
+        height: 80%;
+        background-color: #232323;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px;
+    }
 
-textarea{
-    height: 250px;
-    overflow: hidden;
-    resize: none;
-}
-.add-product-img{
-    background: #DB4444;
-    color: #fefeeb;
-    padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-}
-.add-product-img:hover{
-    background: #f55;
-}
-.form-control{
-    background: #2D2D2D;
-    color: #fefeeb;
-}
+    textarea {
+        height: 250px;
+        overflow: hidden;
+        resize: none;
+    }
+
+    .add-product-img {
+        background: #DB4444;
+        color: #fefeeb;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .add-product-img:hover {
+        background: #f55;
+    }
+
+    .form-control {
+        background: #232323;
+        color: #fefeeb;
+    }
+
+    .form-control:focus {
+        color: #fefeeb;
+        background: #232323;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus {
+        -webkit-text-fill-color: #fff;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+
+    /*--------- images add ---------*/
+
+    .image-preview {
+        width: 250px;
+        height: 250px;
+    }
+
+
+    .preview-img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .delete-button {
+        margin-top: 10px;
+    }
+
+    .image-upload-preview {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .image-preview-box {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+
+    .img-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .img-container img {
+        width: 100%;
+        height: auto;
+    }
 </style>
 
 
 
 <%- include('navbar') %>
 
-<!-------------------------------------- product add ---------------------------------------------->
+    <!-------------------------------------- product add ---------------------------------------------->
 
     <div class="container container-add-products">
         <div class="add-products">
@@ -50,14 +112,17 @@ textarea{
                 <div class="row d-flex justify-content-center align-content-center ">
                     <div class="col-6">
                         <label class="form-label " for="productName">Product Name</label>
-                        <input class="form-control form-input " type="text" name="productName" id="productName" required>
+                        <input class="form-control form-input " type="text" name="productName" id="productName"
+                            required>
                         <label class="form-label " for="productPrice">Price</label>
-                        <input class="form-control form-input" type="text" name="productPrice" id="productPrice" required>
+                        <input class="form-control form-input" type="text" name="productPrice" id="productPrice"
+                            required>
 
                         <div>
                             <label class="form-label " for="productCollection">Collection</label>
-                            <select name="productCollection" id="productCollection" class="form-control form-input" required>
-                                <option value="" selected disabled >Select a category</option>
+                            <select name="productCollection" id="productCollection" class="form-control form-input"
+                                required>
+                                <option value="" selected disabled>Select a category</option>
                                 <% productCollection.forEach((collection)=> { %>
                                     <option value="<%= collection.collectionName %>">
                                         <%= collection.collectionName %>
@@ -67,7 +132,8 @@ textarea{
                         </div>
 
                         <label class="form-label " for="productQuantity">Stock</label>
-                        <input class="form-control form-input" type="text" name="productQuantity" id="productQuantity" required>
+                        <input class="form-control form-input" type="text" name="productQuantity" id="productQuantity"
+                            required>
                     </div>
 
                     <div class="col-6">
@@ -87,11 +153,13 @@ textarea{
         </div>
         <div class="text-center mt-3">
             <a href="/admin/products" class="btn submit-btn-light">Cancel</a>
-            <button type="submit" class="btn submit-btn" name="" form="add-product-form" id="submit-form">Add Product</button>
+            <button type="submit" class="btn submit-btn" name="" form="add-product-form" id="submit-form">Add
+                Product</button>
         </div>
     </div>
 
     <!--------------------------------- Cropper js Modal -------------------------------------->
+    
     <div class="modal fade" id="cropperModal">
         <div class="modal-dialog modal-dialog-centered ">
             <div class="modal-content">
