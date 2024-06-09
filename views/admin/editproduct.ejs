@@ -1,0 +1,165 @@
+<style>
+    .container-add-products {
+        width: 100%;
+        background-color: #232323;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 37px;
+        margin-top: 40px;
+        color: #fefeeb
+    }
+
+    .add-products {
+        height: 80%;
+        background-color: #232323;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px;
+    }
+
+    textarea {
+        height: 250px;
+        overflow: hidden;
+        resize: none;
+    }
+
+    .add-product-img {
+        background: #DB4444;
+        color: #fefeeb;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .add-product-img:hover {
+        background: #f55;
+    }
+
+    .form-control {
+        background: #232323;
+        color: #fefeeb;
+    }
+
+    .form-control:focus {
+        color: #fefeeb;
+        background: #232323;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus {
+        -webkit-text-fill-color: #fff;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+    .edit-product-disable{
+        background: #232323;
+    }
+    /*--------- images add ---------*/
+
+    .image-preview {
+        width: 250px;
+        height: 250px;
+    }
+
+
+    .preview-img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .delete-button {
+        margin-top: 10px;
+    }
+
+    .image-upload-preview {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .image-preview-box {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+
+    .img-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .img-container img {
+        width: 100%;
+        height: auto;
+    }
+</style>
+
+
+<%- include('navbar') %>
+
+    <div class="container container-add-products">
+        <div class="add-products">
+            <form action="/admin/editproduct/<%= product.id %>" method="post" enctype="multipart/form-data"
+                id="edit-product-form">
+                <div class="row d-flex justify-content-center align-content-center ">
+                    <div class="col-6">
+                        <label class="form-label " for="productName">Product Name</label>
+                        <input class="form-control form-input edit-product-disable" type="text" name="productName" id="productName" value="<%= product.productName %>" disabled required>
+
+                        <label class="form-label " for="productPrice">Price</label>
+                        <input class="form-control form-input" type="text" name="productPrice" id="productPrice" value="<%= product.productPrice %>" required>
+
+                        <div>
+                            <label class="form-label " for="productCollection">Collection</label>
+                            <select name="productCollection" id="productCollection" class="form-control form-input edit-product-disable" disabled required>
+                                <option value="" selected disabled>
+                                    <%= product.productCollection %>
+                                </option>
+                            </select>
+                        </div>
+
+                        <label class="form-label " for="productQuantity">Stock</label>
+                        <input class="form-control form-input" type="text" name="productQuantity" id="productQuantity" value="<%= product.productQuantity %>" required>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="productDescription" class="form-label">Description</label>
+                        <textarea class="form-control form-input" name="productDescription" id="productDescription" required><%= product.productDescription %></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-3  ">
+                        <input type="file" name="image" id="image-upload" accept="image/png, image/jpeg" multiple
+                            class="d-none">
+                        <label for="image-upload" class="btn submit-btn">ChooseImages</label>
+                    </div>
+
+                    <div class="image-upload-preview" id="image-upload-preview">
+                        <% product.productImage.forEach((img)=>{ %>
+                            <div class="product-image-box">
+                                <img src="../../<%=img %>" alt="" class="preview-img ">
+                            </div>
+                            <% }) %>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="text-center mt-3">
+            <a href="/admin/products" class="btn submit-btn-light">Cancel</a>
+            <button type="submit" class="btn submit-btn" name="" form="edit-product-form" id="submit-form">Add
+                Product</button>
+        </div>
+
+    </div>
+
+
+    <%- include('footer') %>
