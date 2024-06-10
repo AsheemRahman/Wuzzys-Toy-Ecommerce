@@ -53,6 +53,7 @@ const addproductPost = async (req,res) => {
             productPrice: req.body.productPrice,
             productCollection: req.body.productCollection,
             productQuantity: req.body.productQuantity,
+            productDiscount: req.body.productDiscount,
             productDescription: req.body.productDescription,
             productImage: imgArray
         }
