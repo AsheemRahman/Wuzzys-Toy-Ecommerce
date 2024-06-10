@@ -4,6 +4,23 @@
         padding: 2rem;
     }
 
+    .home-category-items {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .category-item {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 3rem;
+        padding: 0;
+    }
+
+    .category-item a {
+        text-decoration: none;
+    }
+
     .product {
         background-color: #232323;
         border-radius: 10px;
@@ -11,7 +28,7 @@
         transition: transform 0.3s;
         width: 100%;
         max-width: 300px;
-        max-height: 300px;
+        max-height: 500px;
     }
 
     .product img {
@@ -32,44 +49,56 @@
 
 
 
-<div class="container text-center my-4">
+<div class="container text-center my-4" id="Category">
     <h1 class="text-white home-category-text">Our Products</h1>
     <div class="row home-category-items">
-        <div class="col-6 col-md-4 mb-4 category-item">
-            <div class="product">
-                <img src="/public/assets/Category/All-product.avif" alt="All Toys" class="img-fluid">
-                <p class="text-white">All Toys</p>
-            </div>
+        <div class="col-12 col-md-6 col-lg-4 category-item">
+            <a href="#">
+                <div class="product">
+                    <img src="/public/assets/Category/All-product.avif" alt="All Toys" class="img-fluid">
+                    <p class="text-white">All Toys</p>
+                </div>
+            </a>
         </div>
-        <div class="col-6 col-md-4 mb-4 category-item">
-            <div class="product">
-                <img src="/public/assets/Category/Toy Cars.png" alt="Toy Cars" class="img-fluid">
-                <p class="text-white">Toy Cars</p>
-            </div>
+        <div class="col-12 col-md-6 col-lg-4 category-item">
+            <a href="#">
+                <div class="product">
+                    <img src="/public/assets/Category/Toy Cars.png" alt="Toy Cars" class="img-fluid">
+                    <p class="text-white">Toy Cars</p>
+                </div>
+            </a>
         </div>
-        <div class="col-6 col-md-4 mb-4 category-item">
-            <div class="product">
-                <img src="/public/assets/Category/Soft-toy.avif" alt="Soft Toys" class="img-fluid">
-                <p class="text-white">Soft Toys</p>
-            </div>
+        <div class="col-12 col-md-6 col-lg-4 category-item">
+            <a href="#">
+                <div class="product">
+                    <img src="/public/assets/Category/Soft-toy.avif" alt="Soft Toys" class="img-fluid">
+                    <p class="text-white">Soft Toys</p>
+                </div>
+            </a>
         </div>
-        <div class="col-6 col-md-4 mb-4 category-item">
-            <div class="product">
-                <img src="/public/assets/Category/Charactor-Toy.png" alt="Character Toy" class="img-fluid">
-                <p class="text-white">Character Toy</p>
-            </div>
+        <div class="col-12 col-md-6 col-lg-4 category-item">
+            <a href="#">
+                <div class="product">
+                    <img src="/public/assets/Category/Charactor-Toy.png" alt="Character Toy" class="img-fluid">
+                    <p class="text-white">Character Toy</p>
+                </div>
+            </a>
         </div>
-        <div class="col-6 col-md-4 mb-4 category-item">
-            <div class="product">
-                <img src="/public/assets/Category/Doll-toys.png" alt="Dolls" class="img-fluid">
-                <p class="text-white">Dolls</p>
-            </div>
+        <div class="col-12 col-md-6 col-lg-4 category-item">
+            <a href="#">
+                <div class="product">
+                    <img src="/public/assets/Category/Doll-toys.png" alt="Dolls" class="img-fluid">
+                    <p class="text-white">Dolls</p>
+                </div>
+            </a>
         </div>
-        <div class="col-6 col-md-4 mb-4 category-item">
-            <div class="product">
-                <img src="/public/assets/Category/Puzzle.jpg" alt="Puzzle" class="img-fluid">
-                <p class="text-white">Puzzle</p>
-            </div>
+        <div class="col-12 col-md-6 col-lg-4 category-item">
+            <a href="#">
+                <div class="product">
+                    <img src="/public/assets/Category/puzzle.jpg" alt="Puzzle" class="img-fluid">
+                    <p class="text-white">Puzzle</p>
+                </div>
+            </a>
         </div>
     </div>
 </div>
