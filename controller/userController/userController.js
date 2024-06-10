@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 const sendOTP = require('../../services/emailSender')
 const generateOTP = require('../../services/generateOTP')
 
+const passport = require('passport')
+const auth = require('../../services/auth.js')
 
 //--------------------------------- user Home page Render ------------------------------
 
@@ -15,7 +17,6 @@ const user = (req, res) => {
   }
 }
 
-
 //------------------------------------ Render Signup page --------------------------------
 
 const signup = (req, res) => {
@@ -23,13 +24,12 @@ const signup = (req, res) => {
     if (req.session.user) {
       res.redirect('/user/home')
     } else {
-      res.render('user/signup', { title: 'Signup',user: req.session.user })
+      res.render('user/signup', { title: 'Signup', user: req.session.user })
     }
   } catch (error) {
     console.log(`error while rendering signup page ${error} `)
   }
 }
-
 
 //---------------------------------- Getting Details of User ------------------------------
 
@@ -65,21 +65,20 @@ const signgupPost = async (req, res) => {
   }
 }
 
-
 //-------------------------------- Login otp Page Render -----------------------------
 
 const verify = (req, res) => {
   try {
-    res.render('user/verify', {title: 'OTP verify',
+    res.render('user/verify', {
+      title: 'OTP verify',
       email: req.session.email,
-      otpTime: req.session.optTime,
-      user:req.session.user
+      otpTime: req.session.otpTime,
+      user: req.session.user
     })
   } catch (error) {
     console.log(`error while rendering verify page ${error}`)
   }
 }
-
 
 //------------------------------------ verify the otp -------------------------------
 
@@ -97,7 +96,7 @@ const verifyPost = async (req, res) => {
         await userSchema
           .insertMany(details)
           .then(() => {
-            console.log(`new user successfully registeres`)
+            console.log(`new user registeres successfully`)
             req.flash('success', 'user signup successfull')
             res.redirect('/user/login')
           })
@@ -114,7 +113,6 @@ const verifyPost = async (req, res) => {
   }
 }
 
-
 //-------------------------------------- Otp Resent ---------------------------------
 
 const otpResend = (req, res) => {
@@ -125,7 +123,6 @@ const otpResend = (req, res) => {
     sendOTP(email, otp)
     req.session.otp = otp
     req.session.otpTime = Date.now()
-    res.status(200)
 
     req.flash('success', 'OTP resend successfully')
     res.redirect('/user/verify')
@@ -134,17 +131,15 @@ const otpResend = (req, res) => {
   }
 }
 
-
 //------------------------------------ Login Page Render ----------------------------
- 
+
 const login = (req, res) => {
   if (req.session.user) {
     res.redirect('/user/home')
   } else {
-    res.render('user/login', { title: 'Login' , user: req.session.user})
+    res.render('user/login', { title: 'Login', user: req.session.user })
   }
 }
-
 
 //---------------------------------- Verify Login Details -----------------------------
 
@@ -160,12 +155,12 @@ const loginPost = async (req, res) => {
 
         if (check && password) {
           req.session.user = check.id
-            res.redirect('/user/home')
+          res.redirect('/user/home')
         } else {
-            req.flash('error', 'Invalid credentails')
-            res.redirect('/user/login')
+          req.flash('error', 'Invalid credentails')
+          res.redirect('/user/login')
         }
-        }
+      }
     } else {
       req.flash('error', 'Couldnt find user')
       res.redirect('/user/login')
@@ -174,7 +169,6 @@ const loginPost = async (req, res) => {
     console.log(`error while login post ${error}`)
   }
 }
-
 
 //--------------------------------------- User logout -----------------------------------
 
@@ -192,6 +186,45 @@ const logout = (req, res) => {
   }
 }
 
+//-------------------------------------- google auth -----------------------------------
+const googleAuth = (req, res) => {
+  try {
+      passport.authenticate('google', {
+          scope:
+              ['email', 'profile']
+      })(req, res)
+  } catch (err) {
+      console.log(`Error on google authentication ${err}`)
+  }
+}
+
+
+//----------------------------------- google auth callback  ----------------------------
+
+const googleAuthCallback = (req, res, next) => {
+  try {
+      passport.authenticate('google', (err, user, info) => {
+          if (err) {
+              console.log(`Error on google auth callback: ${err}`);
+              return next(err);
+          }
+          if (!user) {
+              return res.redirect('/user/login');
+          }
+          req.logIn(user, (err) => {
+              if (err) {
+                  return next(err);
+              }
+              req.session.user = user.id;
+              return res.redirect('/user/home');
+          });
+      })(req, res, next);
+  } catch (err) {
+      console.log(`Error on google callback ${err}`);
+  }
+}
+
+
 module.exports = {
   user,
   signup,
@@ -201,5 +234,7 @@ module.exports = {
   otpResend,
   login,
   loginPost,
+  googleAuth,
+  googleAuthCallback,
   logout
 }

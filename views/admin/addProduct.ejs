@@ -181,3 +181,13 @@
     </div>
 
     <%- include('footer') %>
+
+        <script>
+            // Crop button event listener
+            document.getElementById('crop-button').addEventListener('click', () => {
+                const canvas = cropper.getCroppedCanvas()
+                currentImage.src = canvas.toDataURL()
+                cropperModal.hide()
+                cropper.destroy()
+            })
+        </script>

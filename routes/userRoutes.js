@@ -2,34 +2,40 @@ const express = require('express')
 const user = express.Router();
 const isUser = require('../middleware/userSession')
 
-const userContoller = require('../controller/userController/userController')
+const userController = require('../controller/userController/userController')
 const homeController = require('../controller/userController/homeController')
 const productController = require('../controller/userController/productController')
-const profileContoller = require('../controller/userController/profileController')
 const forgotPassword = require('../controller/userController/forgotPassword')
+const profileController = require('../controller/userController/profileController')
 
 //------------------------------- main -------------------------------
 
-user.get('/',userContoller.user)
+user.get('/',userController.user)
 
 
 //------------------------------ login -------------------------------
 
-user.get('/login',userContoller.login)
-user.post('/login',userContoller.loginPost)
+user.get('/login',userController.login)
+user.post('/login',userController.loginPost)
+
+
+//------------------------ login using google ------------------------
+
+user.get('/auth/google',userController.googleAuth)
+user.get('/auth/google/callback',userController.googleAuthCallback)
 
 
 //----------------------------- signup -------------------------------
 
-user.get('/signup',userContoller.signup)
-user.post('/signup',userContoller.signgupPost)
+user.get('/signup',userController.signup)
+user.post('/signup',userController.signgupPost)
 
 
 //--------------------------- otp verify ------------------------------
 
-user.get('/verify',userContoller.verify)
-user.post('/verify',userContoller.verifyPost)
-user.post('/resend/:email',userContoller.otpResend)
+user.get('/verify',userController.verify)
+user.post('/verify',userController.verifyPost)
+user.post('/resend/:email',userController.otpResend)
 
 
 //-------------------------------- home -------------------------------
@@ -45,7 +51,7 @@ user.get('/product/:id',productController.productView);
 
 //----------------------------- logout --------------------------------
 
-user.get('/logout',userContoller.logout)
+user.get('/logout',userController.logout)
 
 
 //------------------------- forgot password ---------------------------
@@ -59,7 +65,7 @@ user.get('/forgotpassword-resend/:email',forgotPassword.forgotResend)
 
 //----------------------------- profile ------------------------------
 
-user.get('/profile',isUser,profileContoller.profile)
+user.get('/profile',isUser,profileController.profile)
 
 
 
