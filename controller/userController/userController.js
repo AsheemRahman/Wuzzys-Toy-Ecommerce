@@ -225,6 +225,56 @@ const googleAuthCallback = (req, res, next) => {
 }
 
 
+//-------------------------------------- Facebook auth -----------------------------------
+// const facebookAuth = (req, res) => {
+//   try {
+//       passport.authenticate('facebook', {
+//           scope:
+//               ['email', 'profile']
+//       })(req, res)
+//   } catch (err) {
+//       console.log(`Error on facebook authentication ${err}`)
+//   }
+// }
+const facebookAuth = (req, res, next) => {
+  try {
+      passport.authenticate('facebook', {
+          scope: ['email', 'profile']
+      })(req, res, next);
+  } catch (err) {
+      console.log(`Error on facebook authentication ${err}`);
+      res.status(500).send('Authentication failed');
+  }
+}
+
+
+
+//----------------------------------- google auth callback  ----------------------------
+
+const facebookAuthCallback = (req, res, next) => {
+  try {
+      passport.authenticate('facebook', (err, user, info) => {
+          if (err) {
+              console.log(`Error on facebook auth callback: ${err}`);
+              return next(err);
+          }
+          if (!user) {
+              return res.redirect('/user/login');
+          }
+          req.logIn(user, (err) => {
+              if (err) {
+                  return next(err);
+              }
+              req.session.user = user.id;
+              return res.redirect('/user/home');
+          });
+      })(req, res, next);
+  } catch (err) {
+      console.log(`Error on facebook callback ${err}`);
+  }
+}
+
+
 module.exports = {
   user,
   signup,
@@ -236,5 +286,7 @@ module.exports = {
   loginPost,
   googleAuth,
   googleAuthCallback,
+  facebookAuth,
+  facebookAuthCallback,
   logout
 }

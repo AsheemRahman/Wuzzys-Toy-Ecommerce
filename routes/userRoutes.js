@@ -25,6 +25,13 @@ user.get('/auth/google',userController.googleAuth)
 user.get('/auth/google/callback',userController.googleAuthCallback)
 
 
+//------------------------ login using facebook ------------------------
+
+user.get('/auth/facebook',userController.facebookAuth)
+user.get('/auth/facebook/callback',userController.facebookAuthCallback)
+
+
+
 //----------------------------- signup -------------------------------
 
 user.get('/signup',userController.signup)
