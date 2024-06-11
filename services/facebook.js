@@ -3,7 +3,6 @@ const passport = require('passport')
 const FacebookStrategy = require('passport-facebook').Strategy;
 const dotenv = require('dotenv').config()
 
-dotenv.config();
 
 
 passport.use(
