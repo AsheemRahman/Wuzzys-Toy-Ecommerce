@@ -138,7 +138,8 @@
 
                     <div class="col-6">
                         <label for="productDiscount">Product Discount in percentage</label>
-                        <input type="number" name="productDiscount" placeholder="0 if discount is not available" min="0" max="100" required>
+                        <input class="form-control form-input type="number" name="productDiscount" placeholder="0 if discount is not available" min="0"
+                            max="100" required>
 
                         <label for="productDescription" class="form-label">Description</label>
                         <textarea class="form-control form-input" name="productDescription" id="productDescription"
@@ -187,10 +188,36 @@
 
         <script>
             // Crop button event listener
-            document.getElementById('crop-button').addEventListener('click', () => {
-                const canvas = cropper.getCroppedCanvas()
-                currentImage.src = canvas.toDataURL()
-                cropperModal.hide()
-                cropper.destroy()
-            })
+            // document.getElementById('crop-button').addEventListener('click', () => {
+            //     const canvas = cropper.getCroppedCanvas()
+            //     currentImage.src = canvas.toDataURL()
+            //     cropperModal.hide()
+            //     cropper.destroy()
+            // })
+
+            document.getElementById('image-upload').addEventListener('change', function (event) {
+                const previewContainer = document.getElementById('image-upload-preview');
+                previewContainer.innerHTML = '';
+
+                const files = event.target.files;
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.classList.add('preview-img');
+
+                        const previewBox = document.createElement('div');
+                        previewBox.classList.add('image-preview-box');
+                        previewBox.appendChild(img);
+
+                        previewContainer.appendChild(previewBox);
+                    }
+
+                    reader.readAsDataURL(file);
+                }
+            });
         </script>
