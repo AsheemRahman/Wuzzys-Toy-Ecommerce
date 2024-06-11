@@ -53,7 +53,7 @@ user.get('/explore',homeController.explore)
 
 //---------------------------- product view ---------------------------
 
-user.get('/product/:id',productController.productView);
+user.get('/product/:id',productController.productDetail);
 
 
 //----------------------------- logout --------------------------------

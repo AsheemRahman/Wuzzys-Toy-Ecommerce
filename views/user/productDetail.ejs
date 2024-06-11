@@ -1,0 +1,250 @@
+<style>
+    .product-details{
+        width: 50%;
+    }
+
+    .product-view {
+        display: flex;
+        padding: 100px;
+        gap: 40px;
+        color: #fefeeb;
+    }
+
+    .product-image-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    .main-image {
+        width: 480px;
+        height: 380px;
+        border-radius: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .main-image img {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .product-image-min {
+        width: 150px;
+        height: 150px;
+        background-color: #FFFFFF;
+        border-radius: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .product-image-min img {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+    }
+
+    .add-coupon {
+        max-width: 200px;
+    }
+
+    .product-description {
+        font-family: 'Archivo', sans-serif;
+    }
+
+    .productdetail-button {
+        display: flex;
+        justify-content: space-around;
+        height: 9%;
+
+    }
+
+    .product-detail-cart {
+        background: #FFB155;
+        width: 31%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        color: #fefeeb;
+        text-decoration: none;
+    }
+
+    .product-detail-buy {
+        width: 31%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        border-radius: 20px;
+        background: #DB4444;
+        color: #fefeeb;
+    }
+
+    .product-detail-buy :hover {
+        background: #f55;
+        text-decoration: none;
+    }
+
+    .productdetail-button hr {
+        width: 80%;
+        border: 0;
+        height: 3px;
+        background: #ffffff;
+        margin-top: 4rem;
+    }
+
+    /*-------------------- delivery box -------------------------*/
+
+    .product-delivery {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1rem;
+    }
+
+    .product-delivery-line {
+        width: 100%;
+    }
+    .product-detail-delivery {
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border: 1px solid #fefeeb;
+        width: 70%;
+    }
+
+    .info-box {
+        display: flex;
+        align-items: center;
+    }
+
+    .info-box:last-child {
+        margin-bottom: 0;
+    }
+
+    .icon {
+        font-size: 24px;
+        margin-right: 10px;
+    }
+
+    a {
+        color: #00f;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+        .info-box {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .icon {
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+<%- include('navbar') %>
+
+
+    <div class="product-view">
+        <div class="product-image-container">
+            <div class="main-image">
+                <img id="image-view" src="../../<%= product.productImage[0]%>" alt="">
+            </div>
+            <div class="d-flex gap-2 mt-4">
+                <% product.productImage.forEach((img,index)=>{ %>
+                    <a>
+                        <div class="product-image-min" onclick="changeImage(`<%=img.replace(/\\/g, '\\\\')%>`)">
+                            <img src="../../<%= img %>" alt="">
+                        </div>
+                    </a>
+                    <% }) %>
+            </div>
+        </div>
+        <div class="product-details d-flex  flex-column gap-4">
+
+            <div class="">
+                <h1>
+                    <%= product.productName %>
+                </h1>
+                <h3><i class="bi bi-currency-rupee"></i>
+                    <%= product.productPrice %>
+                </h3>
+            </div>
+            <div class="product-description">
+                <h4>
+                    <%= product.productDescription %>
+                </h4>
+            </div>
+            <div class="product-line">
+                <hr>
+            </div>
+            <div class="productdetail-button">
+                <a href="" class="product-detail-cart">Add to Cart</a>
+                <a href="" class="product-detail-buy">Buy Now</a>
+            </div>
+            <div class="product-delivery">
+                <div class="product-detail-delivery">
+                    <div class="info-box">
+                        <div class="icon"><i class="bi bi-truck"></i></div>
+                        <div>
+                            <div>Free Delivery</div>
+                            <a href="#">Enter your postal code for Delivery Availability</a>
+                        </div>
+                    </div>
+                    <div class="product-delivery-line" style="width: 95%;">
+                        <hr>
+                    </div>
+                    <div class="info-box">
+                        <div class="icon"><i class="bi bi-arrow-repeat"></i></div>
+                        <div>
+                            <div>Return Delivery</div>
+                            <a href="#">Free 30 Days Delivery Returns. Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="home-line-div">
+        <hr class="home-line">
+    </div>
+
+    <!------------------------------------ image zoom when the mouse hover ------------------------------>
+    <script>
+        const imageContainer = document.getElementsByClassName('main-image')[0]
+        const productImg = document.getElementById('image-view')
+
+        imageContainer.addEventListener("mousemove", (e) => {
+            const rect = e.target.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+            productImg.style.transformOrigin = `${x * 100}% ${y * 100}%`;
+            productImg.style.transform = "scale(1.5)";
+        });
+        imageContainer.addEventListener("mouseleave", () => {
+            productImg.style.transformOrigin = "center"
+            productImg.style.transform = "scale(1)"
+        })
+
+        async function changeImage(src) {
+            productImg.src = `../../${src}`;
+        }
+
+    </script>
+
+    <%- include('similarProduct') %>
+
+        <%- include('footer') %>

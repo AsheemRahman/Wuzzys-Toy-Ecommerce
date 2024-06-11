@@ -103,7 +103,11 @@ const editProductPost = async (req,res)=> {
     try {
         
         const id = req.params.id;
-        productSchema.findByIdAndUpdate(id,{productPrice: req.body.productPrice, productQuantity: req.body.productQuantity, productDescription: req.body.productDescription})
+        productSchema.findByIdAndUpdate(id,{
+            productPrice: req.body.productPrice,
+            productQuantity: req.body.productQuantity,
+            productDiscount:req.body.productDiscount,
+            productDescription: req.body.productDescription})
         .then(()=>{
             req.flash('success','Product successfully updated')
             res.redirect('/admin/products')

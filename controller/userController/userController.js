@@ -5,7 +5,8 @@ const sendOTP = require('../../services/emailSender')
 const generateOTP = require('../../services/generateOTP')
 
 const passport = require('passport')
-const auth = require('../../services/auth.js')
+const auth = require('../../services/auth')
+const facebook = require('../../services/facebook')
 
 //--------------------------------- user Home page Render ------------------------------
 
@@ -226,16 +227,7 @@ const googleAuthCallback = (req, res, next) => {
 
 
 //-------------------------------------- Facebook auth -----------------------------------
-// const facebookAuth = (req, res) => {
-//   try {
-//       passport.authenticate('facebook', {
-//           scope:
-//               ['email', 'profile']
-//       })(req, res)
-//   } catch (err) {
-//       console.log(`Error on facebook authentication ${err}`)
-//   }
-// }
+
 const facebookAuth = (req, res, next) => {
   try {
       passport.authenticate('facebook', {
