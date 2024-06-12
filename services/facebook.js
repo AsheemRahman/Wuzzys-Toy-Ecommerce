@@ -1,4 +1,4 @@
-const userSchema = require('../model/user.modal')
+const userSchema = require('../model/userSchema')
 const passport = require('passport')
 const FacebookStrategy = require('passport-facebook').Strategy;
 const dotenv = require('dotenv').config()

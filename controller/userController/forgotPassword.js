@@ -1,4 +1,4 @@
-const userSchema = require('../../model/user.modal')
+const userSchema = require('../../model/userSchema')
 const generateOTP = require('../../services/generateOTP')
 const sendOTP = require('../../services/emailSender')
 const bcrypt = require('bcrypt')

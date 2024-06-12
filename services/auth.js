@@ -1,4 +1,4 @@
-const userSchema = require('../model/user.modal')
+const userSchema = require('../model/userSchema')
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const dotenv = require('dotenv').config()

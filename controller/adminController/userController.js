@@ -1,5 +1,5 @@
 
-const userSchema = require('../../model/user.modal')
+const userSchema = require('../../model/userSchema')
 
 
 //-------------------------------- User Page Render ----------------------------------

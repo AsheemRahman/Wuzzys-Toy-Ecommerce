@@ -1,4 +1,4 @@
-const userSchema=require("../model/user.modal")
+const userSchema=require("../model/userSchema")
 
 async function checkUser(req,res,next){
    try {
