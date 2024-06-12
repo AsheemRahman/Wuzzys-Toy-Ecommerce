@@ -1,6 +1,6 @@
 <style>
     .product-container {
-        margin-bottom: 5rem;
+        text-align: center;
     }
 
     .product-container h2 {
@@ -9,170 +9,78 @@
         font-family: 'Times New Roman', Times, serif;
         font-style: italic;
         color: #fefeeb;
-    }
+        margin: 2rem;
 
-    .product-category-container {
-        display: flex;
-        justify-content: space-around;
-        font-family: "Roboto", sans-serif;
-        flex-wrap: wrap;
-        gap: 2rem;
-    }
-
-    .product-category-container a {
-        cursor: pointer;
-        transition: .3s ease-in-out;
-        text-decoration: none;
-        color: aqua;
-    }
-
-    .product-category-container a :hover {
-        scale: 1.1;
     }
 
     .product-list-box {
         display: flex;
-        flex-direction: row;
         flex-wrap: wrap;
-        justify-content: space-around;
+        justify-content: center;
     }
 
     .product-box {
-        border: 1px solid #b2b2b2;
+        background-color: white;
+        border: 1px solid #ddd;
         border-radius: 10px;
-        width: 300px;
-        margin-top: 2rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        margin: 10px;
+        padding: 15px;
+        width: 20%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         position: relative;
+        box-sizing: border-box;
     }
 
-    .product-image-box {
-        height: 290px;
-        width: 290px;
+    .product-discount-box,
+    .product-newarrival-box {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: red;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 12px;
     }
 
     .product-image-box img {
-        margin: auto;
-        width: 250px;
-        height: 290px;
-        object-fit: scale-down;
-    }
-
-    .product-text-row {
-        max-width: 250px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        max-width: 14rem;
+        height: 14rem;
+        border-radius: 10px;
     }
 
     .product-name-box {
-        color: white;
-        margin-left: 4rem;
+        margin-top: 15px;
     }
 
     .product-name-link {
+        color: black;
         text-decoration: none;
-        color: white;
     }
 
-    .product-discount-box {
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding: 0 2rem;
-        color: #0f0f0f;
-        background-color: rgb(36, 189, 36);
-        border-radius: 5px 0;
+    .product-text-row {
+        margin: 5px 0;
     }
 
-    .product-newArrival-box {
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding: 0 2rem;
-        color: #ffffff;
-        background-color: rgb(50, 195, 50);
-        border-radius: 5px 0;
-    }
-
-    .product-price {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: .5rem;
-    }
-
-    .breadcrumbs {
-        margin: 3rem 6rem;
-        font-size: 16px;
-    }
-
-    .breadcrumbs ul {
-        list-style-type: none;
-        display: flex;
-    }
-
-    .breadcrumbs li:last-child {
-        font-weight: bold;
-    }
-
-    .breadcrumbs a {
-        text-decoration: none;
-        color: #fefeeb;
-    }
-
-    .breadcrumbs a:hover {
-        color: #f55;
-    }
-
-    .wishlist-icon {
-        font-size: 24px;
-        color: #e4d9d9;
-        margin-left: 10rem;
-        padding-left: 3rem;
-
-    }
-
+    .wishlist-icon,
     .cart-icon {
-        font-size: 24px;
-        color: #e4d9d9;
-        margin-left: 1rem;
+        color: gray;
+        margin-right: 10px;
+        cursor: pointer;
     }
 
-    @media (max-width: 576px) {
-        .product-container h2 {
-            font-size: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .product-box {
-            width: 90%;
-            margin: 1rem auto;
-        }
-
-        .product-image-box {
-            height: 200px;
-            width: 200px;
-        }
-
-        .product-text-row {
-            max-width: 200px;
-        }
-
-        .product-discount-box,
-        .product-newarrival-box {
-            padding: 0 0.5rem;
-            font-size: 0.8rem;
-        }
+    .wishlist-icon:hover,
+    .cart-icon:hover {
+        color: red;
     }
 </style>
+
 <%-include ('navbar') %>
 
     <nav class="breadcrumbs">
         <ul>
             <li><a href="/">Home</a></li>
-            <span class="text-white">/</span>
+            <span>/</span>
             <li><a href="/user/allproduct">All Product</a></li>
         </ul>
     </nav>
@@ -180,39 +88,38 @@
     <div class="product-container">
         <h2>Our Products</h2>
         <div class="product-list-box container">
-            <% product.forEach((product)=>{ %>
+            <% product.forEach((product)=> { %>
                 <div class="product-box">
-                    <% if(product.productDiscount!=0) {%>
+                    <% if (product.productDiscount !=0) { %>
                         <div class="product-discount-box">
                             <h6>
                                 <%= product.productDiscount %> &percnt; OFF
                             </h6>
                         </div>
-                    <% }else if(new Date(product.addedOn).getTime()>(Date.now() - (7 * 24 * 60 * 60 * 1000))) {%>
-                        <div class="product-newarrival-box">
-                            <h6>New Arrival</h6>
-                        </div>
-                    <% } %>
-                    <div class="product-image-box">
-                        <img src="/<%=product.productImage[0] %>" alt="">
-                    </div>
-                    <div class="product-name-box">
-                        <a href="/user/product-view/<%=product.id %>" class="product-name-link">
-                            <h6 class="product-text-row">
-                                <%=product.productName%>
-                            </h6>
-                            <p class="product-description product-text-row">
-                            <%=product.productAuthor %>
-                            </p>
-                            <h5 class="product-price"><i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                                <%=product.productPrice.toLocaleString() %>
-                            </h5>
-                        </a>
-                    </div>
-                    <a href="#" class="wishlist-icon"><i class="fas fa-heart"></i></a>
-                    <a href="#" class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
+                        <% } else if (new Date(product.createdAt).getTime()> (Date.now() - ( 10 * 24 * 60 * 60 * 1000
+                            ))) { %>
+                            <div class="product-newarrival-box">
+                                <h6>New Arrival</h6>
+                            </div>
+                            <% } %>
+                                <div class="product-image-box">
+                                    <img src="/<%= product.productImage[0] %>" alt="">
+                                </div>
+                                <div class="product-name-box">
+                                    <a href="/user/product-view/<%= product.id %>" class="product-name-link">
+                                        <h6 class="product-text-row">
+                                            <%= product.productName %>
+                                        </h6>
+                                        <h5 class="product-price">
+                                            <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
+                                            <%= product.productPrice.toLocaleString() %>
+                                        </h5>
+                                    </a>
+                                </div>
+                                <a href="#" class="wishlist-icon"><i class="fas fa-heart"></i></a>
+                                <a href="#" class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
                 </div>
-            <% }) %>
+                <% }) %>
         </div>
     </div>
 

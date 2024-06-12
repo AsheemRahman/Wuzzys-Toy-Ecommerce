@@ -2,7 +2,7 @@ body{
     background: #1a1a1a;
 }
 
-/*----------------- button style -------------------------------*/
+/*-------------------------------------- button style ------------------------------*/
 
 .submit-btn{
     background-color: #DB4444;
@@ -24,4 +24,40 @@ body{
     transform: scale(1.02);
     background-color: #f55;
     color: #fefeeb;
+}
+
+
+/*--------------------------------- Breadcrumbs ---------------------------------*/
+
+.breadcrumbs {
+    font-size: 16px;
+    height: 5rem;
+    width: 13rem;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    margin-left: 10rem;
+}
+
+.breadcrumbs ul {
+    list-style-type: none;
+    display: flex;
+}
+
+.breadcrumbs ul span {
+    color: #fefeeb;
+    margin: 0rem 1rem;
+}
+
+.breadcrumbs li:last-child {
+    font-weight: bold;
+}
+
+.breadcrumbs a {
+    text-decoration: none;
+    color: #fefeeb;
+}
+
+.breadcrumbs a:hover {
+    color: #f55;
 }

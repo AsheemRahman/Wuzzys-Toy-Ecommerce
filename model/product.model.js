@@ -17,6 +17,9 @@ const schema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    productDiscount:{
+        type:Number,
+    },
     productCollection: {
         type: String,
         required: true
