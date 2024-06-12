@@ -11,7 +11,7 @@ passport.use(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: process.env.GOOGLE_CALLBACK_URL,   
+            callbackURL: process.env.GOOGLE_CALLBACK_URL,
             passReqToCallback: true
         },
     async (request, accessToken, refreshToken, profile, done) => {
@@ -30,7 +30,6 @@ passport.use(
                 user = new userSchema({
                 name: profile.displayName,
                 email : profile.emails[0].value,
-                phone: '1234567890',
                 password: randomPassword,
                 googleID: profile.id
             })
