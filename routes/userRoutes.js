@@ -7,7 +7,6 @@ const userController = require('../controller/userController/userController')
 const homeController = require('../controller/userController/homeController')
 const productController = require('../controller/userController/productController')
 const forgotPassword = require('../controller/userController/forgotPassword')
-const profileController = require('../controller/userController/profileController')
 
 //------------------------------- main -------------------------------
 
@@ -49,7 +48,6 @@ user.post('/resend/:email',userController.otpResend)
 //-------------------------------- home -------------------------------
 
 user.get('/home',checkUser,homeController.home)
-user.get('/explore' , homeController.explore)
 
 
 //---------------------------- product view ---------------------------
@@ -71,9 +69,8 @@ user.post('/forgotpasswordotp',forgotPassword.forgotPasswordOtpPost)
 user.post('/resetpassword',forgotPassword.resetPasswordPost)
 user.get('/forgotpassword-resend/:email',forgotPassword.forgotResend)
 
-//----------------------------- profile ------------------------------
 
-user.get('/profile',isUser,profileController.profile)
+
 
 
 
