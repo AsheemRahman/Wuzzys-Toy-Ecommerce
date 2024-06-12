@@ -1,6 +1,7 @@
 const express = require('express')
 const user = express.Router();
 const isUser = require('../middleware/userSession')
+const checkUser = require('../middleware/checkUserSession')
 
 const userController = require('../controller/userController/userController')
 const homeController = require('../controller/userController/homeController')
@@ -47,13 +48,13 @@ user.post('/resend/:email',userController.otpResend)
 
 //-------------------------------- home -------------------------------
 
-user.get('/home',homeController.home)
-user.get('/explore',homeController.explore)
+user.get('/home', checkUser , homeController.home)
+user.get('/explore' , homeController.explore)
 
 
 //---------------------------- product view ---------------------------
 
-user.get('/product/:id',productController.productDetail);
+user.get('/product/:id', checkUser , productController.productDetail);
 
 
 //----------------------------- logout --------------------------------
