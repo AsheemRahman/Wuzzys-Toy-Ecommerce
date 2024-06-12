@@ -48,13 +48,13 @@ user.post('/resend/:email',userController.otpResend)
 
 //-------------------------------- home -------------------------------
 
-user.get('/home', checkUser , homeController.home)
+user.get('/home',checkUser,homeController.home)
 user.get('/explore' , homeController.explore)
 
 
 //---------------------------- product view ---------------------------
 
-user.get('/product/:id', checkUser , productController.productDetail);
+user.get('/product/:id',checkUser,productController.productDetail);
 
 
 //----------------------------- logout --------------------------------
