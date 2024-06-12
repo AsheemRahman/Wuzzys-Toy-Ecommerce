@@ -1,4 +1,4 @@
-const userSchema = require('../../model/uuserSchema')
+const userSchema = require('../../model/userSchema')
 
 //----------------------------------- profile page ----------------------------------
 
