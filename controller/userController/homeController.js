@@ -16,14 +16,14 @@ const home = async (req, res) => {
 
 //--------------------------------------- Explore Page ---------------------------------
 
-const explore = async (req, res) => {
+const allproduct = async (req, res) => {
   try {
     const product = await productSchema.find()
 
-    res.render('user/explore', { title: 'explore', product , user:req.session.user })
+    res.render('user/allproduct', { title: 'All Product', product , user:req.session.user })
   } catch (error) {
     console.log(`error from explore rendering ${error}`)
   }
 }
 
-module.exports = { home, explore }
+module.exports = { home , allproduct }
