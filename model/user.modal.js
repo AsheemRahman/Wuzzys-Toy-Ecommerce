@@ -20,6 +20,12 @@ const schema = new mongoose.Schema({
     isActive:{
         type:Boolean,
         default:true
+    },
+    googleID: {
+        type: String
+    },
+    facebookID: {
+        type: String
     }
 })
 

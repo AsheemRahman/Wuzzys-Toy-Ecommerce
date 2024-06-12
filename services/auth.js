@@ -3,21 +3,35 @@ const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const dotenv = require('dotenv').config()
 
+//for creating random passsword
+const crypto = require('crypto');
+
 passport.use(
     new GoogleStrategy(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: process.env.GOOGLE_CALLBACK_URL,
+            callbackURL: process.env.GOOGLE_CALLBACK_URL,   
             passReqToCallback: true
         },
     async (request, accessToken, refreshToken, profile, done) => {
         try {
-            let user = await userSchema.findOne({ email: profile.email })
+             //----------- Extract email from profile -------------------
+
+            const email = profile.emails[0].value;
+
+             //------------ Check if the user already exists ------------
+
+            let user = await userSchema.findOne({ email })
+
+            const randomPassword = crypto.randomBytes(16).toString('hex');
+
             if (!user) {
                 user = new userSchema({
                 name: profile.displayName,
-                email: profile.email,
+                email : profile.emails[0].value,
+                phone: '1234567890',
+                password: randomPassword,
                 googleID: profile.id
             })
                 await user.save()

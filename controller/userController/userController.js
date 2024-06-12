@@ -190,15 +190,13 @@ const logout = (req, res) => {
 //-------------------------------------- google auth -----------------------------------
 const googleAuth = (req, res) => {
   try {
-      passport.authenticate('google', {
-          scope:
-              ['email', 'profile']
-      })(req, res)
+    passport.authenticate('google', {
+      scope: ['email', 'profile']
+    })(req, res)
   } catch (err) {
-      console.log(`Error on google authentication ${err}`)
+    console.log(`Error on google authentication ${err}`)
   }
 }
-
 
 //----------------------------------- google auth callback  ----------------------------
 
@@ -230,42 +228,39 @@ const googleAuthCallback = (req, res, next) => {
 
 const facebookAuth = (req, res, next) => {
   try {
-      passport.authenticate('facebook', {
-          scope: ['email', 'profile']
-      })(req, res, next);
+    passport.authenticate('facebook', {
+      scope: ['email', 'profile']
+    })(req, res, next)
   } catch (err) {
-      console.log(`Error on facebook authentication ${err}`);
-      res.status(500).send('Authentication failed');
+    console.log(`Error on facebook authentication ${err}`)
+    res.status(500).send('Authentication failed')
   }
 }
 
-
-
-//----------------------------------- google auth callback  ----------------------------
+//----------------------------------- facebook auth callback  ----------------------------
 
 const facebookAuthCallback = (req, res, next) => {
   try {
-      passport.authenticate('facebook', (err, user, info) => {
-          if (err) {
-              console.log(`Error on facebook auth callback: ${err}`);
-              return next(err);
-          }
-          if (!user) {
-              return res.redirect('/user/login');
-          }
-          req.logIn(user, (err) => {
-              if (err) {
-                  return next(err);
-              }
-              req.session.user = user.id;
-              return res.redirect('/user/home');
-          });
-      })(req, res, next);
+    passport.authenticate('facebook', (err, user, info) => {
+      if (err) {
+        console.log(`Error on facebook auth callback: ${err}`)
+        return next(err)
+      }
+      if (!user) {
+        return res.redirect('/user/login')
+      }
+      req.logIn(user, err => {
+        if (err) {
+          return next(err)
+        }
+        req.session.user = user.id
+        return res.redirect('/user/home')
+      })
+    })(req, res, next)
   } catch (err) {
-      console.log(`Error on facebook callback ${err}`);
+    console.log(`Error on facebook callback ${err}`)
   }
 }
-
 
 module.exports = {
   user,
