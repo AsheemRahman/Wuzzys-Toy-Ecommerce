@@ -213,10 +213,10 @@
             const files = event.target.files;
             const preview = document.getElementById('imagePreview');
             preview.innerHTML = "";
-            if (files.length > 4) {
+            if (files.length > 3) {
                 Swal.fire({
-                    title: "You can upload a maximum of 4 images!",
-                    text: "Maximum 4 Images!",
+                    title: "You can upload a maximum of 3 images!",
+                    text: "Maximum 3 Images!",
                     icon: "Error"
                 });
                 return;
