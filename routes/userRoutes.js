@@ -51,6 +51,8 @@ user.get('/home',checkUser,homeController.home)
 
 user.get('/allproduct',homeController.allproduct)
 
+user.get('/view-more',homeController.latestProduct)
+
 user.get('/:category',homeController.category)
 
 //---------------------------- product view ---------------------------

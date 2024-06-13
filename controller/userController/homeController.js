@@ -24,7 +24,22 @@ const allproduct = async (req, res) => {
       user: req.session.user
     })
   } catch (error) {
-    console.log(`error from All Products rendering ${error}`)
+    console.log(`error from All Products page rendering ${error}`)
+  }
+}
+//--------------------------------------- Latest product Page ---------------------------------
+
+const latestProduct = async (req, res) => {
+  try {
+    const product = await productSchema.find()
+
+    res.render('user/view-more', {
+      title: 'Latest Products',
+      product,
+      user: req.session.user
+    })
+  } catch (error) {
+    console.log(`error in Latest products page rendering ${error}`)
   }
 }
 
@@ -46,4 +61,4 @@ const category = async (req, res) => {
   }
 }
 
-module.exports = { home, allproduct, category }
+module.exports = { home, allproduct, category , latestProduct }

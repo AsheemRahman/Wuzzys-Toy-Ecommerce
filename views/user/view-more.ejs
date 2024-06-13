@@ -1,0 +1,121 @@
+<style>
+    .product-container {
+        text-align: center;
+    }
+
+    .product-container h2 {
+        display: flex;
+        justify-content: center;
+        font-family: 'Times New Roman', Times, serif;
+        font-style: italic;
+        color: #fefeeb;
+        margin: 2rem;
+    }
+
+    .product-list-box {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 3rem;
+    }
+
+    .product-box {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        margin: 10px;
+        padding: 15px;
+        width: 20%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: relative;
+        box-sizing: border-box;
+    }
+
+    .product-discount-box,
+    .product-newarrival-box {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: red;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 12px;
+    }
+
+    .product-image-box img {
+        max-width: 14rem;
+        height: 14rem;
+        border-radius: 10px;
+    }
+
+    .product-name-box {
+        margin-top: 15px;
+    }
+
+    .product-name-link {
+        color: black;
+        text-decoration: none;
+    }
+
+    .product-text-row {
+        margin: 5px 0;
+    }
+
+    .wishlist-icon,
+    .cart-icon {
+        color: gray;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .wishlist-icon:hover,
+    .cart-icon:hover {
+        color: red;
+    }
+</style>
+
+
+<%- include('navbar') %>
+
+<!-------------------------------------------- All Products ------------------------------------------------->
+
+<div class="product-container">
+    <div class="latest-Products">
+        <h2>Latest Products</h2>
+    </div>
+    <div class="product-list-box container">
+        <% product.forEach((product) => {
+            const productAge = (Date.now() - new Date(product.createdAt).getTime()) / (24 * 60 * 60 * 1000);
+            if (product.productDiscount === 0 && productAge <= 10 ) { %>
+            <div class="product-box">
+                <% if (productAge <= 10) { %>
+                    <div class="product-newarrival-box">
+                        <h6>New Arrival</h6>
+                    </div>
+                <% } %>
+                <div class="product-image-box">
+                    <a href="/user/product/<%= product.id %>" class="product-name-link">
+                        <img src="/<%= product.productImage[0] %>" alt="">
+                    </a>
+                </div>
+                <div class="product-name-box">
+                    <h6 class="product-text-row">
+                        <%= product.productName %>
+                    </h6>
+                    <h5 class="product-price">
+                        <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
+                        <%= product.productPrice.toLocaleString() %>
+                    </h5>
+                </div>
+                <a href="#" class="wishlist-icon"><i class="fas fa-heart"></i></a>
+                <a href="#" class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+            <% }
+        }) %>
+    </div>
+</div>
+
+
+<%- include('footer') %>
+
