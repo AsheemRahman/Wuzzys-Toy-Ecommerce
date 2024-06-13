@@ -28,7 +28,7 @@ const allproduct = async (req, res) => {
   }
 }
 
-//--------------------------------------- Explore Page ---------------------------------
+//--------------------------------------- Category wise product Page ---------------------------------
 
 const category = async (req, res) => {
   try {

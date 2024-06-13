@@ -48,7 +48,7 @@ const addproductPost = async (req,res) => {
             imgArray.push(img.path)
         })
 
-        const product={
+        const product = {
             productName: req.body.productName,
             productPrice: req.body.productPrice,
             productCollection: req.body.productCollection,
@@ -162,4 +162,4 @@ const deleteProduct =async (req,res)=>{
     }
 }
 
-module.exports = {product,deleteProduct,status,addProduct,multer,addproductPost,editProduct,editProductPost}
+module.exports = { product , deleteProduct , status , addProduct , multer , addproductPost , editProduct , editProductPost }

@@ -85,13 +85,13 @@
         <ul>
             <li><a href="/">Home</a></li>
             <span>/</span>
-            <li><a href="/user/allproduct"><%= product.productCollection %></a></li>
+            <li><a href="/user/allproduct"><%= title %></a></li>
         </ul>
     </nav>
 
 
     <div class="product-container">
-        <h2><%= product.productCollection %></h2>
+        <h2><%= title %></h2>
         <div class="product-list-box container">
             <% product.forEach((product)=> { %>
                 <div class="product-box">

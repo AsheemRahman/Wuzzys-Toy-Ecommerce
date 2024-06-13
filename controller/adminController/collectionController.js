@@ -56,7 +56,7 @@ const status = async (req, res) => {
     }
 }
 
-//------------------------------ Delete a Colection ------------------------------
+//------------------------------ Delete a Colection --------------------------------
 
 const deleteCollection = async (req, res) => {
     try {
