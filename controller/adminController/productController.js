@@ -34,7 +34,7 @@ const addProduct = async (req,res) => {
 
 //------------------------------------ Multer upload ---------------------------------
 
-const multer = upload.array('image',3);
+const multer = upload.array('images',3);
 
 
 //----------------------------------- add New product --------------------------------
