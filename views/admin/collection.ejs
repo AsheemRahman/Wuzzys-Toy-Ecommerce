@@ -67,7 +67,7 @@
         </div>
 
 
-        <!------------------------------------- collection page -------------------------------------------------------->
+        <!------------------------------------- collection page Header -------------------------------------------------------->
         <div class="collection ">
             <div class="search-container d-flex  justify-content-between">
                 <div class="d-flex justify-content-between align-items-center gap-2 p-2">
@@ -216,7 +216,6 @@
                             img.classList.add('preview-img')
                             img.setAttribute('src', reader.result)
                             figure.appendChild(img)
-
                             // Create delete button with class delete-button
                             let deleteButton = document.createElement('button')
                             deleteButton.textContent = 'Delete'
@@ -251,7 +250,6 @@
                                 )
                             })
                         }
-
                         reader.readAsDataURL(imageUpload.files[i])
                     }
                 }

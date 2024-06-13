@@ -105,6 +105,8 @@
 
 <%- include('navbar') %>
 
+<!-------------------------------------------- Edit product ------------------------------------------------->
+
     <div class="container container-add-products">
         <div class="add-products">
             <form action="/admin/editproduct/<%= product.id %>" method="post" enctype="multipart/form-data"
@@ -136,7 +138,6 @@
 
                         <label for="productDiscount">Product Discount in percentage</label>
                         <input class="form-control form-input" type="number" name="productDiscount"  min="0" max="100" value="<%= product.productDiscount %> required>
-
 
                         <label for="productDescription" class="form-label">Description</label>
                         <textarea class="form-control form-input" name="productDescription" id="productDescription" required><%= product.productDescription %></textarea>
@@ -173,6 +174,8 @@
 
     <%- include('footer') %>
 
+
+    <!-------------------------------------------- Input Validation ------------------------------------------------->
 
     <script>
         const addProductForm = document.getElementById('add-product-form')
