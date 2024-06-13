@@ -61,3 +61,17 @@ body{
 .breadcrumbs a:hover {
     color: #f55;
 }
+
+/*------------------------------- Line stylel ---------------------------------*/
+
+.home-line-div{
+    display: flex;
+    justify-content: center;
+}
+.home-line-div hr {
+    width: 80%;
+    border: 0;
+    height: 3px;
+    background: #ffffff;
+    margin-top: 4rem;
+}

@@ -1,174 +1,89 @@
-<!-- <style>
-    .container h1 {
+<style>
+    .product-container {
+        text-align: center;
+    }
+
+    .latest-Products {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 33rem;
+    }
+
+    .latest-Products button {
+        height: 3rem;
+        margin-left: 2rem;
+    }
+
+    .product-container h2 {
+        display: flex;
+        justify-content: center;
+        font-family: 'Times New Roman', Times, serif;
+        font-style: italic;
         color: #fefeeb;
+        margin: 2rem;
     }
 
-    .product-card {
-        background-color: #333;
+    .product-list-box {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 3rem;
+    }
+
+    .product-box {
+        background-color: white;
+        border: 1px solid #ddd;
         border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .product-card img {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-    }
-
-    .product-card .info {
+        margin: 10px;
         padding: 15px;
+        width: 20%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: relative;
+        box-sizing: border-box;
     }
 
-    .product-card .info h5 {
-        margin: 0;
-        font-size: 18px;
+    .product-discount-box,
+    .product-newarrival-box {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: red;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 12px;
     }
 
-    .product-card .info .price {
-        font-size: 16px;
-        margin: 10px 0;
+    .product-image-box img {
+        max-width: 14rem;
+        height: 14rem;
+        border-radius: 10px;
     }
 
-    .product-card .info .old-price {
-        text-decoration: line-through;
-        color: #888;
+    .product-name-box {
+        margin-top: 15px;
     }
 
-    .product-card .info .rating {
-        margin: 5px 0;
-        color: #ff0;
-    }
-
-    .product-card .info .wishlist {
-        margin-top: 10px;
-        cursor: pointer;
-    }
-
-    .submit-btn {
-        background-color: #ff6347;
-        color: #fff;
-        border: none;
-        padding: 5px 10px;
+    .product-name-link {
+        color: black;
         text-decoration: none;
     }
 
-    .home-line-div {
-        display: flex;
-        justify-content: center;
+    .product-text-row {
+        margin: 5px 0;
     }
 
-    .home-line-div hr {
-        width: 80%;
-        border: 0;
-        height: 3px;
-        background: #ffffff;
-        margin-top: 4rem;
-    }
-</style>
-
-<div class="home-line-div">
-    <hr class="home-line">
-</div>
-
-<div class="container text-center mt-4">
-    <h1>Similar Products</h1>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4  my-4">
-        <% for(let i = 0; i < similarProduct.length && i < 4; i++) { %>
-            <div class="col">
-                <div class="product-card d-flex flex-column justify-content-start">
-                    <div>
-                        <a href="/user/product/<%= similarProduct[i].id %>" class="image-card">
-                            <img src="../../<%= similarProduct[i].productImage[0] %>" alt="" class="img-fluid">
-                        </a>
-                    </div>
-                    <div class="info d-flex flex-column justify-content-evenly align-items-center">
-                        <div class="text-center">
-                            <h5 class="title-container mt-3">
-                                <%= similarProduct[i].productName %>
-                            </h5>
-                            <h5><i class="bi bi-currency-rupee"></i>
-                                <%= similarProduct[i].productPrice %>
-                            </h5>
-                        </div>
-                        <div class="mt-3 d-flex gap-2 align-items-center">
-                            <a href="" class="btn submit-btn">Add to Cart</a>
-                            <span class="wishlist-heart" id="wishlist-heart">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                    class="bi bi-heart" viewBox="0 0 16 16">
-                                    <path
-                                        d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
-                                </svg>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <% } %>
-    </div>
-</div> -->
-
-
-<style>
-    .latest-product{
-        color: #fefeeb;
-        display: flex;
-        justify-content: space-between;
-        padding: 2rem 0rem;
-    }
-    .latest-product h2{
-        font-size: 3rem;
+    .wishlist-icon,
+    .cart-icon {
+        color: gray;
+        margin-right: 10px;
+        cursor: pointer;
     }
 
-    .latest-product button{
-        border-radius: 10px;
-    }
-
-    .image-card {
-        width: 340px;
-        height: 270px;
-        background-color: #FFFFFF;
-        border-radius: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-    }
-
-    .image-card img {
-        width: 80%;
-        height: 90%;
-        border-radius: 10px;
-    }
-
-    .image-card {
-        width: 100%;
-    }
-
-    .new-tag {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background-color: rgb(1, 182, 1);
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-weight: bold;
-        z-index: 1;
-        border-top-right-radius: 20px;
-        width: 25%;
-        text-align: center;
-    }
-    .home-line-div{
-        display: flex;
-        justify-content: center;
-    }
-    .home-line-div hr {
-        width: 80%;
-        border: 0;
-        height: 3px;
-        background: #ffffff;
-        margin-top: 4rem;
+    .wishlist-icon:hover,
+    .cart-icon:hover {
+        color: red;
     }
 </style>
 
@@ -176,34 +91,36 @@
 
 <!-------------------------------------------- Similar Products ------------------------------------------------->
 
-<div class="container my-2">
-    <div class="latest-product">
-        <h2>
-            Similar Product
+<!----------------- line ---------------------->
+
+<div class="home-line-div">
+    <hr>
+</div>
+
+<div class="product-container">
+    <div class="latest-Products">
+        <h2>Similar Products
         </h2>
     </div>
-    <div class="row">
-        <% for(let i = 0; i < similarProduct.length && i < 4; i++) { %>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                <div class="card product-card h-100 d-flex flex-column justify-content-start">
-                    <a href="/user/product/<%= similarProduct[i].id %>" class="image-card">
-                        <img src="../../<%= similarProduct[i].productImage[0] %>" alt=""class="card-img-top img-fluid">
+    <div class="product-list-box container">
+        <% for(let i=0; i < similarProduct.length && i < 4; i++) { %>
+            <div class="product-box">
+                <div class="product-image-box">
+                    <a href="/user/product/<%= similarProduct[i].id %>" class="product-name-link">
+                        <img src="../../<%= similarProduct[i].productImage[0] %>" alt="">
                     </a>
-                    <div class="card-body">
-                        <h5 class="card-title ">
-                            <%= similarProduct[i].productName %>
-                        </h5>
-                        <h5 class="card-text"><i class="bi bi-currency-rupee"></i>
-                            <%= similarProduct[i].productPrice %>
-                        </h5>
-                        <div class="mt-3 d-flex gap-2 align-items-center">
-                            <a href="" class="btn btn-danger">Add to Cart</a>
-                            <span class="wishlist-heart" id="wishlist-heart">
-                                <i class="bi bi-heart"></i>
-                            </span>
-                        </div>
-                    </div>
                 </div>
+                <div class="product-name-box">
+                    <h6 class="product-text-row">
+                        <%= similarProduct[i].productName %>
+                    </h6>
+                    <h5 class="product-price">
+                        <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
+                        <%= similarProduct[i].productPrice.toLocaleString() %>
+                    </h5>
+                </div>
+                <a href="#" class="wishlist-icon"><i class="fas fa-heart"></i></a>
+                <a href="#" class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
             </div>
             <% } %>
     </div>
