@@ -1,8 +1,8 @@
 
-# env file
+#-------------------- env file -------------------
 
 .env
 
-# files that is uploads by admin
+#--------- files that is uploads by admin --------
 
 uploads/*

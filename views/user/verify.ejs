@@ -82,6 +82,8 @@
 
 <%- include('footer') %>
 
+
+<!------------------- Go to Next input --------------------->
 <script>
     const otpInputs = document.querySelectorAll('.otp-input');
     const hiddenOtpInput = document.getElementById('otp');
@@ -110,6 +112,9 @@
             }
         });
     });
+
+    // ------------------- Timer ---------------------//
+
     function updateHiddenOtpInput() {
         let otpValue = '';
         otpInputs.forEach(input => {

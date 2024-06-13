@@ -1,5 +1,4 @@
-
-//---------- requiring modules -------------------------
+//------------------ requiring modules -------------------------
 
 const express = require("express")
 const path = require("path")
@@ -11,32 +10,42 @@ const flash = require('connect-flash')
 require("dotenv").config()
 
 const app = express()
+const connectDB = require("./config/connection")
+
+//----------------------- Requiring Routes -------------------------
 
 const adminRoutes = require('./routes/adminRoutes')
 const userRoutes = require('./routes/userRoutes')
-const connectDB = require("./config/connection")
 
 
-//port setting
+//----------------------- port setting -------------------------
+
 const port = process.env.PORT || 3000
 
-//mongodb connection
+
+//--------------------- mongodb connection ---------------------
+
 connectDB();
 
-//setting view engine
+//--------------------- Setting view engine --------------------
+
 app.set('view engine','ejs')
 app.use(flash())
 
-//public static files
+
+//-----------------------public static files -------------------
+
 app.use('/public',express.static(path.join(__dirname,'public')))
 app.use('/uploads',express.static(path.join(__dirname,'uploads')))
 
 
-//url encoded data
+//------------------------- url encoded data -------------------
+
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-// middlewares
+
+//--------------------------- middlewares -----------------------
 
 app.use(nocache())
 app.use(session({
@@ -45,10 +54,14 @@ app.use(session({
     saveUninitialized: false
 }))
 
-// layouts
+
+//---------------------------- layouts --------------------------
+
 app.use(expressLayouts);
 app.set('layout','./layouts/layout')
 
+
+//---------------------------- layouts --------------------------
 
 app.use((req,res,next)=>{
     res.locals.success = req.flash('success');
@@ -56,11 +69,15 @@ app.use((req,res,next)=>{
     next();
 })
 
-//routes
+
+//---------------------------- routes --------------------------
+
 app.use('/admin',adminRoutes)
 app.use('/user',userRoutes)
 
-//first route
+
+//------------------------ first route -------------------------
+
 app.get("/",(req,res)=>{
     try {
         res.redirect('/user')
@@ -70,14 +87,16 @@ app.get("/",(req,res)=>{
     
 })
 
-//404 page render
+
+//---------------------- 404 page render ------------------------
+
 app.use("*",(req,res)=>{
     res.render('pageNotFound',{title:"Page not found"})
 })
 
 
+//----------------------- Server listening -----------------------
 
-//server listening
 app.listen(port,(err)=>{
     if(err){
         console.log("Error while listening port")
