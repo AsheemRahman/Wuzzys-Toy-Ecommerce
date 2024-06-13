@@ -103,18 +103,18 @@
                             </div>
                             <% } %>
                                 <div class="product-image-box">
-                                    <img src="/<%= product.productImage[0] %>" alt="">
+                                    <a href="/user/product/<%= product.id %>" class="product-name-link">
+                                        <img src="/<%= product.productImage[0] %>" alt="">
+                                    </a>
                                 </div>
                                 <div class="product-name-box">
-                                    <a href="/user/product-view/<%= product.id %>" class="product-name-link">
-                                        <h6 class="product-text-row">
-                                            <%= product.productName %>
-                                        </h6>
-                                        <h5 class="product-price">
-                                            <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                                            <%= product.productPrice.toLocaleString() %>
-                                        </h5>
-                                    </a>
+                                    <h6 class="product-text-row">
+                                        <%= product.productName %>
+                                    </h6>
+                                    <h5 class="product-price">
+                                        <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
+                                        <%= product.productPrice.toLocaleString() %>
+                                    </h5>
                                 </div>
                                 <a href="#" class="wishlist-icon"><i class="fas fa-heart"></i></a>
                                 <a href="#" class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
