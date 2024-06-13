@@ -50,6 +50,7 @@
         list-style: none;
         gap: 4rem;
         margin-top: 1rem;
+        align-items: center;
     }
 
     .user-nav-icon li a {
@@ -135,6 +136,19 @@
         color: #ffffff;
     }
 
+    .dropdown a{
+        color: #fefeeb;
+        background:#232323;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+    }
+    .dropdown-menu {
+        background: #232323;
+        border-radius: 10px;
+    }
 </style>
 
 
@@ -149,7 +163,20 @@
         </form>
         <ul class="user-nav-icon">
             <li><a href="/">Home</a></li>
-            <li><a href="#Category">Category</a></li>
+            <!-- <li><a href="#Category">Category</a></li> -->
+
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Category</a>
+                <div class="dropdown-menu">
+                    <a href="/user/allproduct" class="dropdown-item">All Toys</a>
+                    <a href="/user/Toy Cars" class="dropdown-item">Toy Cars</a>
+                    <a href="/user/Soft Toys" class="dropdown-item">Soft Toys</a>
+                    <a href="/user/Character Toy" class="dropdown-item">Character Toy</a>
+                    <a href="/user/Doll" class="dropdown-item">Doll</a>
+                    <a href="/user/Puzzle" class="dropdown-item">Puzzle</a>
+                </div>
+            </div>
+
             <li><a href="#footer">About</a></li>
             <li><a href="#">Contact</a></li>
             <li><a href="#"><i class="fa fa-heart"></i></a></li>
