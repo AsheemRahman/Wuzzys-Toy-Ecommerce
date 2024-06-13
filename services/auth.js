@@ -3,9 +3,6 @@ const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const dotenv = require('dotenv').config()
 
-//for creating random passsword
-const crypto = require('crypto');
-
 passport.use(
     new GoogleStrategy(
         {
@@ -24,13 +21,10 @@ passport.use(
 
             let user = await userSchema.findOne({ email })
 
-            const randomPassword = crypto.randomBytes(16).toString('hex');
-
             if (!user) {
                 user = new userSchema({
                 name: profile.displayName,
                 email : profile.emails[0].value,
-                password: randomPassword,
                 googleID: profile.id
             })
                 await user.save()
