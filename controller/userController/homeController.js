@@ -1,5 +1,5 @@
 const productSchema = require('../../model/productSchema')
-const collectionSchema = require('../../model/collection.model')
+const collectionSchema = require('../../model/collectionSchema')
 
 
 //----------------------------------- Home page render --------------------------------

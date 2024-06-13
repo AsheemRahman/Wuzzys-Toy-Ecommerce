@@ -1,6 +1,6 @@
 const productSchema = require('../../model/productSchema')
 const upload = require('../../middleware/multer')
-const collectionSchema = require('../../model/collection.model')
+const collectionSchema = require('../../model/collectionSchema')
 const fs = require('fs');
 
 

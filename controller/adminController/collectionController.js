@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const collectionSchema = require('../../model/collection.model')
+const collectionSchema = require('../../model/collectionSchema')
 
 //--------------------------- finding collection by search ------------------------------
 
