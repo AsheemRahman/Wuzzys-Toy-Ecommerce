@@ -31,7 +31,9 @@
 
 
 
-<div id="carouselExampleFade" class="carousel slide carousel-fade">
+
+
+<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
             <img src="/public/assets/Banner1.jpg" class="d-block w-100" alt="...">
@@ -62,3 +64,12 @@
 <div class="home-line-div">
     <hr>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#carouselExampleFade').carousel({
+            interval: 1000
+        });
+    });
+</script>
