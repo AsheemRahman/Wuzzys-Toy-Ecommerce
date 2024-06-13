@@ -48,8 +48,10 @@ user.post('/resend/:email',userController.otpResend)
 //-------------------------------- home -------------------------------
 
 user.get('/home',checkUser,homeController.home)
+
 user.get('/allproduct',homeController.allproduct)
 
+user.get('/:category',homeController.category)
 
 //---------------------------- product view ---------------------------
 
