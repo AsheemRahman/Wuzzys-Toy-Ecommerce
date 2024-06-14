@@ -57,7 +57,7 @@ user.get('/product/:category',homeController.category)
 
 //---------------------------- product view ---------------------------
 
-user.get('/product/:id',checkUser,productController.productDetail);
+user.get('/productDetail/:id',checkUser,productController.productDetail);
 
 
 //----------------------------- logout --------------------------------
