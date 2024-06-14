@@ -53,7 +53,7 @@ user.get('/allproduct',homeController.allproduct)
 
 user.get('/view-more',homeController.latestProduct)
 
-user.get('/:category',homeController.category)
+user.get('/product/:category',homeController.category)
 
 //---------------------------- product view ---------------------------
 

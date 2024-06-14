@@ -178,10 +178,9 @@ const logout = (req, res) => {
     req.session.destroy(err => {
       if (err) {
         console.log(err)
-      } else {
-        res.redirect('/user/home')
       }
     })
+    res.redirect('/user/home')
   } catch (error) {
     console.log(`error while logout user ${error}`)
   }
