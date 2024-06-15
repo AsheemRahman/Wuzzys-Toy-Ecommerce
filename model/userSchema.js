@@ -7,7 +7,6 @@ const schema = new mongoose.Schema({
     },
     phone:{
         type:Number,
-        // required: true
     },
     email:{
         type:String,
