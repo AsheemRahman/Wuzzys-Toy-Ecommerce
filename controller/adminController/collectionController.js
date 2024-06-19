@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
-const collectionSchema = require('../../model/categorySchema')
+const categorySchema = require('../../model/categorySchema')
 
 //--------------------------- finding collection by search ------------------------------
 
 const collection = async (req, res) => {
     try {
         const search = req.query.search || ''
-        const collection = await collectionSchema.find({collectionName: { $regex: search, $options: 'i' }
+        const collection = await categorySchema.find({collectionName: { $regex: search, $options: 'i' }
         })
         res.render('admin/collection', { title: 'Collection', collection })
     } catch (error) {
@@ -24,9 +24,9 @@ const addCollectionPost = async (req, res) => {
         collectionName: name,
         isActive: true
     }
-    const check = await collectionSchema.findOne({collectionName: { $regex: name, $options: 'i' }})
+    const check = await categorySchema.findOne({collectionName: { $regex: name, $options: 'i' }})
     if (check == null) {
-        await collectionSchema.insertMany(collection)
+        await categorySchema.insertMany(collection)
         .then(() => {
             req.flash('success', 'New collection added')
             res.redirect('/admin/collection')
@@ -49,7 +49,7 @@ const status = async (req, res) => {
     try {
         const collectionId = req.query.id
         const status = !(req.query.status === 'true')
-        const collection = await collectionSchema.findByIdAndUpdate(collectionId, {isActive: status})
+        const collection = await categorySchema.findByIdAndUpdate(collectionId, {isActive: status})
         res.redirect('/admin/collection')
     } catch (error) {
         console.log(`error while status update ${error}`)
@@ -61,7 +61,7 @@ const status = async (req, res) => {
 const deleteCollection = async (req, res) => {
     try {
         const collectionId = req.params.id
-        const deleteCollection = await collectionSchema.findByIdAndDelete(collectionId)
+        const deleteCollection = await categorySchema.findByIdAndDelete(collectionId)
         if (deleteCollection != null) {
             req.flash('success', 'Collection Successfully deleted')
             res.redirect('/admin/collection')
@@ -80,7 +80,7 @@ const editcollection = async (req, res) => {
     try {
 
         const { collectionId, collectionName } = req.body
-        const editCollection = await collectionSchema.findByIdAndUpdate(collectionId,{ collectionName: collectionName })
+        const editCollection = await categorySchema.findByIdAndUpdate(collectionId,{ collectionName: collectionName })
         if (editCollection != null) {
             req.flash('success', 'Collection Successfully edited')
             res.redirect('/admin/collection')

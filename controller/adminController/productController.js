@@ -1,6 +1,6 @@
 const productSchema = require('../../model/productSchema')
 const upload = require('../../middleware/multer')
-const collectionSchema = require('../../model/categorySchema')
+const categorySchema = require('../../model/categorySchema')
 const fs = require('fs');
 
 
@@ -22,7 +22,7 @@ const product = async (req,res) => {
 const addProduct = async (req,res) => {
     try {
         
-        const productCollection = await collectionSchema.find()
+        const productCollection = await categorySchema.find()
 
         res.render('admin/addProduct',{title: "Add Product",productCollection})
 
