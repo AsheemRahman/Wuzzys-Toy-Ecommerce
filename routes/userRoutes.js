@@ -63,11 +63,11 @@ user.get('/productDetail/:id' , checkUser , productController.productDetail);
 
 
 //----------------------------- profile route --------------------------
-user.get('/profile', checkUser , profileController.profile)
-user.post('/add-address', checkUser , profileController.addAddress)
-user.post('/edit-address-profile/:id', checkUser , profileController.editAddressPost)
-user.post('/update-profile', checkUser , profileController.updateProfile)
 
+user.get('/profile', checkUser , profileController.profile)
+user.post('/update-profile', checkUser , profileController.updateProfile)
+user.post('/add-address', checkUser , profileController.addAddress)
+user.get('/remove-address/:index', checkUser,profileController.removeAddress);
 
 
 //------------------------- forgot password ---------------------------

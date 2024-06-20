@@ -9,7 +9,7 @@ const profile = async (req, res) => {
             req.flash('error', 'Error while getting user data. Please try again later.')
             return res.redirect('/user/home')
         }
-        res.render('user/profile', { title: "Profile", alertMessage: req.flash('errorMessage'), user: req.session.user, userDetail })
+        res.render('user/profile', { title: "Profile", alertMessage: req.flash('success'), user: req.session.user, userDetail })
     } catch (err) {
         console.log(`Error during profile page render ${err}`);
     }
@@ -39,7 +39,6 @@ const updateProfile = async (req, res) => {
 // address management in the user side 
 const addAddress = async (req, res) => {
     try {
-
         // user address details added
         const userAddress = {
             building:req.body.building,
@@ -55,7 +54,7 @@ const addAddress = async (req, res) => {
         const user = await userSchema.findById(req.session.user)
         // if maximum address size reached then redirect to login page
         if (user.address.length > 3) {
-            req.flash("errorMessage", "Maximum Address limit Reached")
+            req.flash("error", "Maximum Address limit Reached")
             return res.redirect('/user/profile')
         }
         // Add the new address to the user's address array
@@ -63,7 +62,7 @@ const addAddress = async (req, res) => {
         // Save the updated user document
         await user.save();
 
-        req.flash('sucess', "Address added")
+        req.flash('success', "Address added")
         res.redirect('/user/profile')
     } catch (err) {
         req.flash('error', "Error While adding new address , Please try later")
@@ -72,34 +71,40 @@ const addAddress = async (req, res) => {
 }
 
 
-
-// edit the user address
-const editAddressPost = async (req, res) => {
+//Remove Address
+const removeAddress = async (req, res) => {
     try {
-        const addressIndex = req.params.id
-        const userAddress = {
-            contactName: req.body.name,
-            pincode: req.body.pincode,
-            homeAddress: req.body.addressHome,
-            areaAddress: req.body.addressArea,
-            landmark: req.body.addresslandmark
+        const userId = req.session.user;
+        const index = parseInt(req.params.index, 10);
+        // Find the user by userId
+        const user = await userSchema.findById(userId).populate('address');
+        if (!user) {
+            req.flash('error', 'User not found');
+            return res.redirect('/user/profile');
         }
-        // get current user data from collection
-        const user = await userSchema.findById(req.session.user)
-
-        user.address[addressIndex] = userAddress
+        // Validate the index
+        if (isNaN(index) || index < 0 || index >= user.address.length) {
+            req.flash('error', 'Invalid address index');
+            return res.redirect('/user/profile');
+        }
+        // Remove the address by index
+        user.address.splice(index, 1);
+        // Save the updated user document
         await user.save();
 
-        req.flash('errorMessage', 'user address edited')
-        res.redirect('/user/profile')
+        req.flash('success', 'Address deleted successfully');
+        res.redirect('/user/profile');
     } catch (err) {
-        console.log(`Error during editing address in collection in post request ${err}`);
+        console.error(`Error during deleting address${err}`);
+        req.flash('error','Failed to delete address. Please try again later.');
+        res.redirect('/user/profile');
     }
-}
+};
+
 
 module.exports = {
     profile,
     updateProfile,
     addAddress,
-    editAddressPost,
+    removeAddress
 }
