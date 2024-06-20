@@ -1,5 +1,5 @@
 <style>
-    .collection {
+    .category {
         width: 85%;
         display: flex;
         flex-direction: column;
@@ -12,7 +12,7 @@
         background: #232323;
         width: 90%;
     }
-    .collection-action a{
+    .category-action a{
         margin: 0.4rem;
     }
 </style>
@@ -68,7 +68,7 @@
 
 
         <!------------------------------------- collection page Header -------------------------------------------------------->
-        <div class="collection ">
+        <div class="category ">
             <div class="search-container d-flex  justify-content-between">
                 <div class="d-flex justify-content-between align-items-center gap-2 p-2">
                     <h2 class="text-white mx-5">
@@ -115,7 +115,7 @@
                                             <span class="status block">Blocked</span>
                                             <% } %>
                                 </td>
-                                <td class="collection-action">
+                                <td class="category-action">
                                     <a href="" id="edit-collection-modal" data-bs-toggle="modal"
                                         data-bs-target="#editCollection" data-name="<%=collection.collectionName%>"
                                         data-id="<%=collection.id %>"><i class="bi bi-pencil-square"></i></a>
