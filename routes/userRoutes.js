@@ -69,6 +69,9 @@ user.post('/update-profile', checkUser , profileController.updateProfile)
 user.post('/add-address', checkUser , profileController.addAddress)
 user.get('/remove-address/:index', checkUser,profileController.removeAddress);
 
+user.get('/edit-address/:index',checkUser,profileController.editAddress)
+user.post('/update-address/:index',checkUser,profileController.updateAddress)
+
 
 //------------------------- forgot password ---------------------------
 

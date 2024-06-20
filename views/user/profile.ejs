@@ -51,7 +51,7 @@
         background-color: #f55;
     }
 
-    .btn-secondary {
+    .close-btn {
         background-color: #555;
         border: none;
         color: #fefeeb;
@@ -60,24 +60,6 @@
     .modal-content {
         background-color: #232323;
         color: #fefeeb;
-    }
-
-    .img-account-profile {
-        height: 10rem;
-    }
-
-    .rounded-circle {
-        border-radius: 50% !important;
-    }
-
-    .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 1.35rem;
-        margin-bottom: 0;
-        background-color: rgba(33, 40, 50, 0.03);
-        border-bottom: 1px solid rgba(33, 40, 50, 0.125);
     }
 
     .form-control,
@@ -99,44 +81,18 @@
         transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
 
-
-    .nav-borders .nav-link.active {
-        color: #0061f2;
-        border-bottom-color: #0061f2;
-    }
-
-    .nav-borders .nav-link {
-        color: #69707a;
-        border-bottom-width: 0.125rem;
-        border-bottom-style: solid;
-        border-bottom-color: transparent;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        padding-left: 0;
-        padding-right: 0;
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
-
-    .added-inner-address {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
 </style>
 
 <%- include('navbar') %>
 
+ <!---------------------------------- User Profile ---------------------------------------->
 
     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-6">
                 <div class="card user-profile-div">
                     <div class="card-body">
-                        <!-- <div class="pen-option text-right">
-                            <a href="#" id="edit-enable-btn" onclick="displayBtn()" title="Edit Profile"><i class="bi bi-pencil"></i></i></a>
-                        </div> -->
-                        <form method="post" action="/update-profile">
+                        <form method="post" action="/user/update-profile">
                             <h2>Your Profile</h2>
                             <div class="form-group mb-3">
                                 <label class="profile-text">Name</label>
@@ -164,47 +120,50 @@
                     <div class="card-body">
                         <div class="pen-option text-right">
                             <% if (userDetail.address.length < 4) { %>
-                                <a href="#" id="add-address-btn" data-bs-toggle="modal" data-bs-target="#addressModal"
-                                    title="Add New Address"><i class="bi bi-plus-circle"></i></a>
-                                <% } else { %>
-                                    <span class="">Maximum 4 addresses reached</span>
-                                    <% } %>
+                                <a href="#" id="add-address-btn" data-bs-toggle="modal" data-bs-target="#addressModal" title="Add New Address">
+                                    <i class="bi bi-plus-circle"></i>
+                                </a>
+                            <% } else { %>
+                                <span class="">Maximum 4 addresses reached</span>
+                            <% } %>
                         </div>
                         <h2>Address</h2>
                         <% if (!userDetail.address || userDetail.address.length===0) { %>
                             <p class="mt-5">No Address Found. Please add an Address.</p>
-                            <% } else { %>
-                                <% userDetail.address.forEach((address,index)=>{ %>
-                                    <div class="single-address-div">
-                                        <div class="address-icons">
-                                            <a href="/edit-address/<%= index %>" title="Edit Address"><i
-                                                    class="bi bi-pencil"></i></i>
-                                                <a href="/remove-address/<%= index %>" title="Delete Address"><i
-                                                        class="bi bi-trash"></i></a>
-                                        </div>
-                                        <div class="address">
-                                            <p>
-                                                <span>
-                                                    <%=address.building %>,
-                                                </span>
-                                                <span>
-                                                    <%=address.street %>
-                                                </span>
-                                                <span>
-                                                    <%=address.city %> ,
-                                                </span>
-                                            <p>
-                                                <%=address.state %>, <%=address.country %> ,<%=address.pincode %>,
-                                                            <%=address.phonenumber %>
-                                            </p>
-                                            <span>
-                                                <%=address.landmark %>
-                                            </span>
-                                            </p>
-                                        </div>
+                        <% } else { %>
+                            <% userDetail.address.forEach((address,index)=>{ %>
+                                <div class="single-address-div">
+                                    <div class="address-icons">
+                                        <a href="/user/edit-address/<%= index %>" title="Edit Address">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a href="#" class="delete-address" data-address-index="<%= index %>" title="Delete Address">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
                                     </div>
-                                    <% }) %>
-                                        <% } %>
+                                    <div class="address">
+                                        <p>
+                                            <span>
+                                                <%= address.building %>,
+                                            </span>
+                                            <span>
+                                                <%= address.street %>
+                                            </span>
+                                            <span>
+                                                <%= address.city %> ,
+                                            </span>
+                                        </p>
+                                        <p>
+                                            <%= address.state %>, <%= address.country %> ,<%= address.pincode %>,
+                                            <%= address.phonenumber %>
+                                        </p>
+                                        <span>
+                                            <%= address.landmark %>
+                                        </span>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        <% } %>
                     </div>
                 </div>
             </div>
@@ -214,7 +173,8 @@
 
     <%- include('footer') %>
 
-        <!-- Address adding modal box -->
+        <!---------------------------------- Address adding modal box ---------------------------------------->
+
         <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -278,10 +238,47 @@
                             </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-danger">Save</button>
                     </div>
                     </form>
                 </div>
             </div>
         </div>
+
+<!----------------------------------- Sweet Alert For Delete ---------------------------------------->
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const deleteButtons = document.querySelectorAll('.delete-address');
+        
+                deleteButtons.forEach(button => {
+                    button.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const addressIndex = parseInt(this.getAttribute('data-address-index'));
+                        if (!isNaN(addressIndex) && addressIndex >= 0) {
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You won't be able to revert this!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, delete it!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Here you can trigger the deletion process, for example, redirecting to a delete route
+                                    window.location.href = "/user/remove-address/" + addressIndex;
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Invalid Address Index',
+                                text: 'The address index is invalid. Please try again.'
+                            });
+                        }
+                    });
+                });
+            });
+        </script>

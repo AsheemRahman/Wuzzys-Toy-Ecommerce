@@ -1,5 +1,8 @@
 const userSchema = require("../../model/userSchema");
 
+const { ObjectId } = require('mongodb');
+
+
 
 //profile
 const profile = async (req, res) => {
@@ -102,9 +105,68 @@ const removeAddress = async (req, res) => {
 };
 
 
+// ------------------- Edit address page load ----------------- 
+
+const editAddress = async (req, res) => {
+    const index = Number(req.params.index);
+    const id = req.session.user;
+
+    try {
+        const getAddress = await userSchema.findOne({ _id: id }, { address: { $slice: [index, 1] } });
+
+        if (getAddress) {
+            res.render('user/editAddress', { title: "edit address", data: getAddress.address[0], index , user: req.session.user});
+        } else {
+            res.redirect('/user/profile');
+        }
+    } catch (err) {
+        console.error(`error on rendering the editaddress page`);
+        req.flash('error','error while rendering the Edit Address page . Please try again later.');
+        res.redirect('/user/profile');
+    }
+};
+
+
+// ---------------------------- Update existing address --------------------- 
+
+const updateAddress= async (req,res)=>{
+const id= req.session.user;
+const index = parseInt(req.params.index, 10);
+const data= {
+    building:req.body.building,
+    street:req.body.street,
+    city:req.body.city,
+    state:req.body.state,
+    country:req.body.country,
+    pincode:req.body.pincode,
+    phonenumber:req.body.phonenumber,
+    landmark:req.body.landmark
+}
+
+    try {
+
+        const updateQuery = {};
+        updateQuery[`address.${index}`] = data; // Constructing the dynamic update object
+
+        const result = await userSchema.updateOne(
+            { _id: new ObjectId(id) },
+            { $set: updateQuery }
+        );
+        req.flash('sucess','Address updated Successfully');
+        res.redirect('/user/profile');
+    } catch (err) {
+        console.log(`error while editing the address ${err}`)
+        req.flash('error','Cannot update the address right now . Please try again later.');
+        res.redirect(`/user/edit-address/${index}`);
+    }
+}
+
+
 module.exports = {
     profile,
     updateProfile,
     addAddress,
-    removeAddress
+    removeAddress,
+    editAddress,
+    updateAddress
 }
