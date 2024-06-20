@@ -6,6 +6,7 @@ const checkUser = require('../middleware/checkUserSession')
 const userController = require('../controller/userController/userController')
 const homeController = require('../controller/userController/homeController')
 const productController = require('../controller/userController/productController')
+const profileController = require('../controller/userController/profileController')
 const forgotPassword = require('../controller/userController/forgotPassword')
 
 //------------------------------- main -------------------------------
@@ -47,34 +48,41 @@ user.post('/resend/:email',userController.otpResend)
 
 //-------------------------------- home -------------------------------
 
-user.get('/home',checkUser,homeController.home)
-
-user.get('/allproduct',homeController.allproduct)
-
-user.get('/view-more',homeController.latestProduct)
-
-user.get('/product/:category',homeController.category)
-
-//---------------------------- product view ---------------------------
-
-user.get('/productDetail/:id',checkUser,productController.productDetail);
+user.get('/home' , checkUser , homeController.home)
 
 
-//----------------------------- logout --------------------------------
+//----------------------------- product view -----------------------------
 
-user.get('/logout',userController.logout)
+user.get('/allproduct', checkUser , homeController.allproduct)
+
+user.get('/view-more', checkUser , homeController.latestProduct)
+
+user.get('/product/:category', checkUser , homeController.category)
+
+user.get('/productDetail/:id' , checkUser , productController.productDetail);
+
+
+//----------------------------- profile route --------------------------
+user.get('/profile', checkUser , profileController.profile)
+user.post('/add-address', checkUser , profileController.addAddress)
+user.post('/edit-address-profile/:id', checkUser , profileController.editAddressPost)
+user.post('/update-profile', checkUser , profileController.updateProfile)
+
 
 
 //------------------------- forgot password ---------------------------
 
-user.get('/forgotpassword',forgotPassword.forgotPassword)
-user.post('/forgotpassword',forgotPassword.forgotPasswordPost)
-user.get('/forgotpasswordotp',forgotPassword.forgotPasswordOtp)
-user.post('/forgotpasswordotp',forgotPassword.forgotPasswordOtpPost)
-user.post('/resetpassword',forgotPassword.resetPasswordPost)
-user.get('/forgotpassword-resend/:email',forgotPassword.forgotResend)
+user.get('/forgotpassword' , forgotPassword.forgotPassword)
+user.post('/forgotpassword' , forgotPassword.forgotPasswordPost)
+user.get('/forgotpasswordotp' , forgotPassword.forgotPasswordOtp)
+user.post('/forgotpasswordotp' , forgotPassword.forgotPasswordOtpPost)
+user.post('/resetpassword' , forgotPassword.resetPasswordPost)
+user.get('/forgotpassword-resend/:email' , forgotPassword.forgotResend)
 
 
+//------------------------------- logout --------------------------------
+
+user.get('/logout' , userController.logout)
 
 
 
