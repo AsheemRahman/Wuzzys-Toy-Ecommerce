@@ -12,9 +12,11 @@
         background: #232323;
         width: 90%;
     }
+
     .category-action a{
         margin: 0.4rem;
     }
+    
 </style>
 
 
@@ -67,7 +69,7 @@
         </div>
 
 
-        <!------------------------------------- collection page Header -------------------------------------------------------->
+        <!------------------------------------- category page Header -------------------------------------------------------->
         <div class="category ">
             <div class="search-container d-flex  justify-content-between">
                 <div class="d-flex justify-content-between align-items-center gap-2 p-2">
@@ -79,11 +81,10 @@
                         <input type="submit" class="btn submit-btn" value="Search">
                     </form>
                 </div>
-                <button type="button" class="btn submit-btn" data-bs-toggle="modal" data-bs-target="#addCollection">Add
-                    Collection</button>
+                <button type="button" class="btn submit-btn" data-bs-toggle="modal" data-bs-target="#addCollection">Add Category</button>
             </div>
 
-            <!----------------------------------------- collection table --------------------------------------------------->
+            <!----------------------------------------- category table --------------------------------------------------->
 
             <div class="table-container">
                 <table class="table">
@@ -143,7 +144,7 @@
                     <form class="form d-flex flex-column gap-3 pt-4" action="/admin/addcollection" method="post">
                         <input type="text" name="collectionName" class="form-control form-input"
                             placeholder="Collection Name" required>
-                        <button type="submit" class="btn submit-btn">+ Add Collection</button>
+                        <button type="submit" class="btn submit-btn"> Add Collection</button>
                     </form>
                 </div>
             </div>
