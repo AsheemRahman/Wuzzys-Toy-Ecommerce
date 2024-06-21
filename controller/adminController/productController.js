@@ -6,16 +6,32 @@ const fs = require('fs');
 
 //------------------------------ Find Product by Search -----------------------------
 
-const product = async (req,res) => {
+const product = async (req, res) => {
     try {
-        
         const search = req.query.search || "";
-        const products = await productSchema.find({productName: {$regex: search, $options: 'i'}})
-        res.render('admin/products',{title: 'Products',products})
+        const page = parseInt(req.query.page) || 1; // Current page number
+        const limit = parseInt(req.query.limit) || 6; // Number of products per page
+        // Fetch products with pagination
+        const products = await productSchema.find({ productName: { $regex: search, $options: 'i' } })
+            .limit(limit)
+            .skip((page - 1) * limit);
+        // Fetch the total number of products matching the search query
+        const count = await productSchema.countDocuments({ productName: { $regex: search, $options: 'i' } });
+        // Render the products page with pagination data
+        res.render('admin/products', {
+            title: 'Products',
+            products,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page,
+            search,
+            limit,page
+        });
     } catch (error) {
-        console.log(`error from product page ${error}`)
+        console.log(`error from product page ${error}`);
+        res.status(500).send('Server Error');
     }
-}
+};
+
 
 //---------------------------------- Add Product Render---------------------------------
 

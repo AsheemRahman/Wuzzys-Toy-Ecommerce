@@ -26,6 +26,53 @@
         display: flex;
         align-items: center;
     }
+
+    /* test */
+
+    .pagination-controls {
+        display: flex;
+        justify-content: end;
+        margin-right: 4rem;
+    }
+
+    .pagination {
+        display: flex;
+        list-style: none;
+        padding: 18px;
+        width: 76%;
+        justify-content: center;
+        background: #232323;
+        border-radius: 10px;
+    }
+
+    .page-item {
+        margin: 0 5px;
+    }
+
+    .page-link {
+        padding: 8px 16px;
+        /* border: 1px solid #ddd; */
+        color: #DB4444;
+        text-decoration: none;
+        background: none;
+        border: none;
+    }
+
+    .page-link:hover {
+        background-color: #DB4444;
+        color: #fefeeb;
+    }
+
+    .page-item.active .page-link {
+        background-color: #DB4444;
+        color: #fefeeb;
+        /* border-color: #007bff; */
+    }
+
+    .pagination-next-btn {
+        background: none;
+        border: none;
+    }
 </style>
 
 
@@ -80,7 +127,7 @@
 
         <!-------------------------------------- Products page header  -------------------------------------------------------->
 
-        <div class="admin-product mb-5">
+        <div class="admin-product mb-4">
             <div class="product-head d-flex justify-content-between">
                 <div class="product-header d-flex justify-content-between align-items-center gap-5">
                     <h2 class="text-white">
@@ -110,44 +157,72 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% products.forEach((product,index)=> { %>
-                            <tr scope="row">
-                                <td>
-                                    <%= index + 1 %>
-                                </td>
-                                <td>
-                                    <%= product.productName %>
-                                </td>
-                                <td>
-                                    <%= product.productPrice %>
-                                </td>
-                                <td>
-                                    <%= product.productQuantity %>
-                                </td>
-                                <td>
-                                    <%= product.productCollection %>
-                                </td>
-                                <td>
-                                    <% if(product.isActive) { %>
-                                        <span class="status active">Active</span>
-                                        <% }else{ %>
-                                            <span class="status block">Blocked</span>
-                                            <% } %>
-                                </td>
-                                <td class="products-icon">
-                                    <a href="/admin/editproduct/<%= product.id %>"><i
-                                            class="bi bi-pencil-square product-icons"></i></a>
-                                    <a href="/admin/productstatus?id=<%= product.id %>&&status=<%= product.isActive%>"><i
-                                            class="bi bi-x-circle product-icons"></i></a>
-                                    <a href="/admin/products/<%= product.id %>" class="sweet-alert-delete"><i
-                                            class="bi bi-trash3 product-icons"></i></a>
-                                </td>
-                            </tr>
-                            <% }) %>
+                        <% let slNo=(currentPage - 1) * limit + 1 ; %>
+                            <% products.forEach((product,index)=> { %>
+                                <tr scope="row">
+                                    <td>
+                                        <%= index + 1 + ((page - 1) * 6) %>
+                                    </td>
+                                    <td>
+                                        <%= product.productName %>
+                                    </td>
+                                    <td>
+                                        <%= product.productPrice %>
+                                    </td>
+                                    <td>
+                                        <%= product.productQuantity %>
+                                    </td>
+                                    <td>
+                                        <%= product.productCollection %>
+                                    </td>
+                                    <td>
+                                        <% if(product.isActive) { %>
+                                            <span class="status active">Active</span>
+                                            <% }else{ %>
+                                                <span class="status block">Blocked</span>
+                                                <% } %>
+                                    </td>
+                                    <td class="products-icon">
+                                        <a href="/admin/editproduct/<%= product.id %>"><i
+                                                class="bi bi-pencil-square product-icons"></i></a>
+                                        <a
+                                            href="/admin/productstatus?id=<%= product.id %>&&status=<%= product.isActive%>"><i
+                                                class="bi bi-x-circle product-icons"></i></a>
+                                        <a href="/admin/products/<%= product.id %>" class="sweet-alert-delete"><i
+                                                class="bi bi-trash3 product-icons"></i></a>
+                                    </td>
+                                </tr>
+                                <% slNo++; %>
+                                    <% }) %>
                     </tbody>
                 </table>
             </div>
         </div>
+    </div>
+
+    <!------------------------------------ Pagination Controls -------------------------------->
+
+    <div class="pagination-controls d-flex  mt-3">
+        <ul class="pagination">
+            <% if (currentPage> 1) { %>
+                <li class="page-item"><a class="page-link"
+                        href="/admin/products?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
+                </li>
+                <% } %>
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                        <li class="page-item <%= currentPage == i ? 'active' : '' %>">
+                            <a class="page-link"
+                                href="/admin/products?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
+                                <%= i %>
+                            </a>
+                        </li>
+                        <% } %>
+                            <% if (currentPage < totalPages) { %>
+                                <li class="page-item"><a class="page-link pagination-next-btn"
+                                        href="/admin/products?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                                </li>
+                                <% } %>
+        </ul>
     </div>
 
     <%- include('footer') %>
