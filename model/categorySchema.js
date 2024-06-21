@@ -12,5 +12,5 @@ const schema = mongoose.Schema({
     }
 },{ timestamps: true })
 
-module.exports= mongoose.model('category',schema)
+module.exports= mongoose.model('categories',schema)
 

@@ -4,7 +4,7 @@ const { ObjectId } = require('mongodb');
 
 
 
-//profile
+//------------------------------------------- profile ----------------------------------------------
 const profile = async (req, res) => {
     try {
         const userDetail = await userSchema.findById(req.session.user)
@@ -19,7 +19,8 @@ const profile = async (req, res) => {
 }
 
 
-// update the user profile
+//------------------------------------- update the user profile ------------------------------------
+
 const updateProfile = async (req, res) => {
     try {
         // get the form data
@@ -39,7 +40,8 @@ const updateProfile = async (req, res) => {
 }
 
 
-// address management in the user side 
+//------------------------------- address management in the user side -----------------------------
+
 const addAddress = async (req, res) => {
     try {
         // user address details added
@@ -74,7 +76,7 @@ const addAddress = async (req, res) => {
 }
 
 
-//Remove Address
+//-------------------------------------- Remove Address ---------------------------------
 const removeAddress = async (req, res) => {
     try {
         const userId = req.session.user;
@@ -105,7 +107,7 @@ const removeAddress = async (req, res) => {
 };
 
 
-// ------------------- Edit address page load ----------------- 
+// --------------------------------------- Edit address page load ---------------------------------
 
 const editAddress = async (req, res) => {
     const index = Number(req.params.index);
@@ -127,7 +129,7 @@ const editAddress = async (req, res) => {
 };
 
 
-// ---------------------------- Update existing address --------------------- 
+// ------------------------------------- Update existing address -------------------------------- 
 
 const updateAddress= async (req,res)=>{
 const id= req.session.user;
@@ -142,9 +144,7 @@ const data= {
     phonenumber:req.body.phonenumber,
     landmark:req.body.landmark
 }
-
     try {
-
         const updateQuery = {};
         updateQuery[`address.${index}`] = data; // Constructing the dynamic update object
 
@@ -152,7 +152,7 @@ const data= {
             { _id: new ObjectId(id) },
             { $set: updateQuery }
         );
-        req.flash('sucess','Address updated Successfully');
+        req.flash('success','Address updated Successfully');
         res.redirect('/user/profile');
     } catch (err) {
         console.log(`error while editing the address ${err}`)
@@ -162,11 +162,4 @@ const data= {
 }
 
 
-module.exports = {
-    profile,
-    updateProfile,
-    addAddress,
-    removeAddress,
-    editAddress,
-    updateAddress
-}
+module.exports = { profile , updateProfile , addAddress , removeAddress , editAddress , updateAddress }
