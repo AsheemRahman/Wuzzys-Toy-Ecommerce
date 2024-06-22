@@ -173,6 +173,46 @@
         color: white;
         background: #232323;
     }
+    /*-------------- no item in the cart -----------------*/
+    .cart-empty{
+        display: flex;
+        justify-content: center;
+    }
+    .empty-cart{
+        margin: 2rem 0rem;
+        max-width: 1400px;
+        width: 90%;
+        border-radius: 1rem;
+        border: transparent;
+        background: url("/public/assets/Empty-cart.jpg");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 500px;
+    }
+    .empty-items{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        flex-direction: column;
+        gap: 5rem;
+    }
+    .empty-cart p{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 5.5rem !important;
+    }
+    .empty-cart a{
+        width: 20%;
+        height: 10%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 4rem;
+        font-size: 1rem;
+    }
 </style>
 
 <%-include ('navbar') %>
@@ -253,10 +293,17 @@
             </div>
         </div>
         <% } else { %>
-            <div class="empty-cart-container">
-                <a href="/user/home" class="btn btn-primary checkout">
-                    <i class="mdi mdi-arrow-left me-1"></i> Continue Shopping
-                </a>
+            <div class="cart-empty">
+                <div class="empty-cart">
+                    <div class="empty-items">
+                        <p class="fw-bold">
+                            Your Cart is Empty
+                        </p>
+                        <a href="/user/home" class="btn btn-primary checkout">
+                            <i class="bi bi-arrow-left-circle" style="margin-right: 2rem;"></i>Continue Shopping
+                        </a>
+                    </div>
+                </div>
             </div>
             <% } %>
 
