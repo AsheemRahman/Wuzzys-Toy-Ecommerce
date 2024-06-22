@@ -257,7 +257,8 @@
                                         <%= item.productPrice.toFixed(2) %>
                                     </div>
                                     <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                        <a href="/user/remove-item/<%= item.productId._id %>" class="text-danger">
+                                        <!-- <a href="/user/remove-item/<%= item.productId._id %>" class="text-danger"> -->
+                                        <a href="#" class="text-danger delete-link" data-id="<%= item.productId._id %>">
                                             <i class="fas fa-trash fa-lg"></i>
                                         </a>
                                     </div>
@@ -308,3 +309,30 @@
             <% } %>
 
                 <%-include ('footer') %>
+
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        document.querySelectorAll('.delete-link').forEach((element) => {
+                            element.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                const productId = this.getAttribute('data-id');
+                                
+                                Swal.fire({
+                                    title: 'Are you sure?',
+                                    text: "Do you want to remove this item from the cart?",
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Yes, delete it!'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = '/user/remove-item/' + productId;
+                                    }
+                                });
+                            });
+                        });
+                    });
+                </script>
+                
