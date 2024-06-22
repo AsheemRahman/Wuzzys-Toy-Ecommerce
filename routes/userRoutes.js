@@ -1,7 +1,7 @@
 const express = require('express')
 const user = express.Router();
 const isUser = require('../middleware/userSession')
-const checkUser = require('../middleware/checkUserSession')
+const checkUser= require('../middleware/checkUserSession')
 
 const userController = require('../controller/userController/userController')
 const homeController = require('../controller/userController/homeController')
@@ -75,7 +75,7 @@ user.post('/update-address/:index',checkUser,profileController.updateAddress)
 
 //----------------------------- cart route --------------------------
 
-user.get('/cart', checkUser, cartController.cart)
+user.get('/cart', checkUser , cartController.cart)
 user.get('/add-to-cart/:id', checkUser, cartController.addToCartPost)
 user.get('/remove-item/:id',checkUser,cartController.removeItem)
 
