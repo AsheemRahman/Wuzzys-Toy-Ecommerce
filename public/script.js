@@ -27,7 +27,6 @@ alertDelete.forEach(ele => {
 async function addToCart(productId, price, user) {
 
   const URL = `/user/add-to-cart/${productId}/?price=${price}`;
-  
   try {
       if (user) {
           const response = await fetch(URL, {
@@ -61,8 +60,8 @@ async function addToCart(productId, price, user) {
   } catch (err) {
       Swal.fire({
           icon: "warning",
-          title: "Cannot add product to cart",
-          text: err.message
+          title: err.message,
+          text: "Cannot add product to cart"
       });
   }
   }

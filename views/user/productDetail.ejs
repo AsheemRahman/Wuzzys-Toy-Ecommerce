@@ -64,6 +64,9 @@
         justify-content: space-around;
         height: 9%;
     }
+    .productdetail-button a{
+        cursor: pointer;
+    }
     .productdetail-button a:hover {
         text-decoration: none;
     }
@@ -75,7 +78,7 @@
         justify-content: center;
         align-items: center;
         border-radius: 20px;
-        color: #fefeeb;
+        color: #fff;
     }
 
     .product-detail-buy {
@@ -86,11 +89,10 @@
         text-decoration: none;
         border-radius: 20px;
         background: #DB4444;
-        color: #fefeeb;
+        color: #fff;
     }
-
-    .product-detail-buy :hover {
-        background: #f55;
+    .product-detail-buy:hover{
+        color: #000;
     }
 
     .productdetail-button hr {
@@ -194,9 +196,13 @@
                 <hr>
             </div>
             <div class="productdetail-button">
-                <!-- <a href="" class="product-detail-cart">Add to Cart</a> -->
-                <a onclick="addToCart('<%= product.id %>','<%= product.productPrice %>','<%=user %>')" class="product-detail-cart" >Add to Cart<i class="fas fa-shopping-cart"></i></a>
-                <a href="" class="product-detail-buy">Buy Now</a>
+                <a onclick="addToCart('<%= product.id %>','<%= product.productPrice %>','<%= user %>')" class="product-detail-cart btn btn-warning" >Add to Cart
+                    <i class="fas fa-shopping-cart"  style="margin-left: 1rem;"></i>
+                </a>
+                <a href="" class="product-detail-buy btn btn-danger">Buy Now
+                    <i class="bi bi-bag-fill"  style="margin-left: 1rem;">
+                    </i>
+                </a>
             </div>
             <div class="product-delivery">
                 <div class="product-detail-delivery">

@@ -1,5 +1,8 @@
-const cartSchema = require('../../model/cartSchema')
 const productSchema = require('../../model/productSchema')
+const cartSchema = require('../../model/cartSchema')
+
+const { ObjectId } = require('mongodb');
+
 
 const cart = async (req, res) => {
     try {
@@ -77,7 +80,45 @@ const addToCartPost = async (req, res) => {
     }
 }
 
+
+//--------------------------------------- Remove cart item ---------------------------------
+
+const removeItem = async (req, res) => {
+    const userId = req.session.user;
+    const itemId = req.params.id;
+
+    // Validate itemId
+    if (!itemId || !ObjectId.isValid(itemId)) {
+        req.flash('error', 'Invalid item ID.');
+        return res.redirect("/user/cart");
+    }
+    console.log(`Received request to remove item with ID: ${itemId} from user cart: ${userId}`);
+
+    try {
+        const cart = await cartSchema.findOne({ userId: userId });
+
+        if (cart) {
+            // Pull the item from the cart
+            cart.items.pull({ productId: new ObjectId(itemId) });
+            await cart.save();
+
+            console.log(`Item removed successfully: ${itemId}`);
+            req.flash('success', 'Item Removed from Cart');
+        } else {
+            console.log('No cart found for the specified user.');
+            req.flash('error', 'Cart not found.');
+        }
+    } catch (err) {
+        req.flash('error', 'Something went wrong, Please try again later.');
+        console.error(`Error in removing the item from cart: ${err}`);
+    }
+    res.redirect("/user/cart");
+};
+
+
+
 module.exports = {
-  cart,
-  addToCartPost,
+    cart,
+    addToCartPost,
+    removeItem
 }
