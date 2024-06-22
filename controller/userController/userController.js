@@ -206,6 +206,10 @@ const googleAuthCallback = (req, res, next) => {
               console.log(`Error on google auth callback: ${err}`);
               return next(err);
           }
+          if(!user.isActive){
+            req.flash('error', 'User access is blocked by admin')
+            return res.redirect('/user/login')
+          }
           if (!user) {
               return res.redirect('/user/login');
           }

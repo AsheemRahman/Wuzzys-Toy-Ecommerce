@@ -6,9 +6,24 @@ const categorySchema = require('../../model/categorySchema')
 const collection = async (req, res) => {
     try {
         const search = req.query.search || ''
-        const collection = await categorySchema.find({collectionName: { $regex: search, $options: 'i' }
-        }).sort({ createdAt: -1 });
-        res.render('admin/collection', { title: 'Collection', collection })
+        const page = parseInt(req.query.page) || 1; // Current page number
+        const limit = parseInt(req.query.limit) || 6; // Number of products per page
+
+        const collection = await categorySchema.find({collectionName: { $regex: search, $options: 'i' }})
+            .sort({ createdAt: -1 })
+            .limit(limit)
+            .skip((page - 1) * limit)
+
+        const count = await categorySchema.countDocuments({ collectionName: { $regex: search, $options: 'i' } });
+
+        res.render('admin/collection', { title: 'Collection',
+            collection ,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page,
+            search,
+            limit,
+            page})
+
     } catch (error) {
         console.log(`error from collection ${error}`)
     }
