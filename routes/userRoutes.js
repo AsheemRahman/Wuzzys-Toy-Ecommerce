@@ -7,6 +7,7 @@ const userController = require('../controller/userController/userController')
 const homeController = require('../controller/userController/homeController')
 const productController = require('../controller/userController/productController')
 const profileController = require('../controller/userController/profileController')
+const cartController = require('../controller/userController/cartController')
 const forgotPassword = require('../controller/userController/forgotPassword')
 
 //------------------------------- main -------------------------------
@@ -71,6 +72,11 @@ user.get('/remove-address/:index', checkUser,profileController.removeAddress);
 
 user.get('/edit-address/:index',checkUser,profileController.editAddress)
 user.post('/update-address/:index',checkUser,profileController.updateAddress)
+
+//----------------------------- cart route --------------------------
+
+user.get('/cart', checkUser, cartController.cart)
+user.get('/add-to-cart/:id', checkUser, cartController.addToCartPost)
 
 
 //------------------------- forgot password ---------------------------

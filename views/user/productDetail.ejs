@@ -194,7 +194,8 @@
                 <hr>
             </div>
             <div class="productdetail-button">
-                <a href="" class="product-detail-cart">Add to Cart</a>
+                <!-- <a href="" class="product-detail-cart">Add to Cart</a> -->
+                <a onclick="addToCart('<%= product.id %>','<%= product.productPrice %>','<%=user %>')" class="product-detail-cart" >Add to Cart<i class="fas fa-shopping-cart"></i></a>
                 <a href="" class="product-detail-buy">Buy Now</a>
             </div>
             <div class="product-delivery">
@@ -237,10 +238,28 @@
             productImg.style.transformOrigin = "center"
             productImg.style.transform = "scale(1)"
         })
-
         async function changeImage(src) {
             productImg.src = `../../${src}`;
         }
+
+
+        // adding product to cart 
+        const addToCartForm = document.getElementById('product-add-to-cart-form')
+                    addToCartForm.addEventListener('submit', (e) => {
+                        e.preventDefault()
+
+                        // an animation of success for every button click
+                        Swal.fire({
+                            icon: "success",
+                            title: "Item added to cart",
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        setTimeout(() => {
+                            addToCartForm.submit()
+                        }, 1000)
+                    })
+
 
     </script>
 

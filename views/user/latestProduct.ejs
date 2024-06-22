@@ -100,7 +100,7 @@
         <% let count = 0; %>
         <% product.forEach((product) => {
             const productAge = (Date.now() - new Date(product.createdAt).getTime()) / (24 * 60 * 60 * 1000);
-            if (product.productDiscount === 0 && productAge <= 10 && count < 8) {
+            if (productAge <= 10 && count < 8) {
                 count++; %>
             <div class="product-box">
                 <% if (productAge <= 10) { %>
@@ -123,9 +123,11 @@
                     </h5>
                 </div>
                 <a href="#" class="wishlist-icon"><i class="fas fa-heart"></i></a>
-                <a href="#" class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
+                <!-- <a href="#" class="cart-icon"><i class="fas fa-shopping-cart"></i></a> -->
+                <a onclick="addToCart('<%= product.id %>','<%= product.productPrice %>','<%=user %>')"
+                    class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
             </div>
-            <% } 
+            <% }
         }) %>
     </div>
 </div>
@@ -135,3 +137,4 @@
 <div class="home-line-div">
     <hr>
 </div>
+
