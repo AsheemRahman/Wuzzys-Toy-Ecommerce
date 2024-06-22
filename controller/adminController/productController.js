@@ -14,7 +14,8 @@ const product = async (req, res) => {
         // Fetch products with pagination
         const products = await productSchema.find({ productName: { $regex: search, $options: 'i' } })
             .limit(limit)
-            .skip((page - 1) * limit);
+            .skip((page - 1) * limit)
+            .sort({ updatedAt : -1 });
         // Fetch the total number of products matching the search query
         const count = await productSchema.countDocuments({ productName: { $regex: search, $options: 'i' } });
         // Render the products page with pagination data

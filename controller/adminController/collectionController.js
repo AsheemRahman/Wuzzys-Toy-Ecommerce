@@ -7,7 +7,7 @@ const collection = async (req, res) => {
     try {
         const search = req.query.search || ''
         const collection = await categorySchema.find({collectionName: { $regex: search, $options: 'i' }
-        })
+        }).sort({ createdAt: -1 });
         res.render('admin/collection', { title: 'Collection', collection })
     } catch (error) {
         console.log(`error from collection ${error}`)

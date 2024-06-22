@@ -92,8 +92,7 @@ const removeItem = async (req, res) => {
         req.flash('error', 'Invalid item ID.');
         return res.redirect("/user/cart");
     }
-    console.log(`Received request to remove item with ID: ${itemId} from user cart: ${userId}`);
-
+    
     try {
         const cart = await cartSchema.findOne({ userId: userId });
 
@@ -102,7 +101,6 @@ const removeItem = async (req, res) => {
             cart.items.pull({ productId: new ObjectId(itemId) });
             await cart.save();
 
-            console.log(`Item removed successfully: ${itemId}`);
             req.flash('success', 'Item Removed from Cart');
         } else {
             console.log('No cart found for the specified user.');

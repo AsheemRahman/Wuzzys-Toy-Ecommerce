@@ -9,7 +9,7 @@ const users = async (req,res)=> {
     try {
         
         const search = req.query.search || ''
-        const user = await userSchema.find({name: {$regex: search, $options: 'i'}})
+        const user = await userSchema.find({name: {$regex: search, $options: 'i'}}).sort({ createdAt: -1 });
 
         res.render('admin/user',{title: 'Customers',user})
 
