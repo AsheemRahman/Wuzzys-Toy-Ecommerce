@@ -36,13 +36,13 @@
     }
 
     .form-control {
-        background: #232323;
+        background: #1a1a1a;
         color: #fefeeb;
     }
 
     .form-control:focus {
         color: #fefeeb;
-        background: #232323;
+        background: #1a1a1a;
     }
 
     input:-webkit-autofill,
@@ -115,7 +115,7 @@
                     <div class="col-6">
 
                         <label class="form-label " for="productName">Product Name</label>
-                        <input class="form-control form-input edit-product-disable" type="text" name="productName" id="productName" value="<%= product.productName %>" disabled required>
+                        <input class="form-control form-input edit-product-disable" type="text" name="productName" id="productName" style="background: transparent;" value="<%= product.productName %>" disabled required>
 
                         <label class="form-label " for="productPrice">Price</label>
                         <input class="form-control form-input" type="text" name="productPrice" id="productPrice" value="<%= product.productPrice %>" required>
@@ -123,7 +123,7 @@
                         <div>
 
                             <label class="form-label " for="productCollection">Collection</label>
-                            <select name="productCollection" id="productCollection" class="form-control form-input edit-product-disable" disabled required>
+                            <select name="productCollection" id="productCollection" style="background: transparent;" class="form-control form-input edit-product-disable" disabled required>
                                 <option value="" selected disabled>
                                     <%= product.productCollection %>
                                 </option>
@@ -179,13 +179,10 @@
 
     <script>
         const addProductForm = document.getElementById('add-product-form')
-        const productName = document.getElementsByName('productName')[0];
         const productPrice = document.getElementsByName('productPrice')[0];
         const productQuantity = document.getElementsByName('productQuantity')[0];
-        const productAuthor = document.getElementsByName('productAuthor')[0];
         const productDiscount = document.getElementsByName('productDiscount')[0];
         const productDescription = document.getElementsByName('productDescription')[0];
-        const productCategory = document.getElementsByName('productCategory')[0];
 
         addProductForm.addEventListener('submit', (e) => {
             e.preventDefault()
@@ -202,11 +199,11 @@
                 isValid = false;
             }
             if (isNaN(productDiscount.value) || parseInt(productDiscount.value) < 0 || parseInt(productDiscount.value) > 100) {
-                errorMessage = 'Product quality should be a number and it must be greater than zero or greater'
+                errorMessage = 'Product Discount should be a number and it must be zero or Greater'
                 isValid = false;
             }
-            if (productDescription.value.length <= 10 || productDescription.value.length > 500 || productDescription.value.trim === "") {
-                errorMessage = 'Product description must be between 10 to 80 word '
+            if (productDescription.value.length <= 10 || productDescription.value.length > 100 || productDescription.value.trim === "") {
+                errorMessage = 'Product description must be between 10 to 100 word '
                 isValid = false
             }
             if (isValid === false) {

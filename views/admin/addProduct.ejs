@@ -152,7 +152,7 @@
                         <input class="form-control form-input" type="text" name="productPrice" id="productPrice"
                             required>
                         <label class="form-label" for="productCollection">Collection</label>
-                        <select name="productCollection" id="productCollection" class="form-control form-input"
+                        <select name="productCollection" id="productCategory" class="form-control form-input"
                             required>
                             <option value="" selected disabled>Select a category</option>
                             <% productCollection.forEach((category)=> { %>
@@ -204,9 +204,57 @@
         </div>
     </div>
 
-    <!-------------------------------------------- Image Cropper ------------------------------------------------->
-
+    
     <script>
+
+        //--------------------------------- validation -----------------------------
+
+        const addProductForm = document.getElementById('add-product-form')
+        const productName = document.getElementsByName('productName')[0];
+        const productPrice = document.getElementsByName('productPrice')[0];
+        const productQuantity = document.getElementsByName('productQuantity')[0];
+        const productDiscount = document.getElementsByName('productDiscount')[0];
+        const productDescription = document.getElementsByName('productDescription')[0];
+
+        addProductForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+
+            let isValid = true
+            let errorMessage = ""
+
+            if (productName.value.length <= 5 || productDescription.value.length > 50 || productDescription.value.trim === "") {
+                errorMessage = 'Product Name must be between 5 to 30 word '
+                isValid = false
+            }
+            if (isNaN(productPrice.value) || parseFloat(productPrice.value) <= 0) {
+                errorMessage = 'Product Price must be greater than zero and it should not contain any alphabets'
+                isValid = false;
+            }
+            if (isNaN(productQuantity.value) || parseInt(productQuantity.value) <= 0) {
+                errorMessage = 'Product quality should be a number and it must be zero or Greater'
+                isValid = false;
+            }
+            if (isNaN(productDiscount.value) || parseInt(productDiscount.value) < 0 || parseInt(productDiscount.value) > 100) {
+                errorMessage = 'Product Discount should be a number and it must be zero or Greater'
+                isValid = false;
+            }
+            if (productDescription.value.length <= 10 || productDescription.value.length > 100 || productDescription.value.trim === "") {
+                errorMessage = 'Product description must be between 10 to 100 word '
+                isValid = false
+            }
+            if (isValid === false) {
+                Swal.fire({
+                    title: "Invalid Inputs",
+                    text: errorMessage,
+                    icon: "error"
+                })
+            } else {
+                addProductForm.submit()
+            }
+        });
+
+        // -------------------------------------------- Image Cropper ------------------------------------------------
+
         let cropper;
         let currentImageElement;
         function previewImages(event) {
