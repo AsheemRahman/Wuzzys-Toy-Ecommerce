@@ -49,11 +49,11 @@ const loginPost = (req,res)=>{
 //------------------------- admin home get request --------------------
 
 const home = (req,res)=>{
-   try {
-    res.render('admin/home',{title: "Home"})
-   } catch (error) {
-    console.log(`error from home ${error}`)
-   }
+    try {
+        res.render('admin/home',{title: "Home"})
+    } catch (error) {
+        console.log(`error from home ${error}`)
+    }
 }
 
 
@@ -69,4 +69,4 @@ const logout = (req,res)=>{
     })
 }
 
-module.exports={login,loginPost,home,admin,logout}
+module.exports={ admin , login , loginPost , home , logout }

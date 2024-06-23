@@ -5,6 +5,7 @@ const adminController = require('../controller/adminController/adminController')
 const collectionController = require('../controller/adminController/collectionController')
 const productController = require('../controller/adminController/productController')
 const userContoller = require('../controller/adminController/userController')
+const orderController = require('../controller/adminController/orderController')
 
 
 //------------------------  login  ----------------------------
@@ -28,26 +29,16 @@ admin.get('/collectionstatus',isAdmin,collectionController.status)
 admin.post('/editcollection',isAdmin,collectionController.editcollection)
 
 
-//------------------------ admin logout ------------------------
-
-admin.get('/logout',adminController.logout)
-
-
 //-------------------------- product ---------------------------
 
 admin.get('/products',isAdmin,productController.product)
 admin.get('/products/:id',isAdmin,productController.deleteProduct)
 admin.get('/productstatus',isAdmin,productController.status)
 
-
-//----------------------- add product --------------------------
-
+//-------- add product ---------//
 admin.get('/addproduct',isAdmin,productController.addProduct)
 admin.post('/addproduct',productController.multer,productController.addproductPost)
-
-
-//---------------------  edit product --------------------------
-
+//------- edit product ---------//
 admin.get('/editproduct/:id',isAdmin,productController.editProduct)
 admin.post('/editproduct/:id',isAdmin,productController.multer,productController.editProductPost)
 
@@ -58,4 +49,15 @@ admin.get('/users',isAdmin,userContoller.users)
 admin.get('/userstatus',isAdmin,userContoller.status)
 
 
-module.exports=admin
+// -------------------------- Order Managment Section ------------------------------------------------------ 
+
+admin.get('/order', isAdmin, orderController.showOrders)
+// admin.get('/updateOrderStatus/:id/:status', isAdmin, orderController.updateOrderStatus)
+// admin.get('/orderDetails/:id', isAdmin , orderController.singleOrderdetails)
+
+//------------------------ admin logout ------------------------
+
+admin.get('/logout',adminController.logout)
+
+
+module.exports = admin

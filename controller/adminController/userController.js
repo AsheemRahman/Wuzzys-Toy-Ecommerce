@@ -26,7 +26,6 @@ const users = async (req,res)=> {
             search,
             limit,
             page})
-
     } catch (error) {
         console.log(`Error while loading user in admin ${error}`)
     }
@@ -44,11 +43,10 @@ const status = async (req,res)=> {
 
         await userSchema.findByIdAndUpdate(id,{isActive: newStatus})
         res.redirect('/admin/users')
-
     } catch (error) {
         console.log(`error while changing status of user ${error}`)
     }
 
 }
 
-module.exports ={ users,status};
+module.exports ={ users , status };
