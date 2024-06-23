@@ -2,6 +2,124 @@ body{
     background: #1a1a1a;
 }
 
+/*--------------------------- product card -----------------------------------*/
+
+.product-container {
+    text-align: center;
+}
+
+.product-container h2 {
+    display: flex;
+    justify-content: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
+    color: #fefeeb;
+    margin: 2rem;
+}
+
+.product-list-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.product-box {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 15px;
+    width: calc(25% - 40px);
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product-discount-box,
+.product-newarrival-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 0, 0, 0.8);
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 20px;
+    color: #fefeeb;
+    padding: 5px;
+    font-size: 12px;
+}
+
+.product-image-box {
+    width: 100%;
+    height: 14rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.product-image-box img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.product-name-box {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.product-name-link {
+    color: black;
+    text-decoration: none;
+}
+
+.product-text-row {
+    margin: 5px 0;
+}
+
+.wishlist-icon,
+.cart-icon {
+    color: gray;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.wishlist-icon:hover,
+.cart-icon:hover {
+    color: red;
+}
+
+@media (max-width: 1220px) {
+    .product-box {
+        width: calc(25% - 40px);
+    }
+}
+
+@media (max-width: 992px) {
+    .product-box {
+        width: calc(33.33% - 40px);
+    }
+}
+
+@media (max-width: 768px) {
+    .product-box {
+        width: calc(50% - 40px);
+    }
+}
+
+@media (max-width: 400px) {
+    .product-box {
+        width: calc(100% - 40px);
+    }
+}
+
+
+
+
 /*-------------------------------------- button style ------------------------------*/
 
 .submit-btn{
@@ -73,5 +191,5 @@ body{
     border: 0;
     height: 3px;
     background: #ffffff;
-    margin-top: 4rem;
+    /* margin-top: 4rem; */
 }

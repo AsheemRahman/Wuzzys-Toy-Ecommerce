@@ -8,19 +8,19 @@ const userContoller = require('../controller/adminController/userController')
 const orderController = require('../controller/adminController/orderController')
 
 
-//------------------------  login  ----------------------------
+//-----------------------------  login  ----------------------------
 
 admin.get('/',adminController.admin)
 admin.get('/login',adminController.login)
 admin.post('/login',adminController.loginPost);
 
 
-//---------------------admin home page ------------------------
+//------------------------ admin home page --------------------------
 
 admin.get('/home',isAdmin,adminController.home)
 
 
-//----------------------- collection ---------------------------
+//-------------------------- collection -----------------------------
 
 admin.get('/collection',isAdmin,collectionController.collection)
 admin.post('/addcollection',isAdmin,collectionController.addCollectionPost)
@@ -29,7 +29,7 @@ admin.get('/collectionstatus',isAdmin,collectionController.status)
 admin.post('/editcollection',isAdmin,collectionController.editcollection)
 
 
-//-------------------------- product ---------------------------
+//----------------------------- product -----------------------------
 
 admin.get('/products',isAdmin,productController.product)
 admin.get('/products/:id',isAdmin,productController.deleteProduct)
@@ -43,19 +43,20 @@ admin.get('/editproduct/:id',isAdmin,productController.editProduct)
 admin.post('/editproduct/:id',isAdmin,productController.multer,productController.editProductPost)
 
 
-//---------------------- user details ---------------------------
+//--------------------------- user details ----------------------------
 
 admin.get('/users',isAdmin,userContoller.users)
 admin.get('/userstatus',isAdmin,userContoller.status)
 
 
-// -------------------------- Order Managment Section ------------------------------------------------------ 
+// ------------------------------ Order  ------------------------------
 
-admin.get('/order', isAdmin, orderController.showOrders)
-// admin.get('/updateOrderStatus/:id/:status', isAdmin, orderController.updateOrderStatus)
-// admin.get('/orderDetails/:id', isAdmin , orderController.singleOrderdetails)
+// admin.get('/order', isAdmin, orderController.Orders)
+// admin.get('/updateStatus/:id', isAdmin, orderController.updateStatus)
+// admin.post('/orderDetails/:id', isAdmin , orderController.OrderDetail)
 
-//------------------------ admin logout ------------------------
+
+//---------------------------- admin logout ----------------------------
 
 admin.get('/logout',adminController.logout)
 

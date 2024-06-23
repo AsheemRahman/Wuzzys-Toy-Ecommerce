@@ -25,10 +25,16 @@
         border-radius: 10px;
         margin: 10px;
         padding: 15px;
-        /* width: 20%; */
+        width: 100%;
+        /* Adjusted */
+        max-width: 300px;
+        /* Adjusted */
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         position: relative;
         box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .product-discount-box,
@@ -43,12 +49,27 @@
         font-size: 12px;
     }
 
+    .product-image-box {
+        width: 100%;
+        max-width: 250px;
+        /* Adjusted */
+        height: 250px;
+        /* Adjusted */
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .product-image-box img {
+        width: 100%;
+        height: auto;
         border-radius: 10px;
     }
 
     .product-name-box {
         margin-top: 15px;
+        text-align: center;
     }
 
     .product-name-link {
@@ -74,56 +95,57 @@
 </style>
 
 
+
 <%- include('navbar') %>
 
-<!-------------------------------------------- Latest Products ------------------------------------------------->
+    <!-------------------------------------------- Latest Products ------------------------------------------------->
 
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <div class="product-container">
-                <div class="latest-Products">
-                    <h2>Latest Products</h2>
-                </div>
-                <div class="row">
-                    <% product.forEach((product) => {
-                        const productAge = (Date.now() - new Date(product.createdAt).getTime()) / (24 * 60 * 60 * 1000);
-                        if (productAge <= 10 ) { %>
-                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                            <div class="product-box">
-                                <% if (productAge <= 10) { %>
-                                    <div class="product-newarrival-box">
-                                        <h6>New Arrival</h6>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="product-container">
+                    <div class="latest-Products">
+                        <h2>Latest Products</h2>
+                    </div>
+                    <div class="row">
+                        <% product.forEach((product)=> {const productAge = (Date.now() - new Date(product.createdAt).getTime()) / (24 * 60 * 60 *1000);
+                            if (productAge <= 10 ) { %>
+                                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                    <div class="product-box">
+                                        <% if (productAge <=10) { %>
+                                            <div class="product-newarrival-box">
+                                                <h6>New Arrival</h6>
+                                            </div>
+                                            <% } %>
+                                                <div class="product-image-box">
+                                                    <a href="/user/productDetail/<%= product.id %>"
+                                                        class="product-name-link">
+                                                        <img src="/<%= product.productImage[0] %>" alt=""
+                                                            class="img-fluid">
+                                                    </a>
+                                                </div>
+                                                <div class="product-name-box">
+                                                    <h6 class="product-text-row">
+                                                        <%= product.productName %>
+                                                    </h6>
+                                                    <h5 class="product-price">
+                                                        <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
+                                                        <%= product.productPrice.toLocaleString() %>
+                                                    </h5>
+                                                </div>
+                                                <div>
+                                                    <a href="#" class="wishlist-icon"><i class="fas fa-heart"></i></a>
+                                                    <a onclick="addToCart('<%= product.id %>','<%= product.productPrice %>','<%=user %>')"
+                                                        class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
+                                                </div>
                                     </div>
-                                <% } %>
-                                <div class="product-image-box">
-                                    <a href="/user/productDetail/<%= product.id %>" class="product-name-link">
-                                        <img src="/<%= product.productImage[0] %>" alt="" class="img-fluid">
-                                    </a>
                                 </div>
-                                <div class="product-name-box">
-                                    <h6 class="product-text-row">
-                                        <%= product.productName %>
-                                    </h6>
-                                    <h5 class="product-price">
-                                        <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                                        <%= product.productPrice.toLocaleString() %>
-                                    </h5>
-                                </div>
-                                <a href="#" class="wishlist-icon"><i class="fas fa-heart"></i></a>
-                                <!-- <a href="#" class="cart-icon"><i class="fas fa-shopping-cart"></i></a> -->
-                                <a onclick="addToCart('<%= product.id %>','<%= product.productPrice %>','<%=user %>')"
-                                    class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
-                            </div>
-                        </div>
-                        <% }
-                    }) %>
+                        <% } }) %>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<%- include('footer') %>
 
 
+    <%- include('footer') %>

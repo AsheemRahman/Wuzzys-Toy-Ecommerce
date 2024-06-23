@@ -44,4 +44,4 @@ const addressSchema = mongoose.Schema({
 },{_id:false})
 
 
-module.exports=addressSchema
+module.exports = addressSchema
