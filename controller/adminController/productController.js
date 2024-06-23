@@ -9,16 +9,16 @@ const fs = require('fs');
 const product = async (req, res) => {
     try {
         const search = req.query.search || "";
-        const page = parseInt(req.query.page) || 1; // Current page number
-        const limit = parseInt(req.query.limit) || 6; // Number of products per page
-        // Fetch products with pagination
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 6;
+        //------ Fetch products with pagination ------
         const products = await productSchema.find({ productName: { $regex: search, $options: 'i' } })
             .limit(limit)
             .skip((page - 1) * limit)
             .sort({ updatedAt : -1 });
-        // Fetch the total number of products matching the search query
+        //---- Fetch the total number of products matching the search query ----
         const count = await productSchema.countDocuments({ productName: { $regex: search, $options: 'i' } });
-        // Render the products page with pagination data
+
         res.render('admin/products', {
             title: 'Products',
             products,
