@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 
 const addressSchema = mongoose.Schema({
+    contactName:{
+        type:String,
+        required: false,
+        unique: false
+    },
     building: {
         type: String,
         required: false,

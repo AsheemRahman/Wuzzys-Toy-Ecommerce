@@ -61,7 +61,7 @@ app.use(expressLayouts);
 app.set('layout','./layouts/layout')
 
 
-//---------------------------- layouts --------------------------
+//----------------------------flash message --------------------------
 
 app.use((req,res,next)=>{
     res.locals.success = req.flash('success');

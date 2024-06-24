@@ -9,7 +9,7 @@
 
     .shipping-address-container {
         background-color: #232323;
-        color: fefeeb;
+        color: #fefeeb;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -187,6 +187,7 @@
     }
 
     .payment-method {
+        margin: 2rem 0rem;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -212,7 +213,7 @@
     .payment-method img {
         width: 40px;
         height: 40px;
-        margin-bottom: 10px;
+        margin: 10px;
     }
 
     .payment-method.selected {
@@ -230,7 +231,6 @@
             text-align: center;
         }
     }
-
 
     /*------------------------- order summary ------------------------------*/
     .card {
@@ -251,42 +251,35 @@
             <div class="shipping-address-container mb-4">
                 <div class="shipping-head">
                     <h2>Shipping Address</h2>
-                    <button class="add-address-btn">+ Add to Address</button>
+                    <button class="add-address-btn">Add Address</button>
                 </div>
                 <div class="address-cards">
-                    <div class="address-card selected" onclick="selectAddress(this)">
-                        <div class="address-info">
-                            <h3>Home</h3>
-                            <p>(424) 985-8942</p>
-                            <p>114 Glann Rd</p>
-                            <p>Apalachin, New York(NY), 13732</p>
-                        </div>
-                        <div class="address-options">
-                            <button>...</button>
-                        </div>
-                    </div>
-                    <div class="address-card" onclick="selectAddress(this)">
-                        <div class="address-info">
-                            <h3>Home</h3>
-                            <p>(424) 985-8942</p>
-                            <p>114 Glann Rd</p>
-                            <p>Apalachin, New York(NY), 13732</p>
-                        </div>
-                        <div class="address-options">
-                            <button>...</button>
-                        </div>
-                    </div>
-                    <div class="address-card" onclick="selectAddress(this)">
-                        <div class="address-info">
-                            <h3>Home</h3>
-                            <p>(424) 985-8942</p>
-                            <p>114 Glann Rd</p>
-                            <p>Apalachin, New York(NY), 13732</p>
-                        </div>
-                        <div class="address-options">
-                            <button>...</button>
-                        </div>
-                    </div>
+                    <% if (!userDetails.address || userDetails.address.length===0) { %>
+                        <p class="mt-5">No Address Found. Please add an Address.</p>
+                        <% } else { %>
+                            <% userDetails.address.forEach((address, index)=> { %>
+                                <div class="address-card" onclick="selectAddress(this)">
+                                    <div class="address-info">
+                                        <!-- <h3>Home</h3> -->
+                                        <h3>
+                                            <%= address.building %>,
+                                        </h3>
+                                        <p>
+                                            <%= address.phonenumber %>
+                                        </p>
+                                        <p>
+                                            <%= address.city %> , <%= address.state %> , <%= address.country %>
+                                        </p>
+                                        <p>
+                                            <%= address.pincode %>
+                                        </p>
+                                    </div>
+                                    <div class="address-options">
+                                        <button><i class="bi bi-pencil"></i></button>
+                                    </div>
+                                </div>
+                        <% }) %>
+                    <% } %>
                 </div>
             </div>
             <!----------------------------- billing info ------------------------------>
@@ -298,7 +291,7 @@
                         <p>Sed ut perspiciatis unde omnis iste</p>
                     </div>
                 </div>
-                <form class="billing-form">
+                <form class="billing-form" id="billing-form">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" placeholder="Enter name">
@@ -317,11 +310,6 @@
                     </div>
                     <div class="form-group">
                         <label for="country">Country</label>
-                        <!-- <select id="country">
-                            <option value="" disabled selected>Select Country</option>
-                            <option value="us">United States</option>
-                            <option value="ca">Canada</option>
-                        </select> -->
                         <input type="text" id="country" placeholder="Country">
                     </div>
                     <div class="form-group">
@@ -336,23 +324,19 @@
             </div>
 
             <!---------------------------- payment option ------------------------------->
-
-            <div class="payment-methods  mt-4">
-                <h2>
-                    Payment method :
-                </h2>
+            <div class="payment-methods mt-4">
+                <h2>Payment method :</h2>
                 <div class="payment-options">
                     <div class="payment-method" onclick="selectPaymentMethod(this)">
-                        <img src="https://img.icons8.com/ios-filled/50/000000/bank-card-front-side.png"
-                            alt="Credit / Debit Card">
+                        <i class="bi bi-credit-card" style="font-size: 2rem;"></i>
                         <span>Debit Card</span>
                     </div>
                     <div class="payment-method" onclick="selectPaymentMethod(this)">
-                        <img src="https://img.icons8.com/ios-filled/50/000000/paypal.png" alt="Paypal">
+                        <i class="bi bi-paypal" style="font-size: 2rem;"></i>
                         <span>Paypal</span>
                     </div>
                     <div class="payment-method selected" onclick="selectPaymentMethod(this)">
-                        <img src="https://img.icons8.com/ios-filled/50/000000/cash-in-hand.png" alt="Cash on Delivery">
+                        <i class="bi bi-cash" style="font-size: 2rem;"></i>
                         <span>Cash on Delivery</span>
                     </div>
                 </div>
@@ -360,64 +344,53 @@
         </div>
 
         <!----------------------------- Order Summary ------------------------------>
-        <div class="order-summary">
-            <div class="">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="font-size-16 mb-0" style="color: #fefeeb;">Order Summary</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% let total=0; cartDetails.items.forEach((product,index)=>{
-                                        total += product.quantity * product.price
-                                        %>
-                                        <tr class="order-tr">
-                                            <th>
-                                                <%= product.productId.productName %>
-                                            </th>
-                                            <th>
-                                                <%= product.quantity %>
-                                            </th>
-                                            <td><i class="bi bi-currency-rupee"></i>
-                                                <%= product.price * product.quantity %>
-                                            </td>
-                                        </tr>
-                                        <% } ) %>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th style="background: transparent; color: #fefeeb;">Total :</th>
-                                        <th style="background: transparent; color: #fefeeb;"></th>
-                                        <td style="background: transparent; color: #fefeeb;"><i
-                                                class="bi bi-currency-rupee"></i>
-                                            <%= total %>
+        <div class="order-summary" style="width: 45%;">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="font-size-16 mb-0" style="color: #fefeeb;">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% let total=0; cartDetails.items.forEach((product, index)=> {
+                                    total += product.quantity * product.price %>
+                                    <tr class="order-tr">
+                                        <th>
+                                            <%= product.productId.productName %>
+                                        </th>
+                                        <th>
+                                            <%= product.quantity %>
+                                        </th>
+                                        <td><i class="bi bi-currency-rupee"></i>
+                                            <%= product.productPrice * product.quantity %>
                                         </td>
                                     </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        <div class="mt-4">
-                            <div class="alert alert-success" role="alert">
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-shield-fill-check h4 me-2"></i>
-                                    <div class="flex-grow-1">
-                                        Your order is eligible for FREE Delivery.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-3 text-center">
-                                <button class="btn submit-btn-light">Cancel</button>
-                                <button type="submit" class="btn submit-btn" form="checkout-form">Place Order</button>
-                            </div>
+                                    <% }) %>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style="background: transparent; color: #fefeeb;">Total :</th>
+                                    <th style="background: transparent; color: #fefeeb;"></th>
+                                    <td style="background: transparent; color: #fefeeb;">
+                                        <i class="bi bi-currency-rupee"></i>
+                                        <%= total %>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="mt-4">
+                        <div class="mt-3 text-center">
+                            <a href="/user/cart"><button class="btn submit-btn-light">Cancel</button></a>
+                            <button type="submit" class="btn submit-btn" form="checkout-form">Place Order</button>
                         </div>
                     </div>
                 </div>
@@ -427,19 +400,18 @@
 
     <%- include('footer') %>
 
-    <script>
-        // selecting item Option
-
-        function selectAddress(element) {
-            const cards = document.querySelectorAll('.address-card');
-            cards.forEach(card => {
-                card.classList.remove('selected');
-            });
-            element.classList.add('selected');
-        }
-        function selectPaymentMethod(element) {
-            const methods = document.querySelectorAll('.payment-method');
-            methods.forEach(method => method.classList.remove('selected'));
-            element.classList.add('selected');
-        }
-    </script>
+        <script>
+            // selecting item Option
+            function selectAddress(element) {
+                const cards = document.querySelectorAll('.address-card');
+                cards.forEach(card => {
+                    card.classList.remove('selected');
+                });
+                element.classList.add('selected');
+            }
+            function selectPaymentMethod(element) {
+                const methods = document.querySelectorAll('.payment-method');
+                methods.forEach(method => method.classList.remove('selected'));
+                element.classList.add('selected');
+            }
+        </script>
