@@ -125,12 +125,17 @@
         margin-top: 4vh
     }
 
+    .summary-product{
+        display: flex;
+        justify-content: space-between;
+    }
     .cart-line {
         margin-top: 1.25rem;
     }
 
-    .cart-form {
-        padding: 2vh 0;
+    .cart-shipping{
+        display: flex;
+        justify-content: space-between;
     }
 
     #code {
@@ -227,7 +232,7 @@
                                 <div class="col">
                                     <h4><b>Shopping Cart</b></h4>
                                 </div>
-                                <div class="col align-self-center text-right text-muted">
+                                <div class="col align-self-center">
                                     <%= cart.items.length %> items
                                 </div>
                             </div>
@@ -257,7 +262,6 @@
                                         <%= item.productPrice.toFixed(2) %>
                                     </div>
                                     <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                        <!-- <a href="/user/remove-item/<%= item.productId._id %>" class="text-danger"> -->
                                         <a href="#" class="text-danger delete-link" data-id="<%= item.productId._id %>">
                                             <i class="fas fa-trash fa-lg"></i>
                                         </a>
@@ -274,19 +278,45 @@
                         </div>
                         <hr class="cart-line">
                         <div class="row">
-                            <div class="col" style="padding-left:0;">ITEMS <%= cart.items.length %>
-                            </div>
-                            <div class="col text-right"><i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                                <%= cart.totalPrice.toFixed(2) %>
+                            <div class="col" style="padding-left:0;">
+                                <% cart.items.forEach((item, index)=> { %>
+                                    <div class="p-1 summary-product">
+                                        <div>
+                                            <%= item.productId.productName %>  x  <%= item.productId.length %>
+                                        </div>
+                                        <div>
+                                            <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
+                                            <%= item.productPrice.toFixed(2) %>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col text-right" style="display: flex; justify-content: end;"> -->
+                                        <!-- <i class="fa-solid fa-indian-rupee-sign product-text-row"></i> -->
+                                        <!-- <%= cart.totalPrice.toFixed(2) %> -->
+                                        <!-- <%= item.productPrice.toFixed(2) %> -->
+                                    <!-- </div> -->
+                                    <% }) %>
                             </div>
                         </div>
                         <form class="cart-form">
-                            <hr class="cart-line">
-                            <p>Apply Coupon</p> <input id="code" placeholder="Enter your code">
+                            <hr class="cart-line ">
+                            <h6 class="mb-3">Apply Coupon</h6>
+                            <input id="code" placeholder="Enter your code">
                         </form>
-                        <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                        <div>
+                            <hr class="cart-line mt-0">
+                            <h6>Delivery</h6>
+                            <div class="cart-shipping">
+                                <p class="mt-2">Shipping Charge</p>
+                                <p>
+                                    <i class="fa-solid fa-indian-rupee-sign product-text-row"></i> 50
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row " style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                             <div class="col">TOTAL PRICE</div>
-                            <div class="col text-right">&euro; <%= (cart.totalPrice + cart.shipping).toFixed(2) %>
+                            <div class="col text-right d-flex justify-content-end">
+                                <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
+                                <%= (cart.totalPrice + 50).toFixed(2) %>
                             </div>
                         </div>
                         <a href="/user/checkout" class="btn checkout">CHECKOUT</a>
@@ -336,4 +366,3 @@
                         });
                     });
                 </script>
-                

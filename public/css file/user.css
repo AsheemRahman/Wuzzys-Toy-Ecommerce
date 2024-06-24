@@ -180,7 +180,7 @@ body{
     color: #f55;
 }
 
-/*------------------------------- Line stylel ---------------------------------*/
+/*------------------------------- Line style ---------------------------------*/
 
 .home-line-div{
     display: flex;
@@ -191,5 +191,4 @@ body{
     border: 0;
     height: 3px;
     background: #ffffff;
-    /* margin-top: 4rem; */
 }
