@@ -192,6 +192,13 @@
                     <%= product.productDescription %>
                 </h4>
             </div>
+            <div class="product-description">
+                <% if (product.productQuantity === 0) { %>
+                    <h3 class="text-danger">Out of Stock</h3>
+                <% } else if (product.productQuantity > 10) { %>
+                    <h4 class="text-danger">Only <%= product.productQuantity %> left</h4>
+                <% } %>
+            </div>
             <div class="product-line">
                 <hr>
             </div>

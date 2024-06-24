@@ -143,17 +143,16 @@
                         <textarea class="form-control form-input" name="productDescription" id="productDescription" required><%= product.productDescription %></textarea>
                     </div>
 
-                    <div class="d-flex justify-content-center mt-3  ">
-
+                    <!-- <div class="d-flex justify-content-center mt-3  ">
                         <input type="file" name="image" id="image-upload" accept="image/png, image/jpeg" multiple
                             class="d-none">
                         <label for="image-upload" class="btn submit-btn">ChooseImages</label>
                         
-                    </div>
+                    </div> -->
 
-                    <div class="image-upload-preview" id="image-upload-preview">
+                    <div class="image-upload-preview " id="image-upload-preview">
                         <% product.productImage.forEach((img)=>{ %>
-                            <div class="product-image-box">
+                            <div class="product-image-box mt-5" style="width: 25%;">
                                 <img src="../../<%=img %>" alt="" class="preview-img ">
                             </div>
                             <% }) %>
@@ -165,8 +164,7 @@
 
         <div class="text-center mt-3">
             <a href="/admin/products" class="btn submit-btn-light">Cancel</a>
-            <button type="submit" class="btn submit-btn" name="" form="edit-product-form" id="submit-form">Add
-                Product</button>
+            <button type="submit" class="btn submit-btn" name="" form="edit-product-form" id="submit-form">Update Product</button>
         </div>
 
     </div>
