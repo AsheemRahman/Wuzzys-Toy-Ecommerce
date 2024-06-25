@@ -51,7 +51,7 @@ const addToCartPost = async (req, res) => {
         const productId = req.params.id;
         const userId = req.session.user;
         const productPrice = parseInt(req.query.price);
-        // const productQuantity = 1;
+        const productQuantity = 1;
         // Find the product from the collection
         const actualProductDetails = await productSchema.findById(productId);
         if (actualProductDetails.productQuantity <=0) {

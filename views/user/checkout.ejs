@@ -251,27 +251,69 @@
         background: transparent;
         color: #fefeeb;
     }
+
+    .checkout-button {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    /* add address modal */
+    .modal-content {
+        background-color: #232323;
+        color: #fefeeb;
+    }
+
+    .form-control,
+    .dataTable-input {
+        display: block;
+        width: 100%;
+        padding: 0.875rem 1.125rem;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1;
+        color: #69707a;
+        background-color: transparent;
+        background-clip: padding-box;
+        border: 1px solid #c5ccd6;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: 0.35rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    ::placeholder{
+        color: #fefeeb;
+    }
+
 </style>
 
 <%- include('navbar') %>
 
     <div class="container mt-5 mb-5 main-checkout">
         <div>
-            <form action="/user/checkout" method="post" id="check-out-form"></form>
             <!----------------------------- Shipping Address ------------------------------>
             <div class="shipping-address-container mb-4">
                 <div class="shipping-head">
                     <h2>Shipping Address</h2>
-                    <button class="add-address-btn">Add Address</button>
+                    <div class="pen-option text-right">
+                        <% if (userDetails.address.length < 3) { %>
+                            <a href="#" id="add-address-btn" data-bs-toggle="modal" data-bs-target="#addressModal"
+                                title="Add New Address" class="btn btn-danger">
+                                Add Address
+                            </a>
+                            <% } else { %>
+                                <span class="">Maximum 3 address</span>
+                                <% } %>
+                    </div>
                 </div>
                 <div class="address-cards">
                     <% if (!userDetails.address || userDetails.address.length===0) { %>
                         <p class="mt-5">No Address Found. Please add an Address.</p>
                         <% } else { %>
                             <% userDetails.address.forEach((address, index)=> { %>
-                                <div class="address-card" onclick="selectAddress(this)">
+                                <div class="address-card" onclick="selectAddress(this, '<%= index %>')">
                                     <div class="address-info">
-                                        <!-- <h3>Home</h3> -->
                                         <h3>
                                             <%= address.building %>,
                                         </h3>
@@ -285,21 +327,20 @@
                                             <%= address.pincode %>
                                         </p>
                                     </div>
-                                    <div class="address-options">
+                                    <!-- <div class="address-options">
                                         <button><i class="bi bi-pencil"></i></button>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <% }) %>
                                     <% } %>
                 </div>
             </div>
             <!----------------------------- billing info ------------------------------>
-            <div class="billing-info-container">
+            <!-- <div class="billing-info-container">
                 <div class="header">
                     <div class="icon">📄</div>
                     <div class="title">
                         <h2>Billing Info</h2>
-                        <!-- <p>Sed ut perspiciatis unde omnis iste</p> -->
                     </div>
                 </div>
                 <div>
@@ -342,17 +383,13 @@
                                     value="<%= user.address[0].street %>">
                             </div>
                         </div>
-
                     </div>
                     <div class="row">
-
                         <div class="mb-3">
                             <label class="form-label" for="billing-name">Land mark</label>
                             <input type="text" class="form-control" name="landmark" placeholder="Enter landmark"
                                 value="<%= user.address[0].landmark %>">
                         </div>
-
-
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
@@ -364,41 +401,39 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="mb-4 mb-lg-0">
-                                <label class="form-label" for="billing-city">Country</label>
-                                <input type="text" class="form-control" name="country" placeholder="Enter Country"
-                                    value="<%= user.address[0].country %>">
+                                <label class="form-label">State</label>
+                                <input type="text" class="form-control" name="state" placeholder="Enter state"
+                                    value="<%= user.address[0].state %>">
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div class="mb-0">
-                                <label class="form-label" for="zip-code">Pincode</label>
-                                <input type="text" class="form-control" name="pincode" placeholder="Enter Postal code"
+                            <div class="mb-4 mb-lg-0">
+                                <label class="form-label">Pincode</label>
+                                <input type="text" class="form-control" name="pincode" placeholder="Enter pincode"
                                     value="<%= user.address[0].pincode %>">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!---------------------------- payment option ------------------------------->
+            </div> -->
+            <!---------------------------- Payment Options ------------------------------->
             <div class="payment-methods mt-4">
                 <h2>Payment method :</h2>
                 <div class="payment-options">
-                    <div class="payment-method" onclick="selectPaymentMethod(this)">
-                        <i class="bi bi-credit-card" style="font-size: 2rem;"></i>
-                        <span>Debit Card</span>
+                    <div class="payment-method" onclick="selectPaymentMethod(this, 1)">
+                        <i class="bi bi-wallet-fill" style="font-size: 2rem;"></i>
+                        <span>Wallet</span>
                     </div>
-                    <div class="payment-method" onclick="selectPaymentMethod(this)">
+                    <div class="payment-method" onclick="selectPaymentMethod(this, 2)">
                         <i class="bi bi-paypal" style="font-size: 2rem;"></i>
                         <span>Razorpay</span>
                     </div>
-                    <div class="payment-method selected" onclick="selectPaymentMethod(this)">
+                    <div class="payment-method" onclick="selectPaymentMethod(this, 0)">
                         <i class="bi bi-cash" style="font-size: 2rem;"></i>
                         <span>Cash on Delivery</span>
                     </div>
                 </div>
             </div>
-            </form>
         </div>
 
         <!----------------------------- Order Summary ------------------------------>
@@ -413,42 +448,42 @@
                             <thead>
                                 <tr>
                                     <th>Product</th>
-                                    <th>Quantity</th>
+                                    <!-- <th>Product Desc</th> -->
                                     <th>Price</th>
+                                    <th>Discount</th>
+                                    <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <% let total=0; cartDetails.items.forEach((product, index)=> {
-                                    total += product.quantity * product.price %>
-                                    <tr class="order-tr">
-                                        <th>
-                                            <%= product.productId.productName %>
-                                        </th>
-                                        <th>
-                                            <%= product.productCount %>
-                                        </th>
-                                        <td><i class="bi bi-currency-rupee"></i>
-                                            <%= product.productPrice * product.productCount %>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
+                                <% if(cartDetails) { %>
+                                    <% cartDetails.items.forEach((product, index)=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= product.productId.productName %> <br />
+                                            </td>
+                                            <td>
+                                                <%= product.productPrice %>
+                                            </td>
+                                            <td>
+                                                <%= product.productDiscount %>
+                                            </td>
+                                            <td>
+                                                <%= product.productCount * product.productPrice -
+                                                    product.productDiscount %>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                            <% } %>
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th style="background: transparent; color: #fefeeb;">Total :</th>
-                                    <th style="background: transparent; color: #fefeeb;"></th>
-                                    <td style="background: transparent; color: #fefeeb;">
-                                        <i class="bi bi-currency-rupee"></i>
-                                        <%= total %>
-                                    </td>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                     <div class="mt-4">
-                        <div class="mt-3 text-center">
+                        <div class="mt-3 checkout-button">
                             <a href="/user/cart"><button class="btn submit-btn-light">Cancel</button></a>
-                            <button type="submit" class="btn submit-btn" form="checkout-form">Place Order</button>
+                            <form action="" method="post" id="place-order-form">
+                                <button type="submit" class="btn btn-danger" id="place-order-btn">Place
+                                    order</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -456,39 +491,121 @@
         </div>
     </div>
 
-    <%- include('footer') %>
 
-        <script>
-            // selecting item Option
-            function selectAddress(element) {
-                const cards = document.querySelectorAll('.address-card');
-                cards.forEach(card => {
-                    card.classList.remove('selected');
+    <!---------------------------------- Address adding modal box ---------------------------------------->
+
+    <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="/user/checkout-address">
+                        <div class="form-group mb-2">
+                            <label for="building">Flat, House no., Building, Company, Apartment</label>
+                            <input type="text" name="building" class="form-control" id="building"
+                                placeholder="Enter your address" required>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="street">Area, Street, Sector, Village</label>
+                            <input type="text" name="street" class="form-control" id="street"
+                                placeholder="Enter your Area" required>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="city">Town/City</label>
+                            <input type="text" name="city" class="form-control" id="city" placeholder="Enter your City"
+                                required>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="phonenumber">Phone Number</label>
+                                    <input type="text" name="phonenumber" class="form-control" id="phonenumber"
+                                        placeholder="Contact Number" required>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="pincode">Pincode</label>
+                                    <input type="text" name="pincode" class="form-control" id="pincode"
+                                        placeholder="Enter your Pincode" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="landmark">Land Mark</label>
+                            <input type="text" name="landmark" class="form-control" id="landmark"
+                                placeholder="Enter Nearest Landmark" required>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <input type="text" name="state" class="form-control" id="state"
+                                        placeholder="Enter your state" required>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="country">Country</label>
+                                    <input type="text" name="country" class="form-control" id="country"
+                                        placeholder="Enter your Country" required>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Save</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        let selectedAddressIndex = null;
+        let selectedPaymentMethod = null;
+
+        function selectAddress(element, index) {
+            const cards = document.querySelectorAll('.address-card');
+            cards.forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAddressIndex = index;
+        }
+
+        function selectPaymentMethod(element, method) {
+            const methods = document.querySelectorAll('.payment-method');
+            methods.forEach(method => method.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedPaymentMethod = method;
+        }
+
+        document.getElementById('place-order-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            if (selectedAddressIndex === null) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Please select a shipping address.",
+                    text: "Select One"
                 });
-                element.classList.add('selected');
+                return;
             }
-            function selectPaymentMethod(element) {
-                const methods = document.querySelectorAll('.payment-method');
-                methods.forEach(method => method.classList.remove('selected'));
-                element.classList.add('selected');
-            }
-
-            function changeAddress(address) {
-                address = JSON.parse(address);
-                let phonenumber = document.getElementsByName('phonenumber')[0]
-                let building = document.getElementsByName('building')[0]
-                let street = document.getElementsByName('street')[0]
-                let city = document.getElementsByName('city')[0]
-                let country = document.getElementsByName('country')[0]
-                let pincode = document.getElementsByName('pincode')[0]
-
-                phonenumber.value = address.phonenumber
-                building.value = address.building
-                street.value = address.street
-                city.value = address.city
-                country.value = address.country
-                pincode.value = address.pincode
-
+            if (selectedPaymentMethod === null) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Please select a payment method.",
+                    text: "Select One"
+                });
+                return;
             }
 
-        </script>
+            const orderPlacementForm = document.getElementById('place-order-form');
+            const URL = `/user/place-order/${selectedAddressIndex}/${selectedPaymentMethod}`;
+            orderPlacementForm.action = URL;
+            orderPlacementForm.submit();
+        });
+    </script>

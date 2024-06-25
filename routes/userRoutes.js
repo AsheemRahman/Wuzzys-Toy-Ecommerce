@@ -79,9 +79,6 @@ user.post('/update-address/:index',checkUser,profileController.updateAddress)
 user.get('/cart', checkUser , cartController.cart)
 user.get('/add-to-cart/:id', checkUser, cartController.addToCartPost)
 user.get('/remove-item/:id',checkUser,cartController.removeItem)
-// user.post('/cart/productIncrement',isUser,cartController.increment)
-// user.post('/cart/productDecrement',isUser,cartController.decrement)
-// routes.js
 user.post('/cart/productIncrement/:productId', isUser, cartController.increment);
 user.post('/cart/productDecrement/:productId', isUser, cartController.decrement);
 
@@ -90,6 +87,12 @@ user.post('/cart/productDecrement/:productId', isUser, cartController.decrement)
 //---------------------------------- checkout -----------------------
 
 user.get('/checkout', checkUser , checkoutController.checkout)
+user.post('/checkout-address',checkUser,checkoutController.addAddress)
+user.get('/conform-order',checkUser,checkoutController.orderpage)
+
+//---------------------------------- Order Place -----------------------
+
+user.post('/place-order/:address/:payment',checkUser,checkoutController.placeOrder)
 
 //------------------------- forgot password ---------------------------
 
