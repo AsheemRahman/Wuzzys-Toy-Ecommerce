@@ -3,8 +3,13 @@ const cartSchema = require('../../model/cartSchema')
 
 const { ObjectId } = require('mongodb');
 
+//------------------------------------ cart page -----------------------------------
 
 const cart = async (req, res) => {
+    if (!req.session.user) {
+        req.flash('error', "User is Not Found , Please Login Again"  )
+        return res.redirect('/user/login');
+    }
     try {
         const cart = await cartSchema.findOne({ userId: req.session.user }).populate('items.productId')
         var totalPrice = 0;
@@ -39,7 +44,7 @@ const cart = async (req, res) => {
     }
 }
 
-// add product to cart
+//------------------------------ add product to cart -----------------------------
 
 const addToCartPost = async (req, res) => {
     try {
@@ -114,9 +119,118 @@ const removeItem = async (req, res) => {
 };
 
 
+const increment = async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const productQuantity = req.body.quantity;
+
+        if (!productQuantity) {
+            return res.status(400).json({ error: "Product quantity not provided" });
+        }
+
+        const product = await productSchema.findById(productId);
+        if (!product) {
+            return res.status(404).json({ error: "Product not found" });
+        }
+
+        if (productQuantity >= product.productQuantity) {
+            return res.status(400).json({ error: "Insufficient product stock" });
+        }
+
+        const cart = await cartSchema.findOne({ userId: req.session.user }).populate('items.productId');
+        if (!cart) {
+            return res.status(404).json({ error: "Cart not found" });
+        }
+
+        const productCart = cart.items.find(item => item.productId.id === productId);
+        if (!productCart) {
+            return res.status(404).json({ error: "Product not in cart" });
+        }
+
+        productCart.productCount += 1;
+
+        let totalPrice = 0;
+        let totalPriceWithoutDiscount = 0;
+        cart.items.forEach(item => {
+            totalPriceWithoutDiscount += item.productId.productPrice * item.productCount;
+            totalPrice += item.productId.productDiscountPrice * item.productCount;
+        });
+
+        cart.payableAmount = Math.round(totalPrice);
+        cart.totalPrice = Math.round(totalPriceWithoutDiscount);
+        await cart.save();
+
+        const savings = totalPriceWithoutDiscount - totalPrice;
+        return res.status(200).json({
+            productCount: productCart.productCount,
+            productTotal: productCart.productCount * product.productDiscountPrice,
+            total: totalPrice,
+            subTotal: totalPriceWithoutDiscount,
+            savings: savings,
+        });
+    } catch (err) {
+        console.error(`Error incrementing product quantity: ${err}`);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+const decrement = async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const productQuantity = req.body.quantity;
+
+        if (!productQuantity) {
+            return res.status(400).json({ error: "Product quantity not provided" });
+        }
+
+        const cart = await cartSchema.findOne({ userId: req.session.user }).populate('items.productId');
+        if (!cart) {
+            return res.status(404).json({ error: "Cart not found" });
+        }
+
+        const productCart = cart.items.find(item => item.productId.id === productId);
+        if (!productCart) {
+            return res.status(404).json({ error: "Product not in cart" });
+        }
+
+        if (productCart.productCount <= 1) {
+            return res.status(400).json({ error: "Cannot decrement product quantity below 1" });
+        }
+
+        productCart.productCount -= 1;
+
+        let totalPrice = 0;
+        let totalPriceWithoutDiscount = 0;
+        cart.items.forEach(item => {
+            totalPriceWithoutDiscount += item.productId.productPrice * item.productCount;
+            totalPrice += item.productId.productDiscountPrice * item.productCount;
+        });
+
+        cart.payableAmount = Math.round(totalPrice);
+        cart.totalPrice = Math.round(totalPriceWithoutDiscount);
+        await cart.save();
+
+        const savings = totalPriceWithoutDiscount - totalPrice;
+        return res.status(200).json({
+            productCount: productCart.productCount,
+            productTotal: productCart.productCount * productCart.productId.productDiscountPrice,
+            total: totalPrice,
+            subTotal: totalPriceWithoutDiscount,
+            savings: savings,
+        });
+    } catch (err) {
+        console.error(`Error decrementing product quantity: ${err}`);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+
+
 
 module.exports = {
     cart,
     addToCartPost,
-    removeItem
+    removeItem,
+    increment,
+    decrement
 }

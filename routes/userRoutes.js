@@ -38,7 +38,7 @@ user.get('/auth/facebook/callback',userController.facebookAuthCallback)
 //----------------------------- signup -------------------------------
 
 user.get('/signup',userController.signup)
-user.post('/signup',userController.signgupPost)
+user.post('/signup',userController.signupPost)
 
 
 //--------------------------- otp verify ------------------------------
@@ -79,6 +79,12 @@ user.post('/update-address/:index',checkUser,profileController.updateAddress)
 user.get('/cart', checkUser , cartController.cart)
 user.get('/add-to-cart/:id', checkUser, cartController.addToCartPost)
 user.get('/remove-item/:id',checkUser,cartController.removeItem)
+// user.post('/cart/productIncrement',isUser,cartController.increment)
+// user.post('/cart/productDecrement',isUser,cartController.decrement)
+// routes.js
+user.post('/cart/productIncrement/:productId', isUser, cartController.increment);
+user.post('/cart/productDecrement/:productId', isUser, cartController.decrement);
+
 
 
 //---------------------------------- checkout -----------------------

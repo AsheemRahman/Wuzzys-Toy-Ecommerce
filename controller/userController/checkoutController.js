@@ -4,28 +4,35 @@ const userSchema = require('../../model/userSchema')
 const addressSchema = require('../../model/addressSchema')
 
 
-
-const checkout = async (req,res)=>{
-    try{
-        const userDetail = req.session.user
-
-        const user = await userSchema.findById(userDetail)
-        
-        const cartDetails = await cartSchema.findOne({ userId: req.session.user }).populate("items.productId");
-
-        // const address = await addressSchema.find({ userId: req.session.user }).populate('userId');
-        const userDetails = await userSchema.findById(req.session.user)
-
-        const Items = cartDetails.items;
-
-        if(Items.length === 0){
-            res.redirect('/user/cart')
-        }else{
-            res.render('user/checkOut',{title: 'Checkout', user , cartDetails , userDetails })
+const checkout = async (req, res) => {
+    try {
+        if (!req.session.user) {
+            return res.redirect('/login'); 
         }
-    }catch(err){
-        console.log(`Error while rendering the checkout page ${err}`)
+        const userId = req.session.user;
+        const user = await userSchema.findById(userId);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        const cartDetails = await cartSchema.findOne({ userId }).populate("items.productId");
+        if (!cartDetails) {
+            return res.status(404).send('Cart not found');
+        }
+        const items = cartDetails.items;
+        if (items.length === 0) {
+            return res.redirect('/user/cart');
+        }
+        res.render('user/checkOut', {
+            title: 'Checkout',
+            user,
+            cartDetails,
+            userDetails: user
+        });
+    } catch (err) {
+        console.error(`Error while rendering the checkout page: ${err}`);
+        res.status(500).send('An error occurred while processing your request');
     }
-}
+};
 
-module.exports = { checkout }
+module.exports = { checkout };
+

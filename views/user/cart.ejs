@@ -32,6 +32,16 @@
         padding: 1rem 0rem;
     }
 
+    .quantity button {
+        color: #fefeeb;
+        border: 1px solid #fefeeb;
+    }
+
+    .cart-price {
+        display: flex;
+        justify-content: center;
+    }
+
     @media(max-width:767px) {
         .card {
             margin: 3vh auto;
@@ -125,15 +135,16 @@
         margin-top: 4vh
     }
 
-    .summary-product{
+    .summary-product {
         display: flex;
         justify-content: space-between;
     }
+
     .cart-line {
         margin-top: 1.25rem;
     }
 
-    .cart-shipping{
+    .cart-shipping {
         display: flex;
         justify-content: space-between;
     }
@@ -178,12 +189,13 @@
         color: white;
         background: #232323;
     }
-    /*-------------- no item in the cart -----------------*/
-    .cart-empty{
+
+    .cart-empty {
         display: flex;
         justify-content: center;
     }
-    .empty-cart{
+
+    .empty-cart {
         margin: 2rem 0rem;
         max-width: 1400px;
         width: 90%;
@@ -195,7 +207,8 @@
         background-repeat: no-repeat;
         height: 500px;
     }
-    .empty-items{
+
+    .empty-items {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -203,13 +216,15 @@
         flex-direction: column;
         gap: 5rem;
     }
-    .empty-cart p{
+
+    .empty-cart p {
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 5.5rem !important;
     }
-    .empty-cart a{
+
+    .empty-cart a {
         width: 20%;
         height: 10%;
         display: flex;
@@ -218,9 +233,27 @@
         margin-bottom: 4rem;
         font-size: 1rem;
     }
+
+    .quantity-counter {
+        max-width: 100px;
+    }
+
+    .quantity-counter input {
+        width: 45px;
+    }
+
+    .item-count {
+        background: transparent;
+        color: #fefeeb;
+    }
+
+    .item-count:focus {
+        background: transparent;
+        color: #fefeeb;
+    }
 </style>
 
-<%-include ('navbar') %>
+<%- include('navbar') %>
 
     <% if (cart && cart.items.length> 0) { %>
         <div class="cart-card">
@@ -241,23 +274,26 @@
                             <div class="row border-top border-bottom">
                                 <div class="row cart-main align-items-center">
                                     <div class="col-2">
-                                        <img class="img-fluid cart-img" src="/<%= item.productId.productImage[0] %>">
+                                        <img class="img-fluid cart-img" src="/<%= item.productId.productImage[0] %>"
+                                            alt="<%= item.productId.productName %>">
                                     </div>
                                     <div class="col">
                                         <div class="row">
                                             <%= item.productId.productName %>
                                         </div>
                                         <div class="row cart-category">
-                                            Category :
-                                            <%= item.productId.productCollection %>
+                                            Category : <%= item.productId.productCollection %>
                                         </div>
                                     </div>
-                                    <div class="col cart-count">
-                                        <a href="#">-</a><a href="#" class="border">
-                                            <%= item.productCount %>
-                                        </a><a href="#">+</a>
+                                    <div class="d-inline-flex align-items-center quantity" style="width: 20%;">
+                                        <button class="btn minus1" onclick="decreaseQuantity('<%= item.productId._id %>', '<%= index %>')">-</button>
+                                        <input type="text" class="form-control text-center mx-2 item-count" min="1"
+                                            max="<%= item.productCount %>" id="quantity-count-<%= index %>"
+                                            name="quantityCount" value="<%= item.productCount %>" readonly>
+                                        <button class="btn add1" onclick="increaseQuantity('<%= item.productId._id %>', '<%= index %>')">+</button>
                                     </div>
-                                    <div class="col">
+                                    
+                                    <div class="col cart-price">
                                         <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
                                         <%= item.productPrice.toFixed(2) %>
                                     </div>
@@ -268,9 +304,11 @@
                                     </div>
                                 </div>
                             </div>
-                        <% }) %>
-                                <div class="back-to-shop"><a href="/user/home" class="back-shop">&leftarrow; <span
-                                            class="text-white">Back to shop</span></a></div>
+                            <% }) %>
+                                <div class="back-to-shop">
+                                    <a href="/user/home" class="back-shop">&leftarrow; <span class="text-white">Back to
+                                            shop</span></a>
+                                </div>
                     </div>
                     <div class="col-md-4 summary">
                         <div>
@@ -282,41 +320,48 @@
                                 <% cart.items.forEach((item, index)=> { %>
                                     <div class="p-1 summary-product">
                                         <div>
-                                            <%= item.productId.productName %>  x  <%= item.productId.length %>
+                                            <%= item.productId.productName %> x <%= item.productCount %>
                                         </div>
                                         <div>
                                             <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                                            <%= item.productPrice.toFixed(2) %>
+                                            <%= (item.productPrice*item.productCount).toFixed(2) %>
                                         </div>
                                     </div>
-                                    <!-- <div class="col text-right" style="display: flex; justify-content: end;"> -->
-                                        <!-- <i class="fa-solid fa-indian-rupee-sign product-text-row"></i> -->
-                                        <!-- <%= cart.totalPrice.toFixed(2) %> -->
-                                        <!-- <%= item.productPrice.toFixed(2) %> -->
-                                    <!-- </div> -->
                                     <% }) %>
                             </div>
                         </div>
                         <form class="cart-form">
-                            <hr class="cart-line ">
+                            <hr class="cart-line">
                             <h6 class="mb-3">Apply Coupon</h6>
                             <input id="code" placeholder="Enter your code">
                         </form>
+
                         <div>
                             <hr class="cart-line mt-0">
                             <h6>Delivery</h6>
                             <div class="cart-shipping">
+                                <% if ( cart.totalPrice > 1500 ) { %>
+                                <p class="mt-2">Shipping Charge</p>
+                                <p>
+                                    <i class="fa-solid fa-indian-rupee-sign product-text-row"></i> Free Shipping
+                                </p>
+                            <% } else { %>
                                 <p class="mt-2">Shipping Charge</p>
                                 <p>
                                     <i class="fa-solid fa-indian-rupee-sign product-text-row"></i> 50
                                 </p>
+                            <% } %>
                             </div>
                         </div>
-                        <div class="row " style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                        <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                             <div class="col">TOTAL PRICE</div>
                             <div class="col text-right d-flex justify-content-end">
                                 <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                                <%= (cart.totalPrice + 50).toFixed(2) %>
+                                <% if ( cart.totalPrice > 1500 ) { %>
+                                    <%= (cart.totalPrice).toFixed(2) %>
+                                <% } else { %>
+                                    <%= (cart.totalPrice + 50).toFixed(2) %>
+                                <% } %>
                             </div>
                         </div>
                         <a href="/user/checkout" class="btn checkout">CHECKOUT</a>
@@ -339,30 +384,90 @@
             </div>
             <% } %>
 
-                <%-include ('footer') %>
+                <%- include('footer') %>
 
+                    <script>
+                        document.addEventListener('DOMContentLoaded', (event) => {
+                            document.querySelectorAll('.delete-link').forEach((element) => {
+                                element.addEventListener('click', function (e) {
+                                    e.preventDefault();
+                                    const productId = this.getAttribute('data-id');
 
-                <script>
-                    document.addEventListener('DOMContentLoaded', (event) => {
-                        document.querySelectorAll('.delete-link').forEach((element) => {
-                            element.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                const productId = this.getAttribute('data-id');
-                                
-                                Swal.fire({
-                                    title: 'Are you sure?',
-                                    text: "Do you want to remove this item from the cart?",
-                                    icon: 'warning',
-                                    showCancelButton: true,
-                                    confirmButtonColor: '#3085d6',
-                                    cancelButtonColor: '#d33',
-                                    confirmButtonText: 'Yes, delete it!'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = '/user/remove-item/' + productId;
-                                    }
+                                    Swal.fire({
+                                        title: 'Are you sure?',
+                                        text: "Do you want to remove this item from the cart?",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Yes, delete it!'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = '/user/remove-item/' + productId;
+                                        }
+                                    });
                                 });
                             });
                         });
-                    });
-                </script>
+
+
+                        async function updateCartQuantity(productId, index, isIncrement) {
+                            const quantityInput = document.getElementById('quantity-count-' + index);
+                            const currentQuantity = parseInt(quantityInput.value);
+                            const newQuantity = isIncrement ? currentQuantity + 1 : currentQuantity - 1;
+
+                            if (newQuantity < 1 || newQuantity > 10) {
+                                Swal.fire({
+                                    icon: "info",
+                                    title: "Quantity must be between 1 and 10",
+                                });
+                                return;
+                            }
+
+                            const url = isIncrement ? `/cart/productIncrement` : `/cart/productDecrement`;
+                            const response = await fetch(url, {
+                                method: "POST",
+                                headers: {
+                                    "Content-type": "application/json"
+                                },
+                                body: JSON.stringify({ quantity: currentQuantity, productId })
+                            });
+
+                            if (response.ok) {
+                                const data = await response.json();
+                                if (data.productCount !== undefined) {
+                                    quantityInput.value = data.productCount;
+                                    updateSummary(data);
+                                } else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Failed to update product quantity",
+                                        text: data.error || "Unknown error",
+                                    });
+                                }
+                            } else {
+                                const errorData = await response.json();
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Failed to update product quantity",
+                                    text: errorData.error || "Unknown error",
+                                });
+                            }
+                        }
+
+                        function increaseQuantity(productId, index) {
+                            updateCartQuantity(productId, index, true);
+                        }
+
+                        function decreaseQuantity(productId, index) {
+                            updateCartQuantity(productId, index, false);
+                        }
+
+                        function updateSummary(data) {
+                            // Update summary details on the page
+                            document.getElementById('sub-total-price').textContent = data.subTotal.toLocaleString();
+                            document.getElementById('savings-price').textContent = data.savings.toLocaleString();
+                            document.getElementById('total-price-box').textContent = data.total.toLocaleString();
+                        }
+
+                    </script>

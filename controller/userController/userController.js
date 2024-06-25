@@ -34,7 +34,7 @@ const signup = (req, res) => {
 
 //---------------------------------- Getting Details of User ------------------------------
 
-const signgupPost = async (req, res) => {
+const signupPost = async (req, res) => {
   try {
     const details = {
       name: req.body.name,
@@ -268,7 +268,7 @@ const facebookAuthCallback = (req, res, next) => {
 module.exports = {
   user,
   signup,
-  signgupPost,
+  signupPost,
   verify,
   verifyPost,
   otpResend,

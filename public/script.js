@@ -37,7 +37,6 @@ async function addToCart(productId, price, user) {
             cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Redirect to login page
                 window.location.href = '/user/login';
             }
         });
@@ -46,7 +45,7 @@ async function addToCart(productId, price, user) {
         Swal.fire({
             icon: "warning",
             title: err.message,
-            text: "Cannot add product to cart"
+            text: "Available Soon"
         });
     }
 }

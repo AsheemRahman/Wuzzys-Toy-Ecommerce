@@ -95,6 +95,16 @@
 
     /* ----------------------------- billing info ------------------------------ */
 
+    .form-control {
+        background: transparent;
+        color: #fefeeb;
+    }
+
+    .form-control:focus {
+        background: transparent;
+        color: #fefeeb;
+    }
+
     .billing-info-container {
         background-color: #232323;
         padding: 20px;
@@ -247,6 +257,7 @@
 
     <div class="container mt-5 mb-5 main-checkout">
         <div>
+            <form action="/user/checkout" method="post" id="check-out-form"></form>
             <!----------------------------- Shipping Address ------------------------------>
             <div class="shipping-address-container mb-4">
                 <div class="shipping-head">
@@ -278,8 +289,8 @@
                                         <button><i class="bi bi-pencil"></i></button>
                                     </div>
                                 </div>
-                        <% }) %>
-                    <% } %>
+                                <% }) %>
+                                    <% } %>
                 </div>
             </div>
             <!----------------------------- billing info ------------------------------>
@@ -288,39 +299,85 @@
                     <div class="icon">📄</div>
                     <div class="title">
                         <h2>Billing Info</h2>
-                        <p>Sed ut perspiciatis unde omnis iste</p>
+                        <!-- <p>Sed ut perspiciatis unde omnis iste</p> -->
                     </div>
                 </div>
-                <form class="billing-form" id="billing-form">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" placeholder="Enter name">
+                <div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label class="form-label" for="billing-name">Name</label>
+                                <input type="text" class="form-control" name="customer_name" placeholder="Enter name"
+                                    value="<%=user.name %>">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label class="form-label" for="billing-email-address">Email Address</label>
+                                <input type="email" class="form-control" name="customer_emailid"
+                                    placeholder="Enter email" value="<%=user.email%>">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label class="form-label" for="billing-phone">Phone</label>
+                                <input type="text" class="form-control" name="phonenumber" placeholder="Enter Phone no."
+                                    value="<%= user.address[0].phonenumber %>">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" placeholder="Enter email">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label" for="billing-address">Flat , House no , Building</label>
+                                <input type="text" class="form-control" name="building" placeholder="Enter Address"
+                                    value="<%= user.address[0].building %>">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label" for="billing-email-address">Area , Street , Sector ,
+                                    Village</label>
+                                <input type="text" class="form-control" name="street" placeholder="Enter Area"
+                                    value="<%= user.address[0].street %>">
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="tel" id="phone" placeholder="Enter Phone no.">
+                    <div class="row">
+
+                        <div class="mb-3">
+                            <label class="form-label" for="billing-name">Land mark</label>
+                            <input type="text" class="form-control" name="landmark" placeholder="Enter landmark"
+                                value="<%= user.address[0].landmark %>">
+                        </div>
+
+
                     </div>
-                    <div class="form-group full-width">
-                        <label for="address">Address</label>
-                        <textarea id="address" placeholder="Enter full address"></textarea>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="mb-4 mb-lg-0">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-control" name="city" placeholder="Enter City"
+                                    value="<%=user.address[0].city %>">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-4 mb-lg-0">
+                                <label class="form-label" for="billing-city">Country</label>
+                                <input type="text" class="form-control" name="country" placeholder="Enter Country"
+                                    value="<%= user.address[0].country %>">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-0">
+                                <label class="form-label" for="zip-code">Pincode</label>
+                                <input type="text" class="form-control" name="pincode" placeholder="Enter Postal code"
+                                    value="<%= user.address[0].pincode %>">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="country">Country</label>
-                        <input type="text" id="country" placeholder="Country">
-                    </div>
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <input type="text" id="city" placeholder="Enter City">
-                    </div>
-                    <div class="form-group">
-                        <label for="zip">Zip / Postal code</label>
-                        <input type="text" id="zip" placeholder="Enter Postal code">
-                    </div>
-                </form>
+                </div>
             </div>
 
             <!---------------------------- payment option ------------------------------->
@@ -333,7 +390,7 @@
                     </div>
                     <div class="payment-method" onclick="selectPaymentMethod(this)">
                         <i class="bi bi-paypal" style="font-size: 2rem;"></i>
-                        <span>Paypal</span>
+                        <span>Razorpay</span>
                     </div>
                     <div class="payment-method selected" onclick="selectPaymentMethod(this)">
                         <i class="bi bi-cash" style="font-size: 2rem;"></i>
@@ -341,6 +398,7 @@
                     </div>
                 </div>
             </div>
+            </form>
         </div>
 
         <!----------------------------- Order Summary ------------------------------>
@@ -367,10 +425,10 @@
                                             <%= product.productId.productName %>
                                         </th>
                                         <th>
-                                            <%= product.quantity %>
+                                            <%= product.productCount %>
                                         </th>
                                         <td><i class="bi bi-currency-rupee"></i>
-                                            <%= product.productPrice * product.quantity %>
+                                            <%= product.productPrice * product.productCount %>
                                         </td>
                                     </tr>
                                     <% }) %>
@@ -414,4 +472,23 @@
                 methods.forEach(method => method.classList.remove('selected'));
                 element.classList.add('selected');
             }
+
+            function changeAddress(address) {
+                address = JSON.parse(address);
+                let phonenumber = document.getElementsByName('phonenumber')[0]
+                let building = document.getElementsByName('building')[0]
+                let street = document.getElementsByName('street')[0]
+                let city = document.getElementsByName('city')[0]
+                let country = document.getElementsByName('country')[0]
+                let pincode = document.getElementsByName('pincode')[0]
+
+                phonenumber.value = address.phonenumber
+                building.value = address.building
+                street.value = address.street
+                city.value = address.city
+                country.value = address.country
+                pincode.value = address.pincode
+
+            }
+
         </script>
