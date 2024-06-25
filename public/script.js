@@ -18,10 +18,8 @@ async function addToCart(productId, price, user) {
                 icon: "success",
                 title: data.message || "Product added to cart",
                 showConfirmButton: false,
-                timer: 700,
-            }).then(() => {
-                window.location.reload();
-            });
+                timer: 1200,
+            })
         } else {
             const errorData = await response.json();
             throw new Error(errorData.error || "Failed to add product to cart");
