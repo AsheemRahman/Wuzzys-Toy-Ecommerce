@@ -124,43 +124,34 @@ const increment = async (req, res) => {
     try {
         const productId = req.params.productId;
         const productQuantity = req.body.quantity;
-
         if (!productQuantity) {
             return res.status(400).json({ error: "Product quantity not provided" });
         }
-
         const product = await productSchema.findById(productId);
         if (!product) {
             return res.status(404).json({ error: "Product not found" });
         }
-
         if (productQuantity >= product.productQuantity) {
             return res.status(400).json({ error: "Insufficient product stock" });
         }
-
         const cart = await cartSchema.findOne({ userId: req.session.user }).populate('items.productId');
         if (!cart) {
             return res.status(404).json({ error: "Cart not found" });
         }
-
         const productCart = cart.items.find(item => item.productId.id === productId);
         if (!productCart) {
             return res.status(404).json({ error: "Product not in cart" });
         }
-
         productCart.productCount += 1;
-
         let totalPrice = 0;
         let totalPriceWithoutDiscount = 0;
         cart.items.forEach(item => {
             totalPriceWithoutDiscount += item.productId.productPrice * item.productCount;
             totalPrice += item.productId.productDiscountPrice * item.productCount;
         });
-
         cart.payableAmount = Math.round(totalPrice);
         cart.totalPrice = Math.round(totalPriceWithoutDiscount);
         await cart.save();
-
         const savings = totalPriceWithoutDiscount - totalPrice;
         return res.status(200).json({
             productCount: productCart.productCount,

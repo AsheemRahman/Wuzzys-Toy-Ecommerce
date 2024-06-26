@@ -36,15 +36,19 @@ const checkout = async (req, res) => {
     }
 };
 
-const orderpage = (req, res) => {
+
+//---------------------------------- Order Successfull page ------------
+
+const orderpage = async (req, res) => {
     try {
-        res.render('user/conform-order', { title: "Order confirmed" })
+        res.render('user/conform-order', { title: "Order conformed" })
     } catch (err) {
-        console.log(`Error on render in confirm order ${err}`);
+        console.log(`Error on render in conform order ${err}`);
     }
 }
 
-//--------------------------------- order place -----------------------------------
+
+//---------------------------------checkout order place -----------------------------------
 
 const placeOrder = async (req, res) => {
     try {
@@ -85,7 +89,7 @@ const placeOrder = async (req, res) => {
             totalPrice: cartItems.payableAmount,
             address: {
                 customer_name: userDetails.address[addressIndex].contactName,
-                customer_emailid: userDetails.email,
+                customer_email: userDetails.email,
                 building: userDetails.address[addressIndex].homeAddress,
                 street: userDetails.address[addressIndex].areaAddress,
                 city: userDetails.address[addressIndex].city,

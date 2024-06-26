@@ -2,7 +2,8 @@
     .main-checkout {
         color: #fefeeb;
         display: flex;
-        gap: 2rem;
+        gap: 5rem;
+        justify-content: center;
     }
 
     /* ----------------------------- Shipping Address ------------------------------ */
@@ -420,6 +421,10 @@
             <div class="payment-methods mt-4">
                 <h2>Payment method :</h2>
                 <div class="payment-options">
+                    <div class="payment-method" onclick="selectPaymentMethod(this, 0)">
+                        <i class="bi bi-cash" style="font-size: 2rem;"></i>
+                        <span>Cash on Delivery</span>
+                    </div>
                     <div class="payment-method" onclick="selectPaymentMethod(this, 1)">
                         <i class="bi bi-wallet-fill" style="font-size: 2rem;"></i>
                         <span>Wallet</span>
@@ -427,10 +432,6 @@
                     <div class="payment-method" onclick="selectPaymentMethod(this, 2)">
                         <i class="bi bi-paypal" style="font-size: 2rem;"></i>
                         <span>Razorpay</span>
-                    </div>
-                    <div class="payment-method" onclick="selectPaymentMethod(this, 0)">
-                        <i class="bi bi-cash" style="font-size: 2rem;"></i>
-                        <span>Cash on Delivery</span>
                     </div>
                 </div>
             </div>
@@ -448,9 +449,8 @@
                             <thead>
                                 <tr>
                                     <th>Product</th>
-                                    <!-- <th>Product Desc</th> -->
                                     <th>Price</th>
-                                    <th>Discount</th>
+                                    <!-- <th>Discount</th> -->
                                     <th>Total</th>
                                 </tr>
                             </thead>
@@ -459,30 +459,36 @@
                                     <% cartDetails.items.forEach((product, index)=> { %>
                                         <tr>
                                             <td>
-                                                <%= product.productId.productName %> <br />
+                                                <%= product.productId.productName %>  x  <%= product.productCount %>
                                             </td>
                                             <td>
                                                 <%= product.productPrice %>
                                             </td>
-                                            <td>
+                                            <!-- <td>
                                                 <%= product.productDiscount %>
-                                            </td>
+                                            </td> -->
                                             <td>
-                                                <%= product.productCount * product.productPrice -
-                                                    product.productDiscount %>
+                                                <%=product.productPrice  * product.productCount %>
                                             </td>
                                         </tr>
-                                        <% }) %>
-                                            <% } %>
+                                    <% }) %>
+                                <% } %>
                             </tbody>
+                            <thead>
+                                
+                                <tr>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th><%= cartDetails.totalPrice %></th>
+                                </tr>
+                            </thead>
                         </table>
                     </div>
                     <div class="mt-4">
                         <div class="mt-3 checkout-button">
                             <a href="/user/cart"><button class="btn submit-btn-light">Cancel</button></a>
                             <form action="" method="post" id="place-order-form">
-                                <button type="submit" class="btn btn-danger" id="place-order-btn">Place
-                                    order</button>
+                                <button type="submit" class="btn btn-danger" id="place-order-btn">Place order</button>
                             </form>
                         </div>
                     </div>
@@ -582,8 +588,23 @@
             methods.forEach(method => method.classList.remove('selected'));
             element.classList.add('selected');
             selectedPaymentMethod = method;
+            if (method === 1 || method === 2) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Unavailable',
+                    text: 'This payment method is currently unavailable. Please choose another method.',
+                });
+            }
         }
-
+        // function selectPaymentMethod(element, method) {
+        //     if (method === 1 || method === 2) {
+        //         Swal.fire({
+        //             icon: 'info',
+        //             title: 'Unavailable',
+        //             text: 'This payment method is currently unavailable. Please choose another method.',
+        //         });
+        //     }
+        // }
         document.getElementById('place-order-btn').addEventListener('click', (e) => {
             e.preventDefault();
             if (selectedAddressIndex === null) {
@@ -602,7 +623,7 @@
                 });
                 return;
             }
-
+            
             const orderPlacementForm = document.getElementById('place-order-form');
             const URL = `/user/place-order/${selectedAddressIndex}/${selectedPaymentMethod}`;
             orderPlacementForm.action = URL;

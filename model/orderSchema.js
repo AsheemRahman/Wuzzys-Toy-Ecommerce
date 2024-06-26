@@ -41,7 +41,7 @@ const schema = new mongoose.Schema({
     },
     address: {
         customer_name: String,
-        customer_emailid: String,
+        customer_email: String,
         building: String,
         street: String,
         city: String,
