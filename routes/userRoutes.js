@@ -9,6 +9,7 @@ const productController = require('../controller/userController/productControlle
 const profileController = require('../controller/userController/profileController')
 const cartController = require('../controller/userController/cartController')
 const checkoutController = require('../controller/userController/checkoutController')
+const orderController = require('../controller/userController/orderController')
 const forgotPassword = require('../controller/userController/forgotPassword')
 
 //------------------------------- main -------------------------------
@@ -89,10 +90,13 @@ user.post('/cart/productDecrement/:productId', isUser, cartController.decrement)
 user.get('/checkout', checkUser , checkoutController.checkout)
 user.post('/checkout-address',checkUser,checkoutController.addAddress)
 user.get('/conform-order',checkUser,checkoutController.orderPage)
-
-//---------------------------------- Order Place -----------------------
-
 user.post('/place-order/:address/:payment',checkUser,checkoutController.placeOrder)
+
+//---------------------------------- Order  -----------------------
+user.get('/orders', checkUser , orderController.orderPage)
+// user.get('/cancelled-orders',checkUserSession,orderController.cancelledOrder)
+// user.post('/cancel-order/:orderID',checkUserSession,orderController.cancelledOrderPost)
+
 
 //------------------------- forgot password ---------------------------
 

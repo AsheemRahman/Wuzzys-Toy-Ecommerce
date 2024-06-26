@@ -193,17 +193,17 @@
         <% if (user) { %>
             <span class="nav-link-items user-login-icon" onclick="toggleSidebar()"><i
                     class="fa-solid fa-user"></i></span>
-            <div class="sidebar" id="sidebar">
-                <ul>
-                    <li id="go-back-home" onclick="toggleSidebar()"><span><i class="fa-solid fa-angles-left"></i> Go
-                            back</span></li>
-                    <li><a href="/user/profile"><i class="fa-solid fa-user"></i> Profile</a></li>
-                    <li><a href="#"><i class="fa-solid fa-box-open"></i> Orders</a></li>
-                    <li><a href="#"><i class="fa-solid fa-trash-can"></i> Canceled Orders</a></li>
-                    <li><a href="/user/forgotpassword"><i class="fa-solid fa-lock"></i> Reset Password</a></li>
-                    <li><a href="/user/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
-                </ul>
-            </div>
+                    <div class="sidebar" id="sidebar">
+                        <ul>
+                            <li id="go-back-home" onclick="toggleSidebar()"><span><i class="fas fa-chevron-left"></i> Go Back</span></li>
+                            <li><a href="/user/profile"><i class="fas fa-user-circle"></i> View Profile</a></li>
+                            <li><a href="/user/orders"><i class="fas fa-list-alt"></i> My Orders</a></li>
+                            <li><a href="#"><i class="fas fa-ban"></i> Cancelled Orders</a></li>
+                            <li><a href="/user/forgotpassword"><i class="fas fa-key"></i> Reset Password</a></li>
+                            <li><a href="/user/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a></li>
+                        </ul>
+                    </div>
+                    
             <% } else { %>
                 <a href="/user/login" class="btn btn-outline-secondary user-login-btn">Login</a>
                 <% } %>

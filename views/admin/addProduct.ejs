@@ -223,8 +223,8 @@
             errorMessage = 'Product Discount should be a number and must be between 0 and 100.';
             isValid = false;
         }
-        if (productDescription.value.length <= 10 || productDescription.value.length > 100 || productDescription.value.trim() === "") {
-            errorMessage = 'Product description must be between 10 to 100 words.';
+        if (productDescription.value.length <= 10 || productDescription.value.length > 300 || productDescription.value.trim() === "") {
+            errorMessage = 'Product description must be between 10 to 300 words.';
             isValid = false;
         }
         if (!isValid) {
