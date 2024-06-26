@@ -88,7 +88,7 @@ user.post('/cart/productDecrement/:productId', isUser, cartController.decrement)
 
 user.get('/checkout', checkUser , checkoutController.checkout)
 user.post('/checkout-address',checkUser,checkoutController.addAddress)
-user.get('/conform-order',checkUser,checkoutController.orderpage)
+user.get('/conform-order',checkUser,checkoutController.orderPage)
 
 //---------------------------------- Order Place -----------------------
 

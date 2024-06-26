@@ -16,7 +16,7 @@ const collection = async (req, res) => {
 
         const count = await categorySchema.countDocuments({ collectionName: { $regex: search, $options: 'i' } })
 
-        res.render('admin/collection', { title: 'Collection',
+        res.render('admin/collection', { title: 'Category',
             collection ,
             totalPages: Math.ceil(count / limit),
             currentPage: page,

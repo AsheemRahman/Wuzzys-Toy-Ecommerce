@@ -9,6 +9,7 @@ const mongoose = require('mongoose')
 const checkout = async (req, res) => {
     try {
         if (!req.session.user) {
+            req.flash('error',"user is not Found , Login Again")
             return res.redirect('/user/login');
         }
         const userId = req.session.user;
@@ -37,15 +38,6 @@ const checkout = async (req, res) => {
 };
 
 
-//---------------------------------- Order Successfull page ------------
-
-const orderpage = async (req, res) => {
-    try {
-        res.render('user/conform-order', { title: "Order conformed" })
-    } catch (err) {
-        console.log(`Error on render in conform order ${err}`);
-    }
-}
 
 
 //---------------------------------checkout order place -----------------------------------
@@ -153,5 +145,25 @@ const addAddress = async (req, res) => {
     }
 }
 
-module.exports = { checkout , placeOrder ,addAddress , orderpage };
+
+//---------------------------------- Order Successfull page ------------
+
+const orderPage = async (req, res) => {
+    try {
+        const userId = req.session.user;
+        const user = await userSchema.findById(userId);
+
+        const orders = await orderSchema.findOne({ customer_id: user._id }).sort({createdAt : -1}).limit(1)
+
+        res.render('user/conform-order', { title: "Order conformed", orders: orders });
+    } catch (err) {
+        console.log(`Error on render in conform order ${err}`);
+        req.flash('success',"user is not found , please Login again")
+        res.redirect("/user/login")
+    }
+}
+
+
+
+module.exports = { checkout , placeOrder ,addAddress , orderPage };
 

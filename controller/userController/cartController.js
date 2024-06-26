@@ -52,19 +52,19 @@ const addToCartPost = async (req, res) => {
         if (actualProductDetails.productQuantity <=0) {
             return res.status(404).json({ error: "Product is out of stock" })
         }
-        const checkUserCart = await cartSchema.findOne({ userId: req.session.user }).populate('items.productId');
-        if (checkUserCart) {
+        const checkCart = await cartSchema.findOne({ userId: req.session.user }).populate('items.productId');
+        if (checkCart) {
             let productExist = false;
-            checkUserCart.items.forEach((ele) => {
+            checkCart.items.forEach((ele) => {
                 if (ele.productId.id === productId) {
                     productExist = true;
                     return res.status(404).json({ error: "Product is already in the cart" })
                 }
             });
             if (!productExist) {
-                checkUserCart.items.push({ productId: actualProductDetails._id, productCount: 1, productPrice: productPrice });
+                checkCart.items.push({ productId: actualProductDetails._id, productCount: 1, productPrice: productPrice });
             }
-            await checkUserCart.save();
+            await checkCart.save();
         }
         else {
             const newCart = new cartSchema({
@@ -116,36 +116,44 @@ const removeItem = async (req, res) => {
 const increment = async (req, res) => {
     try {
         const productId = req.params.productId;
-        const productQuantity = req.body.quantity;
-        if (!productQuantity) {
-            return res.status(400).json({ error: "Product quantity not provided" });
-        }
+        const productQuantity = parseInt(req.body.quantity, 10);
+
         const product = await productSchema.findById(productId);
         if (!product) {
             return res.status(404).json({ error: "Product not found" });
         }
+
         if (productQuantity >= product.productQuantity) {
             return res.status(400).json({ error: "Insufficient product stock" });
         }
+
         const cart = await cartSchema.findOne({ userId: req.session.user }).populate('items.productId');
         if (!cart) {
             return res.status(404).json({ error: "Cart not found" });
         }
+
         const productCart = cart.items.find(item => item.productId.id === productId);
         if (!productCart) {
             return res.status(404).json({ error: "Product not in cart" });
         }
+
         productCart.productCount += 1;
+
         let totalPrice = 0;
         let totalPriceWithoutDiscount = 0;
+
         cart.items.forEach(item => {
             totalPriceWithoutDiscount += item.productId.productPrice * item.productCount;
             totalPrice += item.productId.productDiscountPrice * item.productCount;
         });
+
         cart.payableAmount = Math.round(totalPrice);
         cart.totalPrice = Math.round(totalPriceWithoutDiscount);
+
         await cart.save();
+
         const savings = totalPriceWithoutDiscount - totalPrice;
+
         return res.status(200).json({
             productCount: productCart.productCount,
             productTotal: productCart.productCount * product.productDiscountPrice,
@@ -158,6 +166,8 @@ const increment = async (req, res) => {
         return res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+
 
 const decrement = async (req, res) => {
     try {

@@ -337,7 +337,7 @@
                 </div>
             </div>
             <!----------------------------- billing info ------------------------------>
-            <!-- <div class="billing-info-container">
+            <div class="billing-info-container">
                 <div class="header">
                     <div class="icon">📄</div>
                     <div class="title">
@@ -356,7 +356,7 @@
                         <div class="col-lg-4">
                             <div class="mb-3">
                                 <label class="form-label" for="billing-email-address">Email Address</label>
-                                <input type="email" class="form-control" name="customer_emailid"
+                                <input type="email" class="form-control" name="customer_email"
                                     placeholder="Enter email" value="<%=user.email%>">
                             </div>
                         </div>
@@ -364,16 +364,16 @@
                             <div class="mb-3">
                                 <label class="form-label" for="billing-phone">Phone</label>
                                 <input type="text" class="form-control" name="phonenumber" placeholder="Enter Phone no."
-                                    value="<%= user.address[0].phonenumber %>">
+                                    value="<%=user.phone%>">
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label" for="billing-address">Flat , House no , Building</label>
                                 <input type="text" class="form-control" name="building" placeholder="Enter Address"
-                                    value="<%= user.address[0].building %>">
+                                    value="">
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -381,42 +381,42 @@
                                 <label class="form-label" for="billing-email-address">Area , Street , Sector ,
                                     Village</label>
                                 <input type="text" class="form-control" name="street" placeholder="Enter Area"
-                                    value="<%= user.address[0].street %>">
+                                    value="">
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                    </div> -->
+                    <!-- <div class="row">
                         <div class="mb-3">
                             <label class="form-label" for="billing-name">Land mark</label>
                             <input type="text" class="form-control" name="landmark" placeholder="Enter landmark"
-                                value="<%= user.address[0].landmark %>">
+                                value="">
                         </div>
-                    </div>
-                    <div class="row">
+                    </div> -->
+                    <!-- <div class="row">
                         <div class="col-lg-4">
                             <div class="mb-4 mb-lg-0">
                                 <label class="form-label">City</label>
                                 <input type="text" class="form-control" name="city" placeholder="Enter City"
-                                    value="<%=user.address[0].city %>">
+                                    value="">
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="mb-4 mb-lg-0">
                                 <label class="form-label">State</label>
                                 <input type="text" class="form-control" name="state" placeholder="Enter state"
-                                    value="<%= user.address[0].state %>">
+                                    value="">
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="mb-4 mb-lg-0">
                                 <label class="form-label">Pincode</label>
                                 <input type="text" class="form-control" name="pincode" placeholder="Enter pincode"
-                                    value="<%= user.address[0].pincode %>">
+                                    value="">
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
-            </div> -->
+            </div>
             <!---------------------------- Payment Options ------------------------------->
             <div class="payment-methods mt-4">
                 <h2>Payment method :</h2>
@@ -450,7 +450,7 @@
                                 <tr>
                                     <th>Product</th>
                                     <th>Price</th>
-                                    <!-- <th>Discount</th> -->
+                                    <th>Discount</th>
                                     <th>Total</th>
                                 </tr>
                             </thead>
@@ -462,13 +462,13 @@
                                                 <%= product.productId.productName %>  x  <%= product.productCount %>
                                             </td>
                                             <td>
-                                                <%= product.productPrice %>
+                                                <%= product.productPrice  %>
                                             </td>
-                                            <!-- <td>
-                                                <%= product.productDiscount %>
-                                            </td> -->
                                             <td>
-                                                <%=product.productPrice  * product.productCount %>
+                                                <%= product.productId.productDiscount %>
+                                            </td>
+                                            <td>
+                                                <%= product.productPrice - product.productPrice * (product.productId.productDiscount / 100) %>
                                             </td>
                                         </tr>
                                     <% }) %>
@@ -479,7 +479,8 @@
                                 <tr>
                                     <th>Total</th>
                                     <th></th>
-                                    <th><%= cartDetails.totalPrice %></th>
+                                    <th></th>
+                                    <th><%= cartDetails.payableAmount %></th>
                                 </tr>
                             </thead>
                         </table>
