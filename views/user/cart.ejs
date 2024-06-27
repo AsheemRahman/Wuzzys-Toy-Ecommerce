@@ -166,30 +166,6 @@
         color: transparent;
     }
 
-    .checkout {
-        background-color: #000;
-        color: #fefeeb;
-        width: 100%;
-        font-size: 0.7rem;
-        margin-top: 4vh;
-        padding: 1vh;
-        border-radius: 5px;
-    }
-
-    .checkout:focus {
-        box-shadow: none;
-        outline: none;
-        box-shadow: none;
-        color: white;
-        -webkit-box-shadow: none;
-        transition: none;
-    }
-
-    .checkout:hover {
-        color: white;
-        background: #232323;
-    }
-
     .cart-empty {
         display: flex;
         justify-content: center;
@@ -201,10 +177,7 @@
         width: 90%;
         border-radius: 1rem;
         border: transparent;
-        background: url("/public/assets/Empty-cart.jpg");
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
+        background: #232323;
         height: 500px;
     }
 
@@ -214,23 +187,31 @@
         align-items: center;
         height: 100%;
         flex-direction: column;
-        gap: 5rem;
+        gap: 1rem;
+    }
+    .empty-items img{
+        max-width: 200px;
+        border-radius: 10px;
+    }
+
+    .empty-items h2{
+        color: #fefeeb;
     }
 
     .empty-cart p {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 5.5rem !important;
+        color: #fefeeb;
+        margin: 0;
     }
 
-    .empty-cart a {
-        width: 20%;
-        height: 10%;
+    .checkout{
+        width: 13%;
+        height: 8%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 4rem;
         font-size: 1rem;
     }
 
@@ -250,6 +231,10 @@
     .item-count:focus {
         background: transparent;
         color: #fefeeb;
+    }
+    .empty-p{
+        text-decoration: none;
+        margin:0rem .7rem;
     }
 </style>
 
@@ -329,8 +314,7 @@
                                         </div>
                                         <div>
                                             <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                                            <%= item.productPrice - item.productPrice * (item.productId.productDiscount
-                                                / 100) %>
+                                            <%= item.productPrice - item.productPrice * (item.productId.productDiscount / 100) %>
                                         </div>
                                     </div>
                                     <% }) %>
@@ -345,7 +329,7 @@
                             <hr class="cart-line mt-0">
                             <h6>Delivery</h6>
                             <div class="cart-shipping">
-                                <% if ( cart.totalPrice> 1500 ) { %>
+                                <% if ( cart.totalPrice > 1000 ) { %>
                                     <p class="mt-2">Shipping Charge</p>
                                     <p>
                                         <i class="fa-solid fa-indian-rupee-sign product-text-row"></i> Free Shipping
@@ -362,7 +346,7 @@
                             <div class="col">TOTAL PRICE</div>
                             <div class="col text-right d-flex justify-content-end">
                                 <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                                <% if ( cart.totalPrice> 1500 ) { %>
+                                <% if ( cart.totalPrice > 1000 ) { %>
                                     <%= (cart.payableAmount).toFixed(2) %>
                                         <% } else { %>
                                             <%= (cart.payableAmount + 50).toFixed(2) %>
@@ -378,11 +362,24 @@
             <div class="cart-empty">
                 <div class="empty-cart">
                     <div class="empty-items">
-                        <p class="fw-bold">
-                            Your Cart is Empty
+                        <img src="/public/assets/empty-cart-image.webp">
+                        <h2 class="fw-bold">
+                            Your cart is empty!
+                        </h2>
+                        <!-- <p>
+                            Add items to it now.
+                        </p> -->
+                        <p>
+                            Your Shopping Cart lives to serve. Give it purpose , Fill it with Toys,
+                        </p>
+                        <p>
+                            Continue shopping on then   <a href="/user/home" class="empty-p">wuzzy's homepage  </a> ,
+                        </p>
+                        <p>
+                            learn about today's deals, or visit your <a href="/user/view-more" class="empty-p">New Arivals </a> ,
                         </p>
                         <a href="/user/home" class="btn btn-primary checkout">
-                            <i class="bi bi-arrow-left-circle" style="margin-right: 2rem;"></i>Continue Shopping
+                            <i class="bi bi-arrow-left-circle" style="margin-right: 2rem;"></i>Shop Now
                         </a>
                     </div>
                 </div>

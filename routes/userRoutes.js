@@ -94,8 +94,8 @@ user.post('/place-order/:address/:payment',checkUser,checkoutController.placeOrd
 
 //---------------------------------- Order  -----------------------
 user.get('/orders', checkUser , orderController.orderPage)
+// user.post('/cancelorder/:id',checkUser,orderController.cancelOrder)
 // user.get('/cancelled-orders',checkUserSession,orderController.cancelledOrder)
-// user.post('/cancel-order/:orderID',checkUserSession,orderController.cancelledOrderPost)
 
 
 //------------------------- forgot password ---------------------------

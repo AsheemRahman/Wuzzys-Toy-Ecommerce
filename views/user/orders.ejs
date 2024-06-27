@@ -1,9 +1,4 @@
 <style>
-    .no-order-prompt {
-        color: #fefeeb;
-        font-family: monospace;
-    }
-
     .avatar-lg {
         height: 5rem;
         width: 5rem;
@@ -28,9 +23,9 @@
     }
 
     .card {
-        margin-bottom: 24px;
-        -webkit-box-shadow: 0 2px 3px #e4e8f0;
-        box-shadow: 0 2px 3px #e4e8f0;
+        margin-bottom: 3rem;
+        /* -webkit-box-shadow: 0 2px 3px #e4e8f0; */
+        /* box-shadow: 0 2px 3px #e4e8f0; */
     }
 
     .card {
@@ -66,12 +61,55 @@
     .add-review-button {
         cursor: pointer;
     }
-    .order-place{
+
+    .order-place {
         width: 50%;
         display: flex;
         align-items: center;
         justify-content: space-around;
     }
+
+    .no-orders {
+        width: 50%;
+        height: 20rem;
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+        justify-content: center;
+        align-items: center;
+        background: #232323;
+        border-radius: 10px;
+    }
+
+    .nothing {
+        color: #fefeeb;
+        font-family: monospace;
+    }
+
+    .order-div {
+        display: flex;
+        justify-content: center;
+        min-height: 500px;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: #232323;
+        color: #fefeeb;
+    }
+
+    .form-control {
+        background: transparent;
+        color: #fefeeb;
+    }
+
+    .form-control:focus {
+        background: transparent;
+        color: #fefeeb;
+        outline: none;
+        box-shadow: none;
+    }
+
 </style>
 
 
@@ -79,7 +117,7 @@
 <%- include('navbar') %>
 
     <div class="container mt-5">
-        <div class="row">
+        <div class="row order-div">
             <div class="">
                 <% if(orderDetails.length !=0) { %>
                     <% orderDetails.forEach((item, index)=> { %>
@@ -89,16 +127,14 @@
                                     <% item.products.forEach((product, index)=> { %>
                                         <div class="d-flex align-items-start">
                                             <div class="me-4">
-                                                <img src="../../<%= product.product_image%>"
-                                                    class="avatar-lg rounded">
+                                                <img src="../../<%= product.product_image%>" class="avatar-lg rounded">
                                             </div>
                                             <div class="flex-grow-1 align-self-center overflow-hidden">
                                                 <div class="order-place">
                                                     <h5 class=" font-size-18">
-                                                        <a href="/user/productDetail/<%= product._id %>"
-                                                            class="product-link text-white">
-                                                            <%= product.product_name %>
-                                                        </a>
+                                                        <!-- <a href="/user/productDetail/<%= product.id %>" class="text-white"> -->
+                                                        <%= product.product_name %>
+                                                            <!-- </a> -->
                                                     </h5>
                                                     <p class="mb-0 mt-1">Quantity: <b>
                                                             <%= product.product_quantity %>
@@ -123,7 +159,7 @@
                                                     <div class="col-md-4">
                                                         <div class="mt-3">
                                                             <p class="mb-2">Order ID</p>
-                                                            <h6 class="mb-0 mt-2"><span >
+                                                            <h6 class="mb-0 mt-2"><span>
                                                                     <%= item.order_id %>
                                                                 </span></h6>
                                                         </div>
@@ -131,7 +167,7 @@
                                                     <div class="col-md-3">
                                                         <div class="mt-3">
                                                             <p class="mb-2">Order Status</p>
-                                                            <h6 class="mb-0 mt-2"><span >
+                                                            <h6 class="mb-0 mt-2"><span>
                                                                     <%= item.orderStatus %>
                                                                 </span></h6>
                                                         </div>
@@ -153,9 +189,11 @@
                                                             order</button>
                                                         <% } else if(item.orderStatus==='Shipping' ||
                                                             item.orderStatus==='Confirmed' ) { %>
-                                                            <button class="btn btn-danger btn-sm"
-                                                                onclick="cancelOrder('<%= item._id %>')">Cancel
-                                                                order</button>
+                                                            <h5><a class="btn btn-danger" id="cancelOrder"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#cancelOrderModal"
+                                                                    data-id="<%= item._id %>">Cancel Order</a>
+                                                            </h5>
                                                             <% } %>
                                                 </h6>
                                             </div>
@@ -175,11 +213,7 @@
                                                             <%= product.productid.productName %>
                                                         </h5>
                                                         <h5 class="text-truncate font-size-18">
-                                                            <a href="/user/product-view/<%= product.productid._id %>"
-                                                                class="text-dark"
-                                                                title="<%= product.productid.productName %>">
-                                                                <%= product.productid.productName %>
-                                                            </a>
+                                                            <%= product.productid.productName %>
                                                         </h5>
                                                         <p class="mb-0 mt-1">Quantity: <b>
                                                                 <%= product.productQuantity %>
@@ -192,13 +226,44 @@
                                             <% }) %>
                                     </div>
                                 </div>
-                        <% } %>
-                    <% }) %>
-                <% } else { %>
-                <div class="row text-center">
-                    <h2 class="no-order-prompt">No orders available yet</h2>
+                                <% } %>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <div class="row d-flex justify-content-center">
+                                                <div class="no-orders">
+                                                    <h2 class="nothing">You have no orders</h2>
+                                                    <a href="/user/home" class="btn btn-danger d-flex">Shop Now</a>
+                                                </div>
+                                            </div>
+                                            <% } %>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!---------------------- modal for cancel order ----------------------------->
+
+    <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelOrderModalLabel">Cancel Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <% } %>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="cancelReason" class="form-label">Reason for Cancellation</label>
+                            <textarea class="form-control" id="cancelReason" rows="3" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a class="btn submit-btn" id="submitCancelOrder">Cancel</a>
+                </div>
             </div>
         </div>
     </div>
