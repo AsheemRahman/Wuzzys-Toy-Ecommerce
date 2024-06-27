@@ -35,34 +35,53 @@ const orderPage = async (req, res) => {
 };
 
 
-const cancelOrder = async(req,res)=>{
-    try{
-        const user = req.session.user
-        const orderId = rq.params.id
+const cancelOrder = async (req, res) => {
+    try {
+        console.log("Cancel order route hit");
 
-        console.log(user)
-        console.log(orderId)
+        const user = req.session.user;
+        const orderId = req.params.id;
 
-        const order  = await orderSchema.findByIdAndUpdate(orderId,{status:"Cancelled"})
+        console.log("User:", user);
+        console.log("Order ID:", orderId);
 
-        for(product of order.products) {
-            await productSchema.findByIdAndUpdate(product.productId,{$inc :{productQuantity : product.quantity}})
+        if (!orderId) {
+            req.flash('error', 'Invalid order ID');
+            return res.redirect('/user/orders');
         }
-        if(order){
-            req.flash('success','Order cancel successfully')
-            res.redirect('/user/orders')
-        }else{
-            req.flash('error','Order cannot cancel right now ,Try again later')
-            res.redirect('/user/orders')
+        const order = await orderSchema.findByIdAndUpdate(orderId, { orderStatus: "Cancelled", isCancelled: true });
+        if (!order) {
+            req.flash('error', 'Order not found');
+            return res.redirect('/user/orders');
         }
-
-
-    }catch(error){
-        console.log(`error While cancel a order ${error}`)
-        req.flash('error','Cannot cancel this Product right now ,Please Try again')
+        for (let product of order.products) {
+            console.log("Product:", product);
+            if (product.product_id && product.product_quantity !== undefined) {
+                await productSchema.findByIdAndUpdate(product.product_id, { $inc: { productQuantity: product.product_quantity } });
+            } else {
+                console.error(`Invalid product data: ${JSON.stringify(product)}`);
+                req.flash('error', 'Error updating product quantity');
+                return res.redirect('/user/orders');
+            }
+        }
+        req.flash('success', 'Order cancelled successfully');
+        res.redirect('/user/orders');
+    } catch (error) {
+        console.error(`Error while cancelling the order: ${error}`);
+        req.flash('error', 'Cannot cancel this order right now, please try again');
+        res.redirect('/user/orders');
     }
-}
+};
+
+module.exports = { cancelOrder };
+
+
+module.exports = { cancelOrder };
 
 
 
-module.exports = {orderPage , cancelOrder }
+
+
+
+
+module.exports = { orderPage , cancelOrder }

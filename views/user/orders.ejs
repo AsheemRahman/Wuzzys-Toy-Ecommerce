@@ -115,168 +115,142 @@
 
 
 <%- include('navbar') %>
-
-    <div class="container mt-5">
-        <div class="row order-div">
-            <div class="">
-                <% if(orderDetails.length !=0) { %>
-                    <% orderDetails.forEach((item, index)=> { %>
-                        <% if(item.orderStatus !='Pending' ) { %>
-                            <div class="card border shadow-none order-container">
-                                <div class="card-body">
-                                    <% item.products.forEach((product, index)=> { %>
-                                        <div class="d-flex align-items-start">
-                                            <div class="me-4">
-                                                <img src="../../<%= product.product_image%>" class="avatar-lg rounded">
-                                            </div>
-                                            <div class="flex-grow-1 align-self-center overflow-hidden">
-                                                <div class="order-place">
-                                                    <h5 class=" font-size-18">
-                                                        <!-- <a href="/user/productDetail/<%= product.id %>" class="text-white"> -->
-                                                        <%= product.product_name %>
-                                                            <!-- </a> -->
-                                                    </h5>
-                                                    <p class="mb-0 mt-1">Quantity: <b>
-                                                            <%= product.product_quantity %>
-                                                        </b></p>
-                                                    <p class="mb-0 mt-1">Price: <b>&#8377; <%=
-                                                                (product.product_price).toLocaleString() %></b></p>
-                                                </div>
-                                            </div>
+<div class="container mt-5">
+    <div class="row order-div">
+        <div class="">
+            <% if(orderDetails.length != 0) { %>
+                <% orderDetails.forEach((item, index) => { %>
+                    <div class="card border shadow-none order-container">
+                        <div class="card-body">
+                            <% item.products.forEach((product, index) => { %>
+                                <div class="d-flex align-items-start">
+                                    <div class="me-4">
+                                        <img src="../../<%= product.product_image %>" class="avatar-lg rounded">
+                                    </div>
+                                    <div class="flex-grow-1 align-self-center overflow-hidden">
+                                        <div class="order-place">
+                                            <h5 class="font-size-18"><%= product.product_name %></h5>
+                                            <p class="mb-0 mt-1">Quantity: <b><%= product.product_quantity %></b></p>
+                                            <p class="mb-0 mt-1">Price: <b>&#8377; <%= (product.product_price).toLocaleString() %></b></p>
                                         </div>
-                                        <hr>
-                                        <% }) %>
-                                            <div>
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <div class="mt-3">
-                                                            <p class=" mb-2">Order Placed</p>
-                                                            <h6 class="mb-0 mt-2"><span>
-                                                                    <%= item.createdAt.toDateString() %>
-                                                                </span></h6>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="mt-3">
-                                                            <p class="mb-2">Order ID</p>
-                                                            <h6 class="mb-0 mt-2"><span>
-                                                                    <%= item.order_id %>
-                                                                </span></h6>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="mt-3">
-                                                            <p class="mb-2">Order Status</p>
-                                                            <h6 class="mb-0 mt-2"><span>
-                                                                <% if(item.orderStatus ==='Pending'){ %>
-                                                                    <p class="text-primary"><%= item.orderStatus %></p>
-                                                                <% } else if(item.orderStatus === 'Confirmed'){ %>
-                                                                    <p class="text-primary"><%= item.orderStatus %></p>
-                                                                <% } else if(item.orderStatus === 'Returned'){%>
-                                                                    <p class="text-danger"><%= item.orderStatus %></p>
-                                                                    <%} else if(item.orderStatus === 'Delivered'){%>
-                                                                        <p class="text-success"><%= item.orderStatus %></p>
-                                                                <%} else if(item.orderStatus === 'Cancelled'){%>
-                                                                    <p class="text-warning"><%= item.orderStatus %></p>
-                                                                <%}%>
-                                                                </span></h6>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <div class="mt-3">
-                                                            <p class="mb-2">Total Price</p>
-                                                            <b class="mb-0 mt-2"><span>&#8377; <%= item.totalPrice.toLocaleString() %></b>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="order-actions-top">
-                                                <a class="btn btn-danger" id="cancelOrder"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#cancelOrderModal"
-                                                    data-id="<%= item._id %>">Cancel Order</a>
-                                                
-                                            </div>
-                                </div>
-                            </div>
-                            <% } else { %>
-                                <div class="card border shadow-none order-container bg-light">
-                                    <div class="card-body">
-                                        <% item.products.forEach((product, index)=> { %>
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-4">
-                                                    <img src="" class="avatar-lg rounded">
-                                                </div>
-                                                <div class="flex-grow-1 align-self-center overflow-hidden">
-                                                    <div>
-                                                        <h5 class="text-truncate font-size-18">
-                                                            <%= product.productid.productName %>
-                                                        </h5>
-                                                        <h5 class="text-truncate font-size-18">
-                                                            <%= product.productid.productName %>
-                                                        </h5>
-                                                        <p class="mb-0 mt-1">Quantity: <b>
-                                                                <%= product.productQuantity %>
-                                                            </b></p>
-                                                        <p class="mb-0 mt-1">Price: <b>&#8377; <%= product.productPrice
-                                                                    * (1 - product.discount / 100) %></b></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <% }) %>
                                     </div>
                                 </div>
-                                <% } %>
-                                    <% }) %>
-                                        <% } else { %>
-                                            <div class="row d-flex justify-content-center">
-                                                <div class="no-orders">
-                                                    <h2 class="nothing">You have no orders</h2>
-                                                    <a href="/user/home" class="btn btn-danger d-flex">Shop Now</a>
-                                                </div>
-                                            </div>
-                                            <% } %>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!---------------------- modal for cancel order ----------------------------->
-
-    <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="cancelOrderModalLabel">Cancel Order</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="cancelReason" class="form-label">Reason for Cancellation</label>
-                            <textarea class="form-control" id="cancelReason" rows="3" required></textarea>
+                                <hr>
+                            <% }) %>
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="mt-3">
+                                            <p class="mb-2">Order Placed</p>
+                                            <h6 class="mb-0 mt-2"><%= item.createdAt.toDateString() %></h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mt-3">
+                                            <p class="mb-2">Order ID</p>
+                                            <h6 class="mb-0 mt-2"><%= item.order_id %></h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mt-3">
+                                            <p class="mb-2">Order Status</p>
+                                            <h6 class="mb-0 mt-2">
+                                                <% if(item.orderStatus === 'Pending') { %>
+                                                    <p class="text-primary"><%= item.orderStatus %></p>
+                                                <% } else if(item.orderStatus === 'Confirmed') { %>
+                                                    <p class="text-primary"><%= item.orderStatus %></p>
+                                                <% } else if(item.orderStatus === 'Returned') { %>
+                                                    <p class="text-danger"><%= item.orderStatus %></p>
+                                                <% } else if(item.orderStatus === 'Delivered') { %>
+                                                    <p class="text-success"><%= item.orderStatus %></p>
+                                                <% } else if(item.orderStatus === 'Cancelled') { %>
+                                                    <p class="text-warning"><%= item.orderStatus %></p>
+                                                <% } %>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="mt-3">
+                                            <p class="mb-2">Total Price</p>
+                                            <b class="mb-0 mt-2">&#8377; <%= item.totalPrice.toLocaleString() %></b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="order-actions-top">
+                                <a class="btn btn-danger" id="cancelOrder" data-bs-toggle="modal" data-bs-target="#cancelOrderModal" data-id="<%= item._id %>">Cancel Order</a>
+                            </div>
                         </div>
-                    </form>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="row d-flex justify-content-center">
+                    <div class="no-orders">
+                        <h2 class="nothing">You have no orders</h2>
+                        <a href="/user/home" class="btn btn-danger d-flex">Shop Now</a>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <a class="btn submit-btn" id="submitCancelOrder">Conform</a>
-                </div>
+                <% } %>
             </div>
         </div>
     </div>
-
-
+    
     <%- include('footer') %>
 
-    <script>
-        const cancelOrder = document.querySelectorAll('#cancelOrder').forEach((btn)=>{
-        btn.addEventListener('click',function(){
-            const orderId = this.getAttribute('data-id');
-            console.log(orderId)
-            document.getElementById('submitCancelOrder').setAttribute('href', `/user/cancelOrder/${orderId}`);
-        })
+
+<!---------------------- modal for cancel order ----------------------------->
+
+
+<div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelOrderModalLabel">Cancel Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="cancelReason" class="form-label">Reason for Cancellation</label>
+                        <textarea class="form-control" id="cancelReason" rows="3" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a class="btn submit-btn btn-primary" id="submitCancelOrder">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('#cancelOrder').forEach((btn) => {
+    btn.addEventListener('click', function () {
+        const orderId = this.getAttribute('data-id');
+        console.log(orderId);  // Check if this logs the order ID
+        document.getElementById('submitCancelOrder').setAttribute('href', `/user/cancelOrder/${orderId}`);
+    });
+});
+
+document.getElementById('submitCancelOrder').addEventListener('click', function (event) {
+    event.preventDefault(); 
+    const href = this.getAttribute('href');
+    fetch(href, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ reason: document.getElementById('cancelReason').value })
     })
-    </script>
+    .then(response => {
+        if (response.ok) {
+            window.location.href = '/user/orders';
+        } else {
+            alert('Failed to cancel order');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+</script>
