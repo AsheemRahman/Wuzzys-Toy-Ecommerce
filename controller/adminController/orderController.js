@@ -25,7 +25,6 @@ const orderpage = async (req, res) => {
         });
     } catch (error) {
         console.log(`Error on rendering admin order details ${error}`);
-        res.status(500).send('Internal Server Error');
     }
 }
 

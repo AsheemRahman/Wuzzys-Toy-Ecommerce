@@ -2,6 +2,18 @@ body{
     background: #1a1a1a;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #fefeeb;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+input.form-control:focus{
+    box-shadow: none;
+    outline: none;
+}
+
 /*--------------------- admin side bar ------------------------------*/
 
 .admin-home {

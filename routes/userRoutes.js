@@ -92,10 +92,10 @@ user.post('/checkout-address',checkUser,checkoutController.addAddress)
 user.get('/conform-order',checkUser,checkoutController.orderPage)
 user.post('/place-order/:address/:payment',checkUser,checkoutController.placeOrder)
 
-//---------------------------------- Order  -----------------------
+//---------------------------------- Order  ------------------------
+
 user.get('/orders', checkUser , orderController.orderPage)
-// user.post('/cancelorder/:id',checkUser,orderController.cancelOrder)
-// user.get('/cancelled-orders',checkUserSession,orderController.cancelledOrder)
+user.post('/cancelOrder/:id',checkUser,orderController.cancelOrder)
 
 
 //------------------------- forgot password ---------------------------

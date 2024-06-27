@@ -168,34 +168,34 @@
                                                         <div class="mt-3">
                                                             <p class="mb-2">Order Status</p>
                                                             <h6 class="mb-0 mt-2"><span>
-                                                                    <%= item.orderStatus %>
+                                                                <% if(item.orderStatus ==='Pending'){ %>
+                                                                    <p class="text-primary"><%= item.orderStatus %></p>
+                                                                <% } else if(item.orderStatus === 'Confirmed'){ %>
+                                                                    <p class="text-primary"><%= item.orderStatus %></p>
+                                                                <% } else if(item.orderStatus === 'Returned'){%>
+                                                                    <p class="text-danger"><%= item.orderStatus %></p>
+                                                                    <%} else if(item.orderStatus === 'Delivered'){%>
+                                                                        <p class="text-success"><%= item.orderStatus %></p>
+                                                                <%} else if(item.orderStatus === 'Cancelled'){%>
+                                                                    <p class="text-warning"><%= item.orderStatus %></p>
+                                                                <%}%>
                                                                 </span></h6>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <div class="mt-3">
                                                             <p class="mb-2">Total Price</p>
-                                                            <b class="mb-0 mt-2"><span>&#8377; <%=
-                                                                        item.totalPrice.toLocaleString() %></b>
+                                                            <b class="mb-0 mt-2"><span>&#8377; <%= item.totalPrice.toLocaleString() %></b>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="order-actions-top">
-                                                <h6>
-                                                    <% if(item.orderStatus==='Delivered' ) { %>
-                                                        <button class="btn btn-danger btn-sm"
-                                                            onclick="returnOrder('<%= item._id %>')">Return
-                                                            order</button>
-                                                        <% } else if(item.orderStatus==='Shipping' ||
-                                                            item.orderStatus==='Confirmed' ) { %>
-                                                            <h5><a class="btn btn-danger" id="cancelOrder"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#cancelOrderModal"
-                                                                    data-id="<%= item._id %>">Cancel Order</a>
-                                                            </h5>
-                                                            <% } %>
-                                                </h6>
+                                                <a class="btn btn-danger" id="cancelOrder"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#cancelOrderModal"
+                                                    data-id="<%= item._id %>">Cancel Order</a>
+                                                
                                             </div>
                                 </div>
                             </div>
@@ -262,7 +262,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <a class="btn submit-btn" id="submitCancelOrder">Cancel</a>
+                    <a class="btn submit-btn" id="submitCancelOrder">Conform</a>
                 </div>
             </div>
         </div>
@@ -270,3 +270,13 @@
 
 
     <%- include('footer') %>
+
+    <script>
+        const cancelOrder = document.querySelectorAll('#cancelOrder').forEach((btn)=>{
+        btn.addEventListener('click',function(){
+            const orderId = this.getAttribute('data-id');
+            console.log(orderId)
+            document.getElementById('submitCancelOrder').setAttribute('href', `/user/cancelOrder/${orderId}`);
+        })
+    })
+    </script>
