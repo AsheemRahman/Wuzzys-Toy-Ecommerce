@@ -17,7 +17,7 @@ const orderPage = async (req, res) => {
             return res.redirect("/user/login");
         }
         
-        const orderDetails = await orderSchema.find({ customer_id: user, isCancelled: false }).populate("products.product_id").sort({ createdAt: -1 })
+        const orderDetails = await orderSchema.find({ customer_id: user }).populate("products.product_id").sort({ updatedAt: -1 })
 
         const orderCount = orderDetails.length;
 
@@ -37,13 +37,8 @@ const orderPage = async (req, res) => {
 
 const cancelOrder = async (req, res) => {
     try {
-        console.log("Cancel order route hit");
-
         const user = req.session.user;
         const orderId = req.params.id;
-
-        console.log("User:", user);
-        console.log("Order ID:", orderId);
 
         if (!orderId) {
             req.flash('error', 'Invalid order ID');
@@ -55,7 +50,6 @@ const cancelOrder = async (req, res) => {
             return res.redirect('/user/orders');
         }
         for (let product of order.products) {
-            console.log("Product:", product);
             if (product.product_id && product.product_quantity !== undefined) {
                 await productSchema.findByIdAndUpdate(product.product_id, { $inc: { productQuantity: product.product_quantity } });
             } else {
@@ -72,16 +66,6 @@ const cancelOrder = async (req, res) => {
         res.redirect('/user/orders');
     }
 };
-
-module.exports = { cancelOrder };
-
-
-module.exports = { cancelOrder };
-
-
-
-
-
 
 
 module.exports = { orderPage , cancelOrder }

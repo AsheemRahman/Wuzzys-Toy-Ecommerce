@@ -117,7 +117,7 @@
 <%- include('navbar') %>
 <div class="container mt-5">
     <div class="row order-div">
-        <div class="">
+        <div>
             <% if(orderDetails.length != 0) { %>
                 <% orderDetails.forEach((item, index) => { %>
                     <div class="card border shadow-none order-container">
@@ -178,7 +178,9 @@
                                 </div>
                             </div>
                             <div class="order-actions-top">
+                                <% if(item.orderStatus ==='Confirmed' ){ %>
                                 <a class="btn btn-danger" id="cancelOrder" data-bs-toggle="modal" data-bs-target="#cancelOrderModal" data-id="<%= item._id %>">Cancel Order</a>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -228,13 +230,12 @@
     document.querySelectorAll('#cancelOrder').forEach((btn) => {
     btn.addEventListener('click', function () {
         const orderId = this.getAttribute('data-id');
-        console.log(orderId);  // Check if this logs the order ID
         document.getElementById('submitCancelOrder').setAttribute('href', `/user/cancelOrder/${orderId}`);
     });
 });
 
 document.getElementById('submitCancelOrder').addEventListener('click', function (event) {
-    event.preventDefault(); 
+    event.preventDefault();
     const href = this.getAttribute('href');
     fetch(href, {
         method: 'POST',
@@ -246,8 +247,17 @@ document.getElementById('submitCancelOrder').addEventListener('click', function 
     .then(response => {
         if (response.ok) {
             window.location.href = '/user/orders';
+            Swal.fire({
+            icon: "success",
+            title: "Order Cancelled Successfully",
+            text: "Shop more"
+            });
         } else {
-            alert('Failed to cancel order');
+            Swal.fire({
+            icon: "warning",
+            title: "Failed to cancel order",
+            text: "Try Again"
+            });
         }
     })
     .catch(error => console.error('Error:', error));
