@@ -69,7 +69,6 @@ const orderView = async (req,res) =>{
     const order_id = req.params.id;
     try{
         const orderDetails = await orderSchema.findOne({ _id : order_id})
-        console.log(orderDetails)
         res.render('admin/order-view',{title:"View Order" , orderDetails})
     }
     catch(error){
