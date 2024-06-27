@@ -5,6 +5,10 @@
         gap: 5rem;
         justify-content: center;
     }
+    .checkout-icons{
+        display: flex;
+        justify-content: space-around;
+    }
 
     /* ----------------------------- Shipping Address ------------------------------ */
 
@@ -305,7 +309,15 @@
                             </a>
                             <% } else { %>
                                 <span class="">Maximum 3 address</span>
-                                <% } %>
+                        <% } %>
+                        <div class="checkout-icons">
+                            <a href="/user/profile" title="Edit Address">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="/user/profile" title="Delete Address">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="address-cards">

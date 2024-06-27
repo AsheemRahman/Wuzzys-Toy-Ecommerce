@@ -16,16 +16,11 @@ const orderPage = async (req, res) => {
             req.flash('error', "User not found. Please login again.");
             return res.redirect("/user/login");
         }
-        
         const orderDetails = await orderSchema.find({ customer_id: user }).populate("products.product_id").sort({ updatedAt: -1 })
-
-        const orderCount = orderDetails.length;
-
         res.render("user/orders", {
             title: "Orders",
             user,
-            orderDetails,
-            orderCount
+            orderDetails
         });
     } catch (err) {
         console.error(`Error rendering the order page: ${err}`);

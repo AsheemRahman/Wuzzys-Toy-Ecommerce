@@ -189,12 +189,13 @@
         flex-direction: column;
         gap: 1rem;
     }
-    .empty-items img{
+
+    .empty-items img {
         max-width: 200px;
         border-radius: 10px;
     }
 
-    .empty-items h2{
+    .empty-items h2 {
         color: #fefeeb;
     }
 
@@ -206,13 +207,13 @@
         margin: 0;
     }
 
-    .checkout{
-        width: 13%;
-        height: 8%;
+    .cart-product-quantity{
+        width: 25%;
         display: flex;
-        align-items: center;
         justify-content: center;
-        font-size: 1rem;
+    }
+    .quantity-input{
+        width: 30%;
     }
 
     .quantity-counter {
@@ -232,10 +233,30 @@
         background: transparent;
         color: #fefeeb;
     }
-    .empty-p{
+
+    .empty-p {
         text-decoration: none;
-        margin:0rem .7rem;
+        margin: 0rem .7rem;
     }
+
+    .cart-checkout{
+        display: flex;
+        justify-content: center;
+        margin: 1rem;
+    }
+
+    .cart-checkout-button {
+        width: 75%;
+        height: 8%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        background: #1a1a1a;
+        color: #fefeeb;
+    }
+
+    
 </style>
 
 <%- include('navbar') %>
@@ -270,7 +291,7 @@
                                             Category : <%= item.productId.productCollection %>
                                         </div>
                                     </div>
-                                    <div class="d-inline-flex align-items-center quantity" style="width: 20%;">
+                                    <!-- <div class="d-inline-flex align-items-center quantity" style="width: 20%;">
                                         <button class="btn minus1"
                                             onclick="decreaseQuantity('<%= item.productId._id %>', '<%= index %>')">-</button>
                                         <input type="text" class="form-control text-center mx-2 item-count" min="1"
@@ -278,6 +299,9 @@
                                             name="quantityCount" value="<%= item.productCount %>" readonly>
                                         <button class="btn add1"
                                             onclick="increaseQuantity('<%= item.productId._id %>', '<%= index %>')">+</button>
+                                    </div> -->
+                                    <div class="cart-product-quantity">
+                                        <input type="number" class="quantity-input" value="<%= item.productCount %>" min="1" max="10">
                                     </div>
                                     <div class="col cart-price">
                                         <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
@@ -314,7 +338,8 @@
                                         </div>
                                         <div>
                                             <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                                            <%= item.productPrice - item.productPrice * (item.productId.productDiscount / 100) %>
+                                            <%= item.productPrice - item.productPrice * (item.productId.productDiscount
+                                                / 100) %>
                                         </div>
                                     </div>
                                     <% }) %>
@@ -329,7 +354,7 @@
                             <hr class="cart-line mt-0">
                             <h6>Delivery</h6>
                             <div class="cart-shipping">
-                                <% if ( cart.totalPrice > 1000 ) { %>
+                                <% if ( cart.totalPrice> 1000 ) { %>
                                     <p class="mt-2">Shipping Charge</p>
                                     <p>
                                         <i class="fa-solid fa-indian-rupee-sign product-text-row"></i> Free Shipping
@@ -346,14 +371,16 @@
                             <div class="col">TOTAL PRICE</div>
                             <div class="col text-right d-flex justify-content-end">
                                 <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                                <% if ( cart.totalPrice > 1000 ) { %>
+                                <% if ( cart.totalPrice> 1000 ) { %>
                                     <%= (cart.payableAmount).toFixed(2) %>
                                         <% } else { %>
                                             <%= (cart.payableAmount + 50).toFixed(2) %>
                                                 <% } %>
                             </div>
                         </div>
-                        <a href="/user/checkout" class="btn checkout">CHECKOUT</a>
+                        <div class="cart-checkout">
+                            <a href="/user/checkout" class="btn btn-secondary cart-checkout-button">CHECKOUT</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -366,17 +393,15 @@
                         <h2 class="fw-bold">
                             Your cart is empty!
                         </h2>
-                        <!-- <p>
-                            Add items to it now.
-                        </p> -->
                         <p>
                             Your Shopping Cart lives to serve. Give it purpose , Fill it with Toys,
                         </p>
                         <p>
-                            Continue shopping on then   <a href="/user/home" class="empty-p">wuzzy's homepage  </a> ,
+                            Continue shopping on then <a href="/user/home" class="empty-p">wuzzy's homepage </a> ,
                         </p>
                         <p>
-                            learn about today's deals, or visit your <a href="/user/view-more" class="empty-p">New Arivals </a> ,
+                            learn about today's deals, or visit your <a href="/user/view-more" class="empty-p">New
+                                Arivals </a> ,
                         </p>
                         <a href="/user/home" class="btn btn-primary checkout">
                             <i class="bi bi-arrow-left-circle" style="margin-right: 2rem;"></i>Shop Now
@@ -410,78 +435,26 @@
                                 });
                             });
                         });
-
-
-                        async function updateCartQuantity(productId, index, isIncrement) {
-                            const quantityInput = document.getElementById('quantity-count-' + index);
-                            const currentQuantity = parseInt(quantityInput.value);
-                            const newQuantity = isIncrement ? currentQuantity + 1 : currentQuantity - 1;
-
-                            console.log(`Updating quantity for productId: ${productId}, index: ${index}, isIncrement: ${isIncrement}`);
-                            console.log(`Current Quantity: ${currentQuantity}, New Quantity: ${newQuantity}`);
-                            if (newQuantity < 1 || newQuantity > 10) {
-                                Swal.fire({
-                                    icon: "info",
-                                    title: "Quantity must be between 1 and 10",
-                                });
-                                return;
-                            }
-                            const url = isIncrement ? `/cart/productIncrement/${productId}` : `/cart/productDecrement/${productId}`;
-                            console.log(`Sending request to URL: ${url}`);
-                            try {
-                                const response = await fetch(url, {
-                                    method: "POST",
+                        // Update cart quantity
+                        document.querySelectorAll('.quantity-input').forEach(input => {
+                            input.addEventListener('change', async (event) => {
+                                const cartItem = event.target.closest('.cart-item');
+                                const productId = cartItem.getAttribute('data-product-id');
+                                const quantity = event.target.value;
+                                const response = await fetch('/update-quantity', {
+                                    method: 'POST',
                                     headers: {
-                                        "Content-type": "application/json"
+                                        'Content-Type': 'application/json',
                                     },
-                                    body: JSON.stringify({ quantity: newQuantity })
+                                    body: JSON.stringify({ productId, quantity }),
                                 });
-                                console.log(`Response Status: ${response.status}`);
-                                if (response.ok) {
-                                    const data = await response.json();
-                                    console.log('Response Data:', data);
-                                    if (data.productCount !== undefined) {
-                                        quantityInput.value = data.productCount;
-                                        updateSummary(data);
-                                    } else {
-                                        Swal.fire({
-                                            icon: "error",
-                                            title: "Failed to update product quantity",
-                                            text: data.error || "Unknown error",
-                                        });
-                                    }
+                                const data = await response.json();
+                                if (data.status === 'updated') {
+                                    updateCartSummary();
                                 } else {
-                                    const errorData = await response.json();
-                                    console.log('Error Data:', errorData);
-                                    Swal.fire({
-                                        icon: "error",
-                                        title: "Failed to update product quantity",
-                                        text: errorData.error || "Unknown error",
-                                    });
+                                    alert(data.message);
                                 }
-                            } catch (error) {
-                                console.error('Fetch Error:', error);
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Failed to update product quantity",
-                                    text: "Network error or server is down",
-                                });
-                            }
-                        }
-
-                        function increaseQuantity(productId, index) {
-                            updateCartQuantity(productId, index, true);
-                        }
-
-                        function decreaseQuantity(productId, index) {
-                            updateCartQuantity(productId, index, false);
-                        }
-
-                        function updateSummary(data) {
-                            console.log('Updating summary with data:', data);
-                            document.getElementById('sub-total-price').textContent = data.subTotal.toLocaleString();
-                            document.getElementById('savings-price').textContent = data.savings.toLocaleString();
-                            document.getElementById('total-price-box').textContent = data.total.toLocaleString();
-                        }
+                            });
+                        });
 
                     </script>
