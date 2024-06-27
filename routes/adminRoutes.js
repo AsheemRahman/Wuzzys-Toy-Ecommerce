@@ -52,7 +52,8 @@ admin.get('/userstatus',isAdmin,userContoller.status)
 // ------------------------------ Order  ------------------------------
 
 admin.get('/order', isAdmin , orderController.orderpage)
-// admin.get('/updateStatus/:id', isAdmin, orderController.updateStatus)
+admin.get("/order-view/:id", orderController.orderView)
+// admin.get('/updaterStatus/:id/:status', isAdmin, orderController.updateStatus)
 // admin.post('/orderDetails/:id', isAdmin , orderController.OrderDetail)
 
 

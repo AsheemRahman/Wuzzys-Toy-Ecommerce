@@ -1,3 +1,18 @@
+<style>
+    .product-sort{
+        display: flex;
+        justify-content: end;
+        margin-right: 10rem;
+        height: 2.5rem;
+    }
+    .product-sort select{
+        width: 20%;
+        background: #232323;
+        color: #fefeeb;
+        border-radius: 5px;
+
+    }
+</style>
 
 <%- include('navbar') %>
 
@@ -16,6 +31,16 @@
     </nav>
 
     <div class="product-container">
+        <!-- <div class="product-sort mb-3">
+            <select name="" class="" onchange="">
+                <option disabled selected>Sort By</option>
+                <option value="1">Price low - high</option>
+                <option value="2">Price high - low</option>
+                <option value="3">New arrival</option>
+                <option value="4">Product Name Aa - Zz</option>
+                <option value="5">Product Name Zz - Aa</option>
+            </select>
+        </div> -->
         <h2>
             <%= title %>
         </h2>

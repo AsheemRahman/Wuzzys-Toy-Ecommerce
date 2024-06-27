@@ -17,7 +17,6 @@
         margin-left: 30px;
     }
 
-
     .form-input {
         height: 80%;
     }
@@ -26,12 +25,18 @@
         display: flex;
         align-items: center;
     }
-</style>
 
+
+    .order-status {
+        background: #232323;
+        color: #fefeeb;
+        border-radius: 5px;
+        padding: 0.4rem;
+    }
+</style>
 
 <%- include('navbar') %>
 
-    <!------------------------------------------ Admin Menu ----------------------------------------------------->
     <div class="admin-home">
         <div class="sidebar">
             <div class="menu-item">
@@ -71,12 +76,10 @@
             </div>
             <div class="menu-item admin-menu-loyout">
                 <a href="/admin/logout">
-                    <div class="admin-menu "><i class="bi bi-box-arrow-right"></i>Logout</div>
+                    <div class="admin-menu"><i class="bi bi-box-arrow-right"></i>Logout</div>
                 </a>
             </div>
         </div>
-
-        <!-------------------------------------- Products page header  -------------------------------------------------------->
 
         <div class="admin-product mb-4">
             <div class="product-head d-flex justify-content-between">
@@ -84,14 +87,12 @@
                     <h2 class="text-white">
                         <%= title %>
                     </h2>
-                    <form action="/admin/order" method="get" class="form-product  d-flex gap-1">
+                    <form action="/admin/order" method="get" class="form-product d-flex gap-1">
                         <input type="text" name="search" placeholder="search" class="form-input form-control">
                         <input type="submit" class="btn submit-btn" value="Search">
                     </form>
                 </div>
             </div>
-
-            <!--------------------------------------- product table ---------------------------------------------------->
 
             <div class="table-container">
                 <table class="table">
@@ -103,34 +104,58 @@
                             <th scope="col">Amount</th>
                             <th scope="col">Payment</th>
                             <th scope="col">Status</th>
-                            <th scope="col" class="product-table-last">Action</th>
+                            <th scope="col" >Action</th>
+                            <th scope="col" class="product-table-last">View</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% let slNo = (currentPage - 1) * limit + 1; %>
-                        <% orders.forEach((order, index) => { %>
-                            <tr>
-                                <td><%= slNo %></td>
-                                <td><%= order.order_id %></td>
-                                <td><%= order.createdAt.toDateString() %></td>
-                                <td><%= order.totalPrice %></td>
-                                <td><%= order.paymentMethod %></td>
-                                <td><%= order.orderStatus %></td>
-                                <td class="products-icon">
-                                    <a href="/admin/updateStatus/<%= order.id %>"><i class="bi bi-three-dots"></i></a>
-                                </td>
-                            </tr>
-                            <% slNo++; %>
-                        <% }); %>
+                        <% let slNo=(currentPage - 1) * limit + 1; %>
+                            <% orders.forEach((order, index)=> { %>
+                                <tr>
+                                    <td>
+                                        <%= slNo %>
+                                    </td>
+                                    <td>
+                                        <%= order.order_id %>
+                                    </td>
+                                    <td>
+                                        <%= order.createdAt.toDateString() %>
+                                    </td>
+                                    <td>
+                                        <%= order.totalPrice %>
+                                    </td>
+                                    <td>
+                                        <%= order.paymentMethod %>
+                                    </td>
+                                    <td>
+                                        <%= order.orderStatus %>
+                                    </td>
+                                    <td>
+                                        <% if (order.status !=='Delivered' ) { %>
+                                            <select class="order-status" data-order-id="<%= order._id %>">
+                                                <option value="Pending" <%=order.status==='Pending' ? 'selected' : '' %>
+                                                    >Pending</option>
+                                                <option value="Shipped" <%=order.status==='Shipped' ? 'selected' : '' %>
+                                                    >Shipped</option>
+                                                <option value="Delivered">Delivered</option>
+                                            </select>
+                                            <% } else { %>
+                                                <span class="status-delivered">Delivered</span>
+                                                <% } %>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/order-view/<%= order._id %>"><i class="bi bi-eye" style="color: #fefeeb;"></i></a>
+                                    </td>
+                                </tr>
+                                <% slNo++; %>
+                                <% }); %>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!------------------------------------ Pagination Controls -------------------------------->
-
-    <div class="pagination-controls d-flex  mt-3">
+    <div class="pagination-controls d-flex mt-3">
         <ul class="pagination">
             <% if (currentPage> 1) { %>
                 <li class="page-item"><a class="page-link"
@@ -153,4 +178,18 @@
         </ul>
     </div>
 
-<%- include('footer') %>
+    <%- include('footer') %>
+
+        <script>
+            function toggleDropdown(event, element) {
+                event.preventDefault();
+                const dropdownMenu = element.nextElementSibling;
+                dropdownMenu.classList.toggle('hidden');
+                document.addEventListener('click', function handleClickOutside(event) {
+                    if (!element.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                        dropdownMenu.classList.add('hidden');
+                        document.removeEventListener('click', handleClickOutside);
+                    }
+                });
+            }
+        </script>
