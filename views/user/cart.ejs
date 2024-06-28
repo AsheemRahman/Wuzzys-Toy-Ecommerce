@@ -483,55 +483,47 @@
                                 });
                             });
                         });
-
-
                         const quantity = async (type, productId) => {
-    console.log('Type:', type);
-    console.log('Product ID:', productId);
-
-    try {
-        const res = await fetch(`/quantity/${productId}?action=${type}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        });
-
-        if (!res.ok) {
-            throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-
-        const data = await res.json();
-        console.log('Response:', data); // Log the entire response for debugging
-
-        // Handle different response scenarios based on data
-        if (data.message === 'Quantity updated successfully') {
-            // Handle success scenario
-            const quantityInput = document.getElementById(`quantity_${productId}`);
-            quantityInput.classList.add('highlight-decrease'); // or 'highlight-increase'
-            setTimeout(() => {
-                quantityInput.classList.remove('highlight-decrease'); // or 'highlight-increase'
-                window.location.reload(); // Reload the page after successful update
-            }, 500);
-        } else if (data.error) {
-            // Handle specific error scenarios
-            const notification = document.getElementById('notification');
-            notification.innerText = data.error;
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 5000);
-        } else {
-            throw new Error('Unexpected response from server');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        const notification = document.getElementById('notification');
-        notification.innerText = error.message;
-        notification.style.display = 'block';
-        setTimeout(() => {
-            notification.style.display = 'none';
-        }, 5000);
-    }
-}; 
+                            console.log('Type:', type);
+                            console.log('Product ID:', productId);
+                            try {
+                                const res = await fetch(`/quantity/${productId}?action=${type}`, {
+                                    method: 'GET',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                });
+                                if (!res.ok) {
+                                    throw new Error(`HTTP error! Status: ${res.status}`);
+                                }
+                                const data = await res.json();
+                                console.log('Response:', data);
+                                if (data.message === 'Quantity updated successfully') {
+                                    const quantityInput = document.getElementById(`quantity_${productId}`);
+                                    quantityInput.classList.add('highlight-decrease'); // or 'highlight-increase'
+                                    setTimeout(() => {
+                                        quantityInput.classList.remove('highlight-decrease'); // or 'highlight-increase'
+                                        window.location.reload(); // Reload the page after successful update
+                                    }, 500);
+                                } else if (data.error) {
+                                    // Handle specific error scenarios
+                                    const notification = document.getElementById('notification');
+                                    notification.innerText = data.error;
+                                    notification.style.display = 'block';
+                                    setTimeout(() => {
+                                        notification.style.display = 'none';
+                                    }, 5000);
+                                } else {
+                                    throw new Error('Unexpected response from server');
+                                }
+                            } catch (error) {
+                                console.error('Error:', error);
+                                const notification = document.getElementById('notification');
+                                notification.innerText = error.message;
+                                notification.style.display = 'block';
+                                setTimeout(() => {
+                                    notification.style.display = 'none';
+                                }, 5000);
+                            }
+                        };
                     </script>
