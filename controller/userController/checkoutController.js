@@ -80,10 +80,10 @@ const placeOrder = async (req, res) => {
             totalQuantity: totalQuantity,
             totalPrice: cartItems.payableAmount,
             address: {
-                customer_name: userDetails.address[addressIndex].contactName,
+                customer_name: req.body.customer_name,
                 customer_email: userDetails.email,
-                building: userDetails.address[addressIndex].homeAddress,
-                street: userDetails.address[addressIndex].areaAddress,
+                building: userDetails.address[addressIndex].building,
+                street: userDetails.address[addressIndex].street,
                 city: userDetails.address[addressIndex].city,
                 country: userDetails.address[addressIndex].country,
                 pincode: userDetails.address[addressIndex].pincode,
