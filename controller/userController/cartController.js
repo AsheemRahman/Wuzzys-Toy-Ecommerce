@@ -112,32 +112,63 @@ const removeItem = async (req, res) => {
     res.redirect("/user/cart");
 };
 
-const CartQuantity = async (req, res) => {
-    try {
-        const user = await userBase.findOne({ email: req.session.user });
-        if (!user) {
-            return res.status(400).json({ message: 'User not found', status: 'error' });
-        }
+//--------------------------------------- Quantity in cart ---------------------------------
 
-        const { productId, quantity } = req.body;
-        const cart = await Cart.findOne({ user: user._id });
-        if (cart) {
-            const item = cart.items.find(item => item.productId.equals(productId));
-            if (item) {
-                item.quantity = quantity;
-                await cart.save();
-                res.json({ message: 'Cart updated', status: 'updated' });
-            } else {
-                res.status(404).json({ message: 'Product not found in cart', status: 'error' });
-            }
-        } else {
-            res.status(400).json({ message: 'Cart not found', status: 'error' });
+const quantity = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const action = req.query.action;
+        const userId = req.session.user._id;
+        
+        // Fetch the user's cart
+        const cart = await cartSchema.findOne({ userId });
+        
+        // Ensure cart exists
+        if (!cart) {
+            return res.status(404).json({ error: 'Cart not found' });
         }
+        
+        // Find the item in the cart
+        let item = cart.items.find(item => item.productId.toString() === productId);
+        
+        // Ensure item exists in the cart
+        if (!item) {
+            return res.status(404).json({ error: 'Item not found in cart' });
+        }
+        
+        // Update quantity based on action
+        if (action === "dec" && item.productCount > 1) {
+            item.productCount--;
+        } else if (action === "inc") {
+            // Check maximum quantity and product stock availability
+            const product = await productSchema.findById(productId);
+            if (!product) {
+                return res.status(404).json({ error: 'Product not found' });
+            }
+            
+            if (item.productCount >= 10) {
+                return res.status(400).json({ error: 'Maximum quantity per person is 10' });
+            }
+            
+            if (item.productCount < product.productQuantity) {
+                item.productCount++;
+            } else {
+                return res.status(400).json({ error: 'Product is out of stock' });
+            }
+        }
+        
+        // Save the updated cart
+        await cart.save();
+        
+        // Send success message
+        res.status(200).json({ message: 'Quantity updated successfully' });
+        
     } catch (error) {
-        console.error('Error updating cart quantity:', error);
-        res.status(500).json({ error: 'Failed to update cart quantity', details: error.message });
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 
 
@@ -145,5 +176,5 @@ module.exports = {
     cart,
     addToCartPost,
     removeItem,
-    CartQuantity
+    quantity
 }

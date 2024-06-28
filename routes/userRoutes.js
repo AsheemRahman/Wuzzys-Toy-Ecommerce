@@ -82,8 +82,7 @@ user.get('/add-to-cart/:id', checkUser, cartController.addToCartPost)
 user.get('/remove-item/:id',checkUser,cartController.removeItem)
 // user.post('/cart/productIncrement/:productId', isUser, cartController.increment);
 // user.post('/cart/productDecrement/:productId', isUser, cartController.decrement);
-user.post('/update-quantity',checkUser,cartController.CartQuantity)
-
+user.get('/quantity/:id', cartController.quantity);
 
 //---------------------------------- checkout -----------------------
 

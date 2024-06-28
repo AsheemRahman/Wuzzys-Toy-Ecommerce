@@ -42,6 +42,13 @@
         justify-content: center;
     }
 
+    .num-product {
+        background: transparent;
+        border: 1px solid #fefeeb;
+        width: 24%;
+        border-radius: 5px;
+    }
+
     @media(max-width:767px) {
         .card {
             margin: 3vh auto;
@@ -207,12 +214,13 @@
         margin: 0;
     }
 
-    .cart-product-quantity{
+    .cart-product-quantity {
         width: 25%;
         display: flex;
         justify-content: center;
     }
-    .quantity-input{
+
+    .quantity-input {
         width: 30%;
     }
 
@@ -239,7 +247,7 @@
         margin: 0rem .7rem;
     }
 
-    .cart-checkout{
+    .cart-checkout {
         display: flex;
         justify-content: center;
         margin: 1rem;
@@ -256,7 +264,41 @@
         color: #fefeeb;
     }
 
-    
+
+    /* test */
+    .highlight-increase {
+        background-color: #049d28;
+        /* Light green background */
+        transition: background-color 0.9s ease;
+    }
+
+    .highlight-decrease {
+        background-color: #c30000;
+        border-radius: 4px;
+        /* Light red background */
+        transition: background-color 0.9s ease;
+    }
+
+    #notification {
+        display: none;
+        position: absolute;
+        top: 20px;
+        right: 190px;
+        padding: 10px;
+        color: #dc0b0b;
+        /* Red color for the text */
+        font-size: 14px;
+        font-weight: bold;
+        z-index: 1000;
+        animation: blink 1s step-start 0s infinite;
+        /* Blinking effect */
+    }
+
+    @keyframes blink {
+        50% {
+            opacity: 0;
+        }
+    }
 </style>
 
 <%- include('navbar') %>
@@ -291,17 +333,23 @@
                                             Category : <%= item.productId.productCollection %>
                                         </div>
                                     </div>
-                                    <!-- <div class="d-inline-flex align-items-center quantity" style="width: 20%;">
-                                        <button class="btn minus1"
-                                            onclick="decreaseQuantity('<%= item.productId._id %>', '<%= index %>')">-</button>
-                                        <input type="text" class="form-control text-center mx-2 item-count" min="1"
-                                            max="<%= item.productCount %>" id="quantity-count-<%= index %>"
-                                            name="quantityCount" value="<%= item.productCount %>" readonly>
-                                        <button class="btn add1"
-                                            onclick="increaseQuantity('<%= item.productId._id %>', '<%= index %>')">+</button>
-                                    </div> -->
                                     <div class="cart-product-quantity">
-                                        <input type="number" class="quantity-input" value="<%= item.productCount %>" min="1" max="10">
+                                        <div id="notification"
+                                            style="display: none; position: absolute; top: 20px; right: 20px; padding: 10px;">
+                                        </div>
+                                        <button type="button" class="quantity-right-plus btn cl8"
+                                            onclick="quantity('dec', '<%= item.productId._id %>')" data-type="minus"
+                                            <%=item.productCount <=0 ? 'disabled' : '' %>>
+                                            <i class="bi bi-dash-lg" style="color: #fefeeb;"></i>
+                                        </button>
+                                        <input class="num-product" type="number" name="num-product1"
+                                            id="quantity_<%= item.productId._id %>" value="<%= item.productCount %>"
+                                            max="10" disabled>
+                                        <button type="button" class="quantity-right-plus btn cl8"
+                                            onclick="quantity('inc', '<%= item.productId._id %>')" data-type="plus"
+                                            <%=item.productCount <=0 ? 'disabled' : '' %>>
+                                            <i class="bi bi-plus-lg" style="color: #fefeeb;"></i>
+                                        </button>
                                     </div>
                                     <div class="col cart-price">
                                         <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
@@ -435,26 +483,55 @@
                                 });
                             });
                         });
-                        // Update cart quantity
-                        document.querySelectorAll('.quantity-input').forEach(input => {
-                            input.addEventListener('change', async (event) => {
-                                const cartItem = event.target.closest('.cart-item');
-                                const productId = cartItem.getAttribute('data-product-id');
-                                const quantity = event.target.value;
-                                const response = await fetch('/update-quantity', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify({ productId, quantity }),
-                                });
-                                const data = await response.json();
-                                if (data.status === 'updated') {
-                                    updateCartSummary();
-                                } else {
-                                    alert(data.message);
-                                }
-                            });
-                        });
 
+
+                        const quantity = async (type, productId) => {
+    console.log('Type:', type);
+    console.log('Product ID:', productId);
+
+    try {
+        const res = await fetch(`/quantity/${productId}?action=${type}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+
+        if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+
+        const data = await res.json();
+        console.log('Response:', data); // Log the entire response for debugging
+
+        // Handle different response scenarios based on data
+        if (data.message === 'Quantity updated successfully') {
+            // Handle success scenario
+            const quantityInput = document.getElementById(`quantity_${productId}`);
+            quantityInput.classList.add('highlight-decrease'); // or 'highlight-increase'
+            setTimeout(() => {
+                quantityInput.classList.remove('highlight-decrease'); // or 'highlight-increase'
+                window.location.reload(); // Reload the page after successful update
+            }, 500);
+        } else if (data.error) {
+            // Handle specific error scenarios
+            const notification = document.getElementById('notification');
+            notification.innerText = data.error;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        } else {
+            throw new Error('Unexpected response from server');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        const notification = document.getElementById('notification');
+        notification.innerText = error.message;
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 5000);
+    }
+}; 
                     </script>
