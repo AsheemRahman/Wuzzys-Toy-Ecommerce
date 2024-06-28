@@ -131,7 +131,7 @@
                                         <%= order.orderStatus %>
                                     </td>
                                     <td>
-                                        <% if (order.status !=='Delivered' ) { %>
+                                        <% if (order.orderStatus !=='Delivered' && order.orderStatus !== 'Cancelled' ) { %>
                                             <select class="order-status" data-order-id="<%= order._id %>">
                                                 <option value="Pending" <%=order.status==='Pending' ? 'selected' : '' %>
                                                     >Pending</option>
@@ -139,9 +139,7 @@
                                                     >Shipped</option>
                                                 <option value="Delivered">Delivered</option>
                                             </select>
-                                            <% } else { %>
-                                                <span class="status-delivered">Delivered</span>
-                                                <% } %>
+                                            <% } %>
                                     </td>
                                     <td>
                                         <a href="/admin/order-view/<%= order._id %>"><i class="bi bi-eye" style="color: #fefeeb;"></i></a>

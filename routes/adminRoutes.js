@@ -53,8 +53,7 @@ admin.get('/userstatus',isAdmin,userContoller.status)
 
 admin.get('/order', isAdmin , orderController.orderpage)
 admin.get("/order-view/:id", orderController.orderView)
-// admin.get('/updaterStatus/:id/:status', isAdmin, orderController.updateStatus)
-// admin.post('/orderDetails/:id', isAdmin , orderController.OrderDetail)
+// admin.get('/statusshipped/:id', orderController. orderStatus);
 
 
 //---------------------------- admin logout ----------------------------

@@ -40,29 +40,6 @@ const orderpage = async (req, res) => {
     }
 }
 
-
-const updateStatus = async (req, res) => {
-    const { id: order_id, status } = req.params;
-    if (!status) {
-        req.flash('error',"Order status Cannot edit now , Try again later")
-        return res.redirect('/admin/order');
-    }
-    try {
-        const updateStatus = await orderCollection.findOneAndUpdate(
-            { _id: new ObjectId(order_id) },
-            { $set: { orderStatus: status } },
-            { new: true }
-        );
-
-        req.flash('success',"Order Status Change Successfully")
-    } catch (error) {
-        console.log(`error while update order status ${error}`);
-        req.flash('error',"Error while update order status")
-    }
-    res.redirect('/admin/order');
-};
-
-
 // ------------------------- Show Single order details --------------------------- 
 
 const orderView = async (req,res) =>{
@@ -79,5 +56,41 @@ const orderView = async (req,res) =>{
 
 
 
+// const orderStatus = async (req, res, status, paymentStatus = null) => {
+//     try {
+//         const orderId = req.params.id;
 
-module.exports = { orderpage ,updateStatus , orderView }
+//         // Prepare the update object
+//         const updateData = { status };
+//         if (paymentStatus) {
+//             updateData.paymentStatus = paymentStatus;
+//         }
+
+//         // Update order status in MongoDB
+//         const updatedOrder = await orderSchema.findByIdAndUpdate(orderId, {
+//             $set: updateData}, { new: true });
+
+//         // Check if order is updated successfully
+//         if (!updatedOrder) {
+//             return res.status(404).json({ msg: "Order not found" });
+//         }
+
+//         // Send response
+//         res.status(200).json({ success: true, message: `Order status updated to ${status}` });
+//     } catch (error) {
+//         console.error("Error:", error);
+//         res.status(500).json({ msg: "Internal server error" });
+//     }
+// };
+
+// const statusShipped = (req, res) => {
+//     updateOrderStatus(req, res, "Shipped");
+// };
+
+// const statusDelivered = (req, res) => {
+//     updateOrderStatus(req, res, "Delivered", "Completed");
+// };
+
+
+
+module.exports = { orderpage  , orderView }
