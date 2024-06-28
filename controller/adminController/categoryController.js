@@ -3,14 +3,14 @@ const categorySchema = require('../../model/categorySchema')
 
 //--------------------------- finding collection by search ------------------------------
 
-const collection = async (req, res) => {
+const category = async (req, res) => {
     try {
         const search = req.query.search || ''
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 6;
 
         const collection = await categorySchema.find({collectionName: { $regex: search, $options: 'i' }})
-            .sort({ createdAt: -1 })
+            .sort({ updatedAt: -1 })
             .limit(limit)
             .skip((page - 1) * limit)
 
@@ -29,16 +29,13 @@ const collection = async (req, res) => {
     }
 }
 
-//---------------------------- new collection creating ----------------------------------
+//---------------------------- new category creating ----------------------------------
 
-const addCollectionPost = async (req, res) => {
+const addCategoryPost = async (req, res) => {
     try {
         const name = req.body.collectionName
 
-    const collection = {
-        collectionName: name,
-        isActive: true
-    }
+    const collection = {collectionName: name , isActive: true}
     const check = await categorySchema.findOne({collectionName: { $regex: name, $options: 'i' }})
     if (check == null) {
         await categorySchema.insertMany(collection)
@@ -64,7 +61,7 @@ const status = async (req, res) => {
     try {
         const collectionId = req.query.id
         const status = !(req.query.status === 'true')
-        const collection = await categorySchema.findByIdAndUpdate(collectionId, {isActive: status})
+        const category = await categorySchema.findByIdAndUpdate(collectionId, {isActive: status})
         res.redirect('/admin/collection')
     } catch (error) {
         console.log(`error while status update ${error}`)
@@ -73,15 +70,15 @@ const status = async (req, res) => {
 
 //------------------------------ Delete a Colection --------------------------------
 
-const deleteCollection = async (req, res) => {
+const deleteCategory = async (req, res) => {
     try {
         const collectionId = req.params.id
-        const deleteCollection = await categorySchema.findByIdAndDelete(collectionId)
-        if (deleteCollection != null) {
-            req.flash('success', 'Collection Successfully deleted')
+        const deleteCategory = await categorySchema.findByIdAndDelete(collectionId)
+        if (deleteCategory != null) {
+            req.flash('success', 'Category Successfully deleted')
             res.redirect('/admin/collection')
         } else {
-            req.flash('error', 'Collection Unable to delete')
+            req.flash('error', 'Category Unable to delete')
             res.redirect('/admin/collection')
         }
     } catch (error) {
@@ -89,29 +86,29 @@ const deleteCollection = async (req, res) => {
     }
 }
 
-//-------------------------------- Edit Collection ---------------------------------
+//-------------------------------- Edit Category ---------------------------------
 
-const editcollection = async (req, res) => {
+const editCategory = async (req, res) => {
     try {
 
         const { collectionId, collectionName } = req.body
-        const editCollection = await categorySchema.findByIdAndUpdate(collectionId,{ collectionName: collectionName })
-        if (editCollection != null) {
-            req.flash('success', 'Collection Successfully edited')
+        const editCategory = await categorySchema.findByIdAndUpdate(collectionId,{ collectionName: collectionName })
+        if (editCategory != null) {
+            req.flash('success', 'Category Successfully edited')
             res.redirect('/admin/collection')
         } else {
-            req.flash('error', 'Collection unable to edit')
+            req.flash('error', 'Category unable to edit')
             res.redirect('/admin/collection')
         }
     } catch (error) {
-        console.log(`error while editing collection ${error}`)
+        console.log(`error while editing category ${error}`)
     }
 }
 
 module.exports = {
-    collection,
-    addCollectionPost,
-    deleteCollection,
+    category,
+    addCategoryPost,
+    deleteCategory,
     status,
-    editcollection
+    editCategory
 }

@@ -2,7 +2,7 @@ const express = require('express')
 const admin = express.Router();
 const isAdmin = require('../middleware/adminSession')
 const adminController = require('../controller/adminController/adminController')
-const collectionController = require('../controller/adminController/collectionController')
+const categoryController = require('../controller/adminController/categoryController')
 const productController = require('../controller/adminController/productController')
 const userContoller = require('../controller/adminController/userController')
 const orderController = require('../controller/adminController/orderController')
@@ -22,11 +22,11 @@ admin.get('/home',isAdmin,adminController.home)
 
 //-------------------------- collection -----------------------------
 
-admin.get('/collection',isAdmin,collectionController.collection)
-admin.post('/addcollection',isAdmin,collectionController.addCollectionPost)
-admin.get('/deletecollection/:id',isAdmin,collectionController.deleteCollection)
-admin.get('/collectionstatus',isAdmin,collectionController.status)
-admin.post('/editcollection',isAdmin,collectionController.editcollection)
+admin.get('/collection',isAdmin,categoryController.category)
+admin.post('/addcollection',isAdmin,categoryController.addCategoryPost)
+admin.get('/deletecollection/:id',isAdmin,categoryController.deleteCategory)
+admin.get('/collectionstatus',isAdmin,categoryController.status)
+admin.post('/editcollection',isAdmin,categoryController.editCategory)
 
 
 //----------------------------- product -----------------------------
