@@ -5,7 +5,7 @@ const categorySchema = require('../../model/categorySchema')
 
 const home = async (req, res) => {
   try {
-    const product = await productSchema.find()
+    const product = await productSchema.find({ isActive : true })
     res.render('user/home', { title: 'Home', product, user: req.session.user })
   } catch (error) {
     console.log(`error while rendering home ${error}`)
@@ -36,7 +36,7 @@ const allproduct = async (req, res) => {
       sort={createdAt:-1}
     }
 
-    const product = await productSchema.find().sort(sort)
+    const product = await productSchema.find({ isActive : true }).sort(sort)
 
     res.render('user/allproduct', {
       title: 'All Product',
@@ -70,7 +70,7 @@ const latestProduct = async (req, res) => {
       sort={createdAt:-1}
     }
 
-    const product = await productSchema.find().sort(sort)
+    const product = await productSchema.find({ isActive : true }).sort(sort)
 
     res.render('user/view-more', {
       title: 'Latest Products',
@@ -107,9 +107,7 @@ const category = async (req, res) => {
     }else{
       sort={createdAt:-1}
     }
-
-    
-    const categoryProduct = await productSchema.find({productCollection: categoryName}).sort(sort)
+    const categoryProduct = await productSchema.find({productCollection: categoryName , isActive : true }).sort(sort)
     res.render('user/category-product', {
       title: categoryName,
       product: categoryProduct,
