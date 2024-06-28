@@ -51,7 +51,26 @@ const allproduct = async (req, res) => {
 
 const latestProduct = async (req, res) => {
   try {
-    const product = await productSchema.find()
+    const sortby = req.query.sortby || ""
+    let sort="";
+    if(sortby){
+        switch(sortby){
+          case '1': sort = {productName: 1}
+                  break;
+          case '2': sort = {productName: -1}
+                  break;
+          case '3': sort = {productPrice: 1}
+                  break;
+          case '4': sort = {productPrice: -1}
+                  break;
+          case '5': sort = {createdAt: -1}
+                  break;
+      }
+    }else{
+      sort={createdAt:-1}
+    }
+
+    const product = await productSchema.find().sort(sort)
 
     res.render('user/view-more', {
       title: 'Latest Products',

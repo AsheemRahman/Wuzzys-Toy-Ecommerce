@@ -92,6 +92,23 @@
     .cart-icon:hover {
         color: red;
     }
+
+    /* sort */
+    .product-sort{
+        display: flex;
+        justify-content: end;
+        height: 2.5rem;
+        margin: 2rem 10rem 0rem 0rem;
+    }
+    .product-sort select{
+        width: 20%;
+        background: #232323;
+        color: #fefeeb;
+        border-radius: 5px;
+    }
+
+    
+
 </style>
 
 
@@ -105,6 +122,16 @@
             <div class="col-12">
                 <div class="product-container">
                     <div class="latest-Products">
+                        <div class="product-sort mb-3">
+                            <select name="sort-box" class="sort-box" onchange="sortbyCategory('<%= title %>')">
+                                <option selected>Sort By</option>
+                                <option value="1">Product Name Aa - Zz</option>
+                                <option value="2">Product Name Zz - Aa</option>
+                                <option value="3">Price low - high</option>
+                                <option value="4">Price high - low</option>
+                                <option value="5">New arrival</option>
+                            </select>
+                        </div>
                         <h2>Latest Products</h2>
                     </div>
                     <div class="row">
@@ -149,3 +176,16 @@
 
 
     <%- include('footer') %>
+
+
+    <script>
+        function sortbyCategory(params){
+            const sortBoxValue = document.getElementsByName('sort-box')[0].value
+            let location;
+            if(params)
+            {
+                location =`?sortby=${sortBoxValue}`
+            }
+            window.location.href=`/user/View-more/${location}`
+        }
+    </script>
