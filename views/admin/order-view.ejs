@@ -8,7 +8,8 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-/* Title */
+/*----------------- Title ---------------------*/
+
 h1, h2 {
     color: #fefeeb;
     margin-bottom: 20px;
@@ -41,7 +42,8 @@ h1, h2 {
     color: #6596f0;
 }
 
-/* Payment Status */
+/*--------------------- Payment Status -----------------*/
+
 .payment-status-alert {
     color: #e74c3c;
     display: flex;
@@ -129,6 +131,14 @@ h1, h2 {
 <%- include('navbar') %>
 
 <div id="content">
+    <!---------------------- Breadcrumbs ----------------------->
+<nav class="breadcrumbs">
+    <ul>
+        <li><a href="/">Home</a></li>
+        <span>/</span>
+        <li><a href="/user/allproduct">All Product</a></li>
+    </ul>
+</nav>
     <h1>Order Details</h1>
     <div class="row" style="margin-bottom: 30px;">
         <div class="col-md-6">
@@ -177,7 +187,6 @@ h1, h2 {
                         <% } else { %>
                             <img src="placeholder.jpg" class="product-image" alt="Product Image">
                         <% } %>
-
                         <div class="product-details">
                             <h5 class="product-title"><%= item.product_name %></h5>
                             <!-- <p class="product-info"><strong>Price:</strong> ₹<%= item.product_price %></p> -->

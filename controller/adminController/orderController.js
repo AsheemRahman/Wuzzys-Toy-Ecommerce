@@ -18,8 +18,6 @@ const orderpage = async (req, res) => {
                 query.order_id = searchNumber;
             }
         }
-
-
         const orders = await orderSchema.find(query)
             .sort({ createdAt: -1 })
             .limit(limit)
@@ -54,43 +52,31 @@ const orderView = async (req,res) =>{
     }
 }
 
+const orderStatus=async (req, res) => {
+    try {
+        const { orderId } = req.params;
+        const { status } = req.body;
 
+        const validStatuses = ['Pending', 'Shipped', 'Confirmed', 'Delivered', 'Cancelled', 'Returned'];
+        const currentOrder = await orderSchema.findOne({_id:orderId});
 
-// const orderStatus = async (req, res, status, paymentStatus = null) => {
-//     try {
-//         const orderId = req.params.id;
+        if (!currentOrder) {
+            return res.status(404).send('Order not found');
+        }
+        // Prevent status change to previous statuses
+        if (validStatuses.indexOf(status) <= validStatuses.indexOf(currentOrder.status)) {
+            return res.status(400).send('Invalid status change');
+        }
+        currentOrder.orderStatus = status;
+        await currentOrder.save();
 
-//         // Prepare the update object
-//         const updateData = { status };
-//         if (paymentStatus) {
-//             updateData.paymentStatus = paymentStatus;
-//         }
-
-//         // Update order status in MongoDB
-//         const updatedOrder = await orderSchema.findByIdAndUpdate(orderId, {
-//             $set: updateData}, { new: true });
-
-//         // Check if order is updated successfully
-//         if (!updatedOrder) {
-//             return res.status(404).json({ msg: "Order not found" });
-//         }
-
-//         // Send response
-//         res.status(200).json({ success: true, message: `Order status updated to ${status}` });
-//     } catch (error) {
-//         console.error("Error:", error);
-//         res.status(500).json({ msg: "Internal server error" });
-//     }
-// };
-
-// const statusShipped = (req, res) => {
-//     updateOrderStatus(req, res, "Shipped");
-// };
-
-// const statusDelivered = (req, res) => {
-//     updateOrderStatus(req, res, "Delivered", "Completed");
-// };
+        res.send('Order status updated');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server error');
+    }
+}
 
 
 
-module.exports = { orderpage  , orderView }
+module.exports = { orderpage  , orderView , orderStatus }

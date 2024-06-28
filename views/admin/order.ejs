@@ -27,7 +27,7 @@
     }
 
 
-    .order-status {
+    .status-dropdown {
         background: #232323;
         color: #fefeeb;
         border-radius: 5px;
@@ -104,7 +104,7 @@
                             <th scope="col">Amount</th>
                             <th scope="col">Payment</th>
                             <th scope="col">Status</th>
-                            <th scope="col" >Action</th>
+                            <th scope="col">Action</th>
                             <th scope="col" class="product-table-last">View</th>
                         </tr>
                     </thead>
@@ -131,22 +131,23 @@
                                         <%= order.orderStatus %>
                                     </td>
                                     <td>
-                                        <% if (order.orderStatus !=='Delivered' && order.orderStatus !== 'Cancelled' ) { %>
-                                            <select class="order-status" data-order-id="<%= order._id %>">
-                                                <option value="Pending" <%=order.status==='Pending' ? 'selected' : '' %>
-                                                    >Pending</option>
-                                                <option value="Shipped" <%=order.status==='Shipped' ? 'selected' : '' %>
-                                                    >Shipped</option>
+                                        <% if (order.orderStatus !=='Delivered' && order.orderStatus !=='Cancelled' &&   order.orderStatus !== 'Returned') {%>
+                                            <select class="status-dropdown"onchange="updateOrderStatus('<%= order._id %>', this.value)">
+                                                <option value="Confirmed">Confirmed</option>
+                                                <option value="Shipped">Shipped</option>
                                                 <option value="Delivered">Delivered</option>
+                                                <option value="Cancelled">Cancelled</option>
+                                                <option value="Returned">Returned</option>
                                             </select>
                                             <% } %>
                                     </td>
                                     <td>
-                                        <a href="/admin/order-view/<%= order._id %>"><i class="bi bi-eye" style="color: #fefeeb;"></i></a>
+                                        <a href="/admin/order-view/<%= order._id %>"><i class="bi bi-eye"
+                                                style="color: #fefeeb;"></i></a>
                                     </td>
                                 </tr>
                                 <% slNo++; %>
-                                <% }); %>
+                                    <% }); %>
                     </tbody>
                 </table>
             </div>
@@ -157,20 +158,20 @@
         <ul class="pagination">
             <% if (currentPage> 1) { %>
                 <li class="page-item"><a class="page-link"
-                        href="/admin/products?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
+                        href="/admin/order?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
                 </li>
                 <% } %>
                     <% for (let i=1; i <=totalPages; i++) { %>
                         <li class="page-item <%= currentPage == i ? 'active' : '' %>">
                             <a class="page-link"
-                                href="/admin/products?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
+                                href="/admin/order?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
                                 <%= i %>
                             </a>
                         </li>
                         <% } %>
                             <% if (currentPage < totalPages) { %>
                                 <li class="page-item"><a class="page-link pagination-next-btn"
-                                        href="/admin/products?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                                        href="/admin/order?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
                                 </li>
                                 <% } %>
         </ul>
@@ -178,16 +179,32 @@
 
     <%- include('footer') %>
 
+
         <script>
-            function toggleDropdown(event, element) {
-                event.preventDefault();
-                const dropdownMenu = element.nextElementSibling;
-                dropdownMenu.classList.toggle('hidden');
-                document.addEventListener('click', function handleClickOutside(event) {
-                    if (!element.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                        dropdownMenu.classList.add('hidden');
-                        document.removeEventListener('click', handleClickOutside);
-                    }
-                });
+            function updateOrderStatus(orderId, newStatus) {
+                fetch(`/admin/order/${orderId}/status`,{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Your work has been saved",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1700)
+                        } else {
+                            response.text().then(text => alert(text));
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
             }
         </script>
