@@ -5,7 +5,8 @@
         gap: 5rem;
         justify-content: center;
     }
-    .checkout-icons{
+
+    .checkout-icons {
         display: flex;
         justify-content: space-around;
     }
@@ -287,13 +288,14 @@
         border-radius: 0.35rem;
         transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
-    ::placeholder{
+
+    ::placeholder {
         color: #fefeeb;
     }
-    .checkout-icons{
+
+    .checkout-icons {
         margin-top: 1.5rem;
     }
-
 </style>
 
 <%- include('navbar') %>
@@ -312,15 +314,15 @@
                             </a>
                             <% } else { %>
                                 <span class="">Maximum 3 address</span>
-                        <% } %>
-                        <div class="checkout-icons">
-                            <a href="/user/profile" title="Edit Address">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <a href="/user/profile" title="Delete Address">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                        </div>
+                                <% } %>
+                                    <div class="checkout-icons">
+                                        <a href="/user/profile" title="Edit Address">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a href="/user/profile" title="Delete Address">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
                     </div>
                 </div>
                 <div class="address-cards">
@@ -371,8 +373,8 @@
                         <div class="col-lg-4">
                             <div class="mb-3">
                                 <label class="form-label" for="billing-email-address">Email Address</label>
-                                <input type="email" class="form-control" name="customer_email"
-                                    placeholder="Enter email" value="<%=user.email%>" readonly>
+                                <input type="email" class="form-control" name="customer_email" placeholder="Enter email"
+                                    value="<%=user.email%>" readonly>
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -474,28 +476,31 @@
                                     <% cartDetails.items.forEach((product, index)=> { %>
                                         <tr>
                                             <td>
-                                                <%= product.productId.productName %>  x  <%= product.productCount %>
+                                                <%= product.productId.productName %> x <%= product.productCount %>
                                             </td>
                                             <td>
-                                                <%= product.productPrice  %>
+                                                <%= product.productPrice %>
                                             </td>
                                             <td>
                                                 <%= product.productId.productDiscount %>
                                             </td>
                                             <td>
-                                                <%= product.productPrice - product.productPrice * (product.productId.productDiscount / 100) %>
+                                                <%= product.productPrice - product.productPrice *
+                                                    (product.productId.productDiscount / 100) %>
                                             </td>
                                         </tr>
-                                    <% }) %>
-                                <% } %>
+                                        <% }) %>
+                                            <% } %>
                             </tbody>
                             <thead>
-                                
+
                                 <tr>
                                     <th>Total</th>
                                     <th></th>
                                     <th></th>
-                                    <th><%= cartDetails.payableAmount %></th>
+                                    <th>
+                                        <%= cartDetails.payableAmount %>
+                                    </th>
                                 </tr>
                             </thead>
                         </table>
@@ -524,7 +529,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="/user/checkout-address">
+                    <form method="post" id="checkAddress" action="/user/checkout-address">
                         <div class="form-group mb-2">
                             <label for="building">Flat, House no., Building, Company, Apartment</label>
                             <input type="text" name="building" class="form-control" id="building"
@@ -589,6 +594,8 @@
 
 
     <script>
+        //------------------------- selecting one item -------------------------
+
         let selectedAddressIndex = null;
         let selectedPaymentMethod = null;
 
@@ -600,27 +607,21 @@
         }
 
         function selectPaymentMethod(element, method) {
-            const methods = document.querySelectorAll('.payment-method');
-            methods.forEach(method => method.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedPaymentMethod = method;
             if (method === 1 || method === 2) {
                 Swal.fire({
                     icon: 'info',
                     title: 'Unavailable',
                     text: 'This payment method is currently unavailable. Please choose another method.',
                 });
+                return;
             }
+
+            const methods = document.querySelectorAll('.payment-method');
+            methods.forEach(methodElement => methodElement.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedPaymentMethod = method;
         }
-        // function selectPaymentMethod(element, method) {
-        //     if (method === 1 || method === 2) {
-        //         Swal.fire({
-        //             icon: 'info',
-        //             title: 'Unavailable',
-        //             text: 'This payment method is currently unavailable. Please choose another method.',
-        //         });
-        //     }
-        // }
+
         document.getElementById('place-order-btn').addEventListener('click', (e) => {
             e.preventDefault();
             if (selectedAddressIndex === null) {
@@ -639,10 +640,107 @@
                 });
                 return;
             }
-            
+
             const orderPlacementForm = document.getElementById('place-order-form');
             const URL = `/user/place-order/${selectedAddressIndex}/${selectedPaymentMethod}`;
             orderPlacementForm.action = URL;
             orderPlacementForm.submit();
         });
+
+
+        //------------------ Validation for the add address modal --------------------
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const checkAddress = document.getElementById('checkAddress');
+            const building = document.getElementsByName('building')[0];
+            const street = document.getElementsByName('street')[0];
+            const city = document.getElementsByName('city')[0];
+            const phone = document.getElementsByName('phonenumber')[0];
+            const pincode = document.getElementsByName('pincode')[0];
+            const landmark = document.getElementsByName('landmark')[0];
+            const state = document.getElementsByName('state')[0];
+            const country = document.getElementsByName('country')[0];
+
+            function validatePhone(phone) {
+                const phoneRe = /^\d{10}$/;
+                return phoneRe.test(phone);
+            }
+            function validatePincode(pincode) {
+                const pincodeRe = /^\d{6}$/;
+                return pincodeRe.test(pincode);
+            }
+            checkAddress.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (building.value.trim() === "" || !isNaN(building.value)) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Building field must not be empty and Not a Number.",
+                        icon: "error"
+                    });
+                } else if (building.value.length > 25 || building.value.length < 4) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Building field must be Greater than 4 letters and less than 25 letters.",
+                        icon: "error"
+                    });
+                } else if (street.value.trim() === "" || !isNaN(street.value)) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Street field must not be empty and Not a Number.",
+                        icon: "error"
+                    });
+                } else if (street.value.length > 25 || street.value.length < 4) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Street Field Must be Greater than 4 Letters and less than 25 letters.",
+                        icon: "error"
+                    });
+                } else if (city.value.trim() === "" || !isNaN(city.value)) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "City field must not be empty and Not a Number.",
+                        icon: "error"
+                    });
+                } else if (city.value.length > 25 || city.value.length < 4) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "City field must be Greater than 4 Words and less than 25 Words.",
+                        icon: "error"
+                    });
+                } else if (!validatePhone(phone.value)) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Phone number must be 10 digits.",
+                        icon: "error"
+                    });
+                } else if (!validatePincode(pincode.value)) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Pincode must be 6 digits.",
+                        icon: "error"
+                    });
+                } else if (landmark.value.trim() === "" || !isNaN(landmark.value)) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Landmark field must not be empty.",
+                        icon: "error"
+                    });
+                } else if (state.value.trim() === "" || !isNaN(state.value)) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "State field must not be empty.",
+                        icon: "error"
+                    });
+                } else if (country.value.trim() === "" || !isNaN(country.value)) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Country field must not be empty.",
+                        icon: "error"
+                    });
+                } else {
+                    checkAddress.submit();
+                }
+            });
+        });
+
     </script>

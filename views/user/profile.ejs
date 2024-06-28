@@ -71,8 +71,8 @@
         font-size: 0.875rem;
         font-weight: 400;
         line-height: 1;
-        color: #69707a;
-        background-color: #fff;
+        color: #fefeeb;
+        background-color: transparent;
         background-clip: padding-box;
         border: 1px solid #c5ccd6;
         -webkit-appearance: none;
@@ -82,11 +82,15 @@
         transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
 
+    .form-control:focus {
+        background: #232323;
+        color: #fefeeb;
+    }
 </style>
 
 <%- include('navbar') %>
 
- <!---------------------------------- User Profile ---------------------------------------->
+    <!---------------------------------- User Profile ---------------------------------------->
 
     <div class="container mt-5">
         <div class="row">
@@ -103,7 +107,7 @@
                             <div class="form-group mb-3">
                                 <label class="profile-text">Email address</label>
                                 <input type="email" class="form-control" name="email" required
-                                    value="<%= userDetail.email %>" disabled />
+                                    value="<%= userDetail.email %>" readonly />
                             </div>
                             <div class="form-group mb-5">
                                 <label class="profile-text">Phone Number</label>
@@ -121,50 +125,52 @@
                     <div class="card-body">
                         <div class="pen-option text-right">
                             <% if (userDetail.address.length < 4) { %>
-                                <a href="#" id="add-address-btn" data-bs-toggle="modal" data-bs-target="#addressModal" title="Add New Address">
+                                <a href="#" id="add-address-btn" data-bs-toggle="modal" data-bs-target="#addressModal"
+                                    title="Add New Address">
                                     <i class="bi bi-plus-circle"></i>
                                 </a>
-                            <% } else { %>
-                                <span class="">Maximum 4 addresses reached</span>
-                            <% } %>
+                                <% } else { %>
+                                    <span class="">Maximum 4 addresses reached</span>
+                                    <% } %>
                         </div>
                         <h2>Address</h2>
                         <% if (!userDetail.address || userDetail.address.length===0) { %>
                             <p class="mt-5">No Address Found. Please add an Address.</p>
-                        <% } else { %>
-                            <% userDetail.address.forEach((address,index)=>{ %>
-                                <div class="single-address-div">
-                                    <div class="address-icons">
-                                        <a href="/user/edit-address/<%= index %>" title="Edit Address">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        <a href="#" class="delete-address" data-address-index="<%= index %>" title="Delete Address">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
+                            <% } else { %>
+                                <% userDetail.address.forEach((address,index)=>{ %>
+                                    <div class="single-address-div">
+                                        <div class="address-icons">
+                                            <a href="/user/edit-address/<%= index %>" title="Edit Address">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a href="#" class="delete-address" data-address-index="<%= index %>"
+                                                title="Delete Address">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                        <div class="address">
+                                            <p>
+                                                <span>
+                                                    <%= address.building %>,
+                                                </span>
+                                                <span>
+                                                    <%= address.street %>
+                                                </span>
+                                                <span>
+                                                    <%= address.city %> ,
+                                                </span>
+                                            </p>
+                                            <p>
+                                                <%= address.state %>, <%= address.country %> ,<%= address.pincode %>,
+                                                            <%= address.phonenumber %>
+                                            </p>
+                                            <span>
+                                                <%= address.landmark %>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="address">
-                                        <p>
-                                            <span>
-                                                <%= address.building %>,
-                                            </span>
-                                            <span>
-                                                <%= address.street %>
-                                            </span>
-                                            <span>
-                                                <%= address.city %> ,
-                                            </span>
-                                        </p>
-                                        <p>
-                                            <%= address.state %>, <%= address.country %> ,<%= address.pincode %>,
-                                            <%= address.phonenumber %>
-                                        </p>
-                                        <span>
-                                            <%= address.landmark %>
-                                        </span>
-                                    </div>
-                                </div>
-                            <% }) %>
-                        <% } %>
+                                    <% }) %>
+                                        <% } %>
                     </div>
                 </div>
             </div>
@@ -184,7 +190,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form method="post" action="/user/add-address">
+                        <form id="addressForm" method="post" action="/user/add-address">
                             <div class="form-group mb-2">
                                 <label for="building">Flat, House no., Building, Company, Apartment</label>
                                 <input type="text" name="building" class="form-control" id="building"
@@ -204,7 +210,7 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="phonenumber">Phone Number</label>
-                                        <input type="text" name="phonenumber" class="form-control" id="phonenumber"
+                                        <input type="tel" name="phonenumber" class="form-control" id="phonenumber"
                                             placeholder="Contact Number" required>
                                     </div>
                                 </div>
@@ -217,7 +223,7 @@
                                 </div>
                             </div>
                             <div class="form-group mb-2">
-                                <label for="landmark">Land Mark</label>
+                                <label for="landmark">Landmark</label>
                                 <input type="text" name="landmark" class="form-control" id="landmark"
                                     placeholder="Enter Nearest Landmark" required>
                             </div>
@@ -247,14 +253,14 @@
             </div>
         </div>
 
-<!----------------------------------- Sweet Alert For Delete ---------------------------------------->
+        <!----------------------------------- Sweet Alert For Delete ---------------------------------------->
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 const deleteButtons = document.querySelectorAll('.delete-address');
-        
+
                 deleteButtons.forEach(button => {
-                    button.addEventListener('click', function(event) {
+                    button.addEventListener('click', function (event) {
                         event.preventDefault();
                         const addressIndex = parseInt(this.getAttribute('data-address-index'));
                         if (!isNaN(addressIndex) && addressIndex >= 0) {
@@ -282,4 +288,102 @@
                     });
                 });
             });
+
+            // validation for modal
+
+            document.addEventListener('DOMContentLoaded', (event) => {
+                const addressForm = document.getElementById('addressForm');
+                const building = document.getElementsByName('building')[0];
+                const street = document.getElementsByName('street')[0];
+                const city = document.getElementsByName('city')[0];
+                const phone = document.getElementsByName('phonenumber')[0];
+                const pincode = document.getElementsByName('pincode')[0];
+                const landmark = document.getElementsByName('landmark')[0];
+                const state = document.getElementsByName('state')[0];
+                const country = document.getElementsByName('country')[0];
+
+                function validatePhone(phone) {
+                    const phoneRe = /^\d{10}$/;
+                    return phoneRe.test(phone);
+                }
+                function validatePincode(pincode) {
+                    const pincodeRe = /^\d{6}$/;
+                    return pincodeRe.test(pincode);
+                }
+                addressForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (building.value.trim() === "" || !isNaN(building.value)) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Building field must not be empty and Not a Number.",
+                            icon: "error"
+                        });
+                    } else if ( building.value.length > 25 || building.value.length < 4) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Building field must be Greater than 4 letters and less than 25 letters.",
+                            icon: "error"
+                        });
+                    }else if (street.value.trim() === "" || !isNaN(street.value) ) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Street field must not be empty and Not a Number.",
+                            icon: "error"
+                        });
+                    }else if (street.value.length > 25 || street.value.length < 4 ) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Street Field Must be Greater than 4 Letters and less than 25 letters.",
+                            icon: "error"
+                        });
+                    }else if (city.value.trim() === "" || !isNaN(city.value)) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "City field must not be empty and Not a Number.",
+                            icon: "error"
+                        });
+                    }else if (city.value.length > 25 || city.value.length < 4) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "City field must be Greater than 4 Words and less than 25 Words.",
+                            icon: "error"
+                        });
+                    }else if (!validatePhone(phone.value)) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Phone number must be 10 digits.",
+                            icon: "error"
+                        });
+                    } else if (!validatePincode(pincode.value)) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Pincode must be 6 digits.",
+                            icon: "error"
+                        });
+                    } else if (landmark.value.trim() === "" || !isNaN(landmark.value)) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Landmark field must not be empty.",
+                            icon: "error"
+                        });
+                    } else if (state.value.trim() === "" || !isNaN(state.value) ) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "State field must not be empty.",
+                            icon: "error"
+                        });
+                    } else if (country.value.trim() === "" || !isNaN(country.value) ) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Country field must not be empty.",
+                            icon: "error"
+                        });
+                    } else {
+                        addressForm.submit();
+                    }
+                });
+            });
+
+
+
         </script>
