@@ -17,6 +17,9 @@ const home = async (req, res) => {
 const allproduct = async (req, res) => {
   try {
     const sortby = req.query.sortby || ""
+    const search = req.query.search || "";
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
 
     let sort="";
     if(sortby){
@@ -36,12 +39,21 @@ const allproduct = async (req, res) => {
       sort={createdAt:-1}
     }
 
-    const product = await productSchema.find({ isActive : true }).sort(sort)
+    const product = await productSchema.find({ isActive : true })
+        .sort(sort)
+        .limit(limit)
+        .skip((page - 1) * limit)
+
+        const count = await productSchema.countDocuments({ productName: { $regex: search, $options: 'i' } });
 
     res.render('user/allproduct', {
       title: 'All Product',
       product,
-      user: req.session.user
+      user: req.session.user,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+      search,
+      limit,page
     })
   } catch (error) {
     console.log(`error from All Products page rendering ${error}`)
