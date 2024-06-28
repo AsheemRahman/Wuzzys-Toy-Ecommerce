@@ -26,16 +26,16 @@
 
 <!-------------------------------------------- All Products ------------------------------------------------->
 <div class="product-container">
-    <!-- <div class="product-sort mb-3">
-        <select name="" class="" onchange="">
-            <option disabled selected>Sort By</option>
-            <option value="1">Price low - high</option>
-            <option value="2">Price high - low</option>
-            <option value="3">New arrival</option>
-            <option value="4">Product Name Aa - Zz</option>
-            <option value="5">Product Name Zz - Aa</option>
+    <div class="product-sort mb-3">
+        <select name="sort-box" class="sort-box" onchange="sortbyCategory('<%= title %>')">
+            <option selected>Sort By</option>
+            <option value="1">Product Name Aa - Zz</option>
+            <option value="2">Product Name Zz - Aa</option>
+            <option value="3">Price low - high</option>
+            <option value="4">Price high - low</option>
+            <option value="5">New arrival</option>
         </select>
-    </div> -->
+    </div>
     <h2>Our Products</h2>
     <div class="product-list-box container">
         <% product.forEach((product) => { %>
@@ -77,3 +77,16 @@
 </div>
 
 <%- include('footer') %>
+
+
+<script>
+    function sortbyCategory(params){
+        const sortBoxValue = document.getElementsByName('sort-box')[0].value
+        let location;
+        if(params)
+        {
+            location =`?sortby=${sortBoxValue}`
+        }
+        window.location.href=`/user/allproduct/${location}`
+    }
+</script>
