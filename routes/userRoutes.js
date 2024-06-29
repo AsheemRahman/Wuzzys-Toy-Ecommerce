@@ -80,7 +80,8 @@ user.post('/update-address/:index',checkUser,profileController.updateAddress)
 user.get('/cart', checkUser , cartController.cart)
 user.get('/add-to-cart/:id', checkUser, cartController.addToCartPost)
 user.get('/remove-item/:id',checkUser,cartController.removeItem)
-user.get('/quantity/:id', checkUser ,cartController.quantity);
+user.post('/cart/increment',isUser,cartController.increment)
+user.post('/cart/decrement',isUser,cartController.decrement)
 
 //---------------------------------- checkout -----------------------
 

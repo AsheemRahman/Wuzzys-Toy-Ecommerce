@@ -333,7 +333,7 @@
                                             Category : <%= item.productId.productCollection %>
                                         </div>
                                     </div>
-                                    <div class="cart-product-quantity">
+                                    <!-- <div class="cart-product-quantity">
                                         <div id="notification"
                                             style="display: none; position: absolute; top: 20px; right: 20px; padding: 10px;">
                                         </div>
@@ -350,6 +350,14 @@
                                             <%=item.productCount <=0 ? 'disabled' : '' %>>
                                             <i class="bi bi-plus-lg" style="color: #fefeeb;"></i>
                                         </button>
+                                    </div> -->
+                                    <div class="cart-product-quantity">
+                                        <button class="btn btn-outline-secondary btn-sm"
+                                            onclick="decrement(`<%= item.productId._id %>`)">-</button>
+                                        <input type="text" class="form-control text-center" id="quantity"
+                                            value="<%= item.productCount %>" readonly>
+                                        <button class="btn btn-outline-secondary btn-sm"
+                                            onclick="increment(`<%= item.productId._id %>`)">+</button>
                                     </div>
                                     <div class="col cart-price">
                                         <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
@@ -427,17 +435,18 @@
                             </div>
                         </div>
                         <div class="cart-checkout">
-                            <% let allInStock = true; %>
-                            <% cart.items.forEach((item) => { %>
-                                <% if (item.productId.productQuantity <= 0) { %>
-                                    <% allInStock = false; %>
-                                <% } %>
-                            <% }) %>
-                            <% if (allInStock) { %>
-                                <a href="/user/checkout" class="btn btn-secondary cart-checkout-button">CHECKOUT</a>
-                            <% } else { %>
-                                <p>One or more products are out of stock</p>
-                            <% } %>
+                            <% let allInStock=true; %>
+                                <% cart.items.forEach((item)=> { %>
+                                    <% if (item.productId.productQuantity <=0) { %>
+                                        <% allInStock=false; %>
+                                            <% } %>
+                                                <% }) %>
+                                                    <% if (allInStock) { %>
+                                                        <a href="/user/checkout"
+                                                            class="btn btn-secondary cart-checkout-button">CHECKOUT</a>
+                                                        <% } else { %>
+                                                            <p>One or more products are out of stock</p>
+                                                            <% } %>
                         </div>
                     </div>
                 </div>
@@ -493,47 +502,45 @@
                                 });
                             });
                         });
-                        const quantity = async (type, productId) => {
-                            console.log('Type:', type);
-                            console.log('Product ID:', productId);
+                        async function increment(productId) {
+                            console.log(productId)
                             try {
-                                const res = await fetch(`/quantity/${productId}?action=${type}`, {
-                                    method: 'GET',
+                                const res = await fetch('/user/cart/increment', {
+                                    method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json'
                                     },
+                                    body: JSON.stringify({ productId })
                                 });
-                                if (!res.ok) {
-                                    throw new Error(`HTTP error! Status: ${res.status}`);
-                                }
-                                const data = await res.json();
-                                console.log('Response:', data);
-                                if (data.message === 'Quantity updated successfully') {
-                                    const quantityInput = document.getElementById(`quantity_${productId}`);
-                                    quantityInput.classList.add('highlight-decrease'); // or 'highlight-increase'
-                                    setTimeout(() => {
-                                        quantityInput.classList.remove('highlight-decrease'); // or 'highlight-increase'
-                                        window.location.reload(); // Reload the page after successful update
-                                    }, 500);
-                                } else if (data.error) {
-                                    // Handle specific error scenarios
-                                    const notification = document.getElementById('notification');
-                                    notification.innerText = data.error;
-                                    notification.style.display = 'block';
-                                    setTimeout(() => {
-                                        notification.style.display = 'none';
-                                    }, 5000);
+                                if (res.ok) {
+                                    window.location.href = '/user/cart';
                                 } else {
-                                    throw new Error('Unexpected response from server');
+                                    const error = await res.text();
+                                    showError(error);
                                 }
                             } catch (error) {
-                                console.error('Error:', error);
-                                const notification = document.getElementById('notification');
-                                notification.innerText = error.message;
-                                notification.style.display = 'block';
-                                setTimeout(() => {
-                                    notification.style.display = 'none';
-                                }, 5000);
+                                console.error(`Error incrementing product quantity in cart: ${error}`);
                             }
-                        };
+                        }
+
+                        async function decrement(productId) {
+                            try {
+                                const res = await fetch('/user/cart/decrement', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ productId })
+                                });
+                                if (res.ok) {
+                                    window.location.href = '/user/cart';
+                                } else {
+                                    const error = await res.text();
+                                    showError(error);
+                                }
+                            } catch (error) {
+                                console.error(`Error decrementing product quantity in cart: ${error}`);
+                            }
+                        }
+
                     </script>

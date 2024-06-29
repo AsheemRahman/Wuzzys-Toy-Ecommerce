@@ -3,15 +3,18 @@ const mongoose =require('mongoose')
 const itemSchema = new mongoose.Schema({
     productId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'product'
+        ref:'product',
+        required: true
     },
 
     productCount:{
-        type :Number
+        type :Number,
+        default: 1,
     },
 
     productPrice:{
-        type:Number
+        type:Number,
+        required: true
     }
 }, { _id: false ,timestamps:true});
 
