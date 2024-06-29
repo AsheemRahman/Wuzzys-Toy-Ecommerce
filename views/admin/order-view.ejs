@@ -123,6 +123,11 @@ h1, h2 {
     font-size: 14px;
     color: #aaa;
 }
+.admin-orderDetails{
+    display: flex;
+    justify-content: center;
+    margin: 3rem;
+}
 
 </style>
 
@@ -130,16 +135,16 @@ h1, h2 {
 
 <%- include('navbar') %>
 
-<div id="content">
-    <!---------------------- Breadcrumbs ----------------------->
 <nav class="breadcrumbs">
     <ul>
-        <li><a href="/">Home</a></li>
+        <li><a href="/admin/order">Order</a></li>
         <span>/</span>
-        <li><a href="/user/allproduct">All Product</a></li>
+        <li><a href="">Order Details</a></li>
     </ul>
 </nav>
-    <h1>Order Details</h1>
+<div id="content">
+    <!---------------------- Breadcrumbs ----------------------->
+    <h1 class="admin-orderDetails">Order Details</h1>
     <div class="row" style="margin-bottom: 30px;">
         <div class="col-md-6">
             <div class="card shipping-card">
@@ -147,7 +152,7 @@ h1, h2 {
                 <div class="card-body">
                     <% if (orderDetails.address) { %>
                         <p class="card-text">
-                            <strong>Name:</strong> <%= orderDetails.address.customer_name %><br>
+                            <strong>Name:</strong> <%= orderDetails.address.customer_email %><br>
                             <strong>Address:</strong> <%= orderDetails.address.building %><br>
                             <strong>District:</strong> <%= orderDetails.address.street %><br>
                             <strong>State:</strong> <%= orderDetails.address.city %><br>
@@ -189,14 +194,23 @@ h1, h2 {
                         <% } %>
                         <div class="product-details">
                             <h5 class="product-title"><%= item.product_name %></h5>
-                            <!-- <p class="product-info"><strong>Price:</strong> ₹<%= item.product_price %></p> -->
                             <p class="product-info"><strong>Qty:</strong> <%= item.product_quantity %></p>
                             <p class="product-info"><strong>Total:</strong> ₹<%= item.product_price * item.product_quantity  %></p>
                             <p class="product-info">
                                 <strong>Status:</strong>
-                                <span class="product-status <%= item.status === 'Delivered' ? 'status-delivered' : 'status-pending' %>">
-                                    <%= item.product_status %>
-                                </span>
+                                    <% if(orderDetails.orderStatus === 'Pending') { %>
+                                        <p class="btn btn-primary"><%= orderDetails.orderStatus %></p>
+                                    <% } else if(orderDetails.orderStatus === 'Confirmed') { %>
+                                        <p class="btn btn-primary"><%= orderDetails.orderStatus %></p>
+                                    <% } else if(orderDetails.orderStatus === 'Returned') { %>
+                                        <p class="btn btn-danger"><%= orderDetails.orderStatus %></p>
+                                    <% } else if(orderDetails.orderStatus === 'Delivered') { %>
+                                        <p class="btn btn-success"><%= orderDetails.orderStatus %></p>
+                                    <% } else if(orderDetails.orderStatus === 'Cancelled') { %>
+                                        <p class="btn btn-warning"><%= orderDetails.orderStatus %></p>
+                                    <% } else if(orderDetails.orderStatus === 'Shipped') { %>
+                                        <p class="btn btn-secondary"><%= orderDetails.orderStatus %></p>
+                                    <% } %>
                             </p>
                         </div>
                     </div>
