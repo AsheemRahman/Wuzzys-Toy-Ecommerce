@@ -1,4 +1,10 @@
 <style>
+    .my-order{
+        display: flex;
+        justify-content: center;
+        color: #fefeeb;
+        margin: 3rem;
+    }
     .avatar-lg {
         height: 5rem;
         width: 5rem;
@@ -116,6 +122,7 @@
 
 <%- include('navbar') %>
 <div class="container mt-5">
+    <h1 class="my-order">My Orders</h1>
     <div class="row order-div">
         <div>
             <% if(orderDetails.length != 0) { %>
@@ -182,7 +189,7 @@
                             <div class="order-actions-top">
                                 <% if(item.orderStatus ==='Delivered' ){ %>
                                     <a class="btn btn-danger">Return Order</a>
-                                <% } else if(item.orderStatus === 'Confirmed' ){ %>
+                                <% } else if(item.orderStatus === 'Confirmed' || item.orderStatus === 'Shipped' ){ %>
                                     <a class="btn btn-danger" id="cancelOrder" data-bs-toggle="modal" data-bs-target="#cancelOrderModal" data-id="<%= item._id %>">Cancel Order</a>
                                     <% } %>
                             </div>

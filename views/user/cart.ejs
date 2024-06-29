@@ -333,24 +333,6 @@
                                             Category : <%= item.productId.productCollection %>
                                         </div>
                                     </div>
-                                    <!-- <div class="cart-product-quantity">
-                                        <div id="notification"
-                                            style="display: none; position: absolute; top: 20px; right: 20px; padding: 10px;">
-                                        </div>
-                                        <button type="button" class="quantity-right-plus btn cl8"
-                                            onclick="quantity('dec', '<%= item.productId._id %>')" data-type="minus"
-                                            <%=item.productCount <=0 ? 'disabled' : '' %>>
-                                            <i class="bi bi-dash-lg" style="color: #fefeeb;"></i>
-                                        </button>
-                                        <input class="num-product" type="number" name="num-product1"
-                                            id="quantity_<%= item.productId._id %>" value="<%= item.productCount %>"
-                                            max="10" disabled>
-                                        <button type="button" class="quantity-right-plus btn cl8"
-                                            onclick="quantity('inc', '<%= item.productId._id %>')" data-type="plus"
-                                            <%=item.productCount <=0 ? 'disabled' : '' %>>
-                                            <i class="bi bi-plus-lg" style="color: #fefeeb;"></i>
-                                        </button>
-                                    </div> -->
                                     <div class="cart-product-quantity">
                                         <button class="btn btn-outline-secondary btn-sm"
                                             onclick="decrement(`<%= item.productId._id %>`)">-</button>
