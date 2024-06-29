@@ -252,7 +252,6 @@
         background: #1a1a1a;
         color: #fefeeb;
     }
-
 </style>
 
 <%- include('navbar') %>
@@ -456,6 +455,7 @@
                                 }
                             } catch (error) {
                                 console.error(`Error incrementing product quantity in cart: ${error}`);
+                                showError('An unexpected error occurred');
                             }
                         }
 
@@ -477,6 +477,15 @@
                             } catch (error) {
                                 console.error(`Error decrementing product quantity in cart: ${error}`);
                             }
+                        }
+
+                        function showError(message) {
+                            // Swal.fire('Error', message, 'error');
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: message,
+                            });
                         }
 
                     </script>

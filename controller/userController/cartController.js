@@ -114,15 +114,6 @@ const removeItem = async (req, res) => {
 
 //--------------------------------------- Quantity in cart ---------------------------------
 
-function showError(message) {
-    console.error(`Error: ${message}`);
-    Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: message,
-    });
-}
-
 //------------- Increment Function ---------------
 
 const increment = async (req, res) => {
@@ -147,10 +138,10 @@ const increment = async (req, res) => {
         if (productInCart) {
             const total = productInCart.productCount + 1;
             if (total > max) {
-                return res.status(400).send(`Only ${max} can be added`);
+                return res.status(400).send("Maximum Quantity per Product is 10");
             }
             if (total > product.productQuantity) {
-                return res.status(400).send(`Only ${product.productQuantity} left`);
+                return res.status(400).send(`Quantity of this product is ${product.productQuantity}`);
             }
             productInCart.productCount = total;
             await cart.save();
