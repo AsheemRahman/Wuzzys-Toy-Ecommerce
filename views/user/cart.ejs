@@ -427,7 +427,17 @@
                             </div>
                         </div>
                         <div class="cart-checkout">
-                            <a href="/user/checkout" class="btn btn-secondary cart-checkout-button">CHECKOUT</a>
+                            <% let allInStock = true; %>
+                            <% cart.items.forEach((item) => { %>
+                                <% if (item.productId.productQuantity <= 0) { %>
+                                    <% allInStock = false; %>
+                                <% } %>
+                            <% }) %>
+                            <% if (allInStock) { %>
+                                <a href="/user/checkout" class="btn btn-secondary cart-checkout-button">CHECKOUT</a>
+                            <% } else { %>
+                                <p>One or more products are out of stock</p>
+                            <% } %>
                         </div>
                     </div>
                 </div>
