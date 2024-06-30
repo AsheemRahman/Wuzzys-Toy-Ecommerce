@@ -1,0 +1,100 @@
+<style>
+    .modal-dialog {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        width: 988px;
+        height: 650px;
+    }
+
+    .modal-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: center;
+    }
+
+    .modal-header button {
+        display: flex;
+        right: 0;
+    }
+</style>
+
+
+
+
+<!-- Modal Structure -->
+<div class="modal fade" id="popupModal" tabindex="-1" role="dialog" aria-labelledby="popupModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="popupModalLabel">Modal title</h5>
+                </button>
+            </div>
+            <div class="modal-body">
+                Modal content
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        async function showPopups() {
+            console.log('DOM fully loaded and parsed');
+
+            const popup = <%- JSON.stringify(popup) %>;
+            console.log('Popup data:', popup);
+
+            if (popup && Object.keys(popup).length > 0) {
+                console.log('Processing popup:', popup);
+
+                if (!sessionStorage.getItem('popupShown')) {
+                    try {
+                        console.log('Popup not shown before, showing now.');
+                        // Set modal title and content
+                        const modalTitle = document.getElementById('popupModalLabel');
+                        const modalBody = document.querySelector('.modal-body');
+                        if (modalTitle && modalBody) {
+                            modalTitle.innerText = popup.title;
+                            modalBody.innerText = popup.text;
+                        } else {
+                            console.error('Modal elements not found.');
+                            return;
+                        }
+                        // Show modal
+                        $('#popupModal').modal('show');
+                        console.log('Popup modal triggered to show.');
+
+                        sessionStorage.setItem('popupShown', 'true');
+                        console.log('Popup shown, session storage updated.');
+                        // Wait for modal to be closed
+                        await new Promise(resolve => {
+                            $('#popupModal').on('hidden.bs.modal', resolve);
+                        });
+                        console.log('Modal has been closed.');
+                    } catch (error) {
+                        console.error('Error showing popup:', error);
+                    }
+                } else {
+                    console.log('Popup already shown, not displaying again.');
+                }
+            } else {
+                console.log('No popups data to process');
+            }
+        }
+        showPopups();
+    });
+</script>

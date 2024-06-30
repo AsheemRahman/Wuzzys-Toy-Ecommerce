@@ -1,12 +1,18 @@
 const productSchema = require('../../model/productSchema')
 const categorySchema = require('../../model/categorySchema')
 
+const checkPopup = require('../../model/PopupSchema')
+
 //----------------------------------- Home page render --------------------------------
 
 const home = async (req, res) => {
   try {
+    const popup = await checkPopup.findOne({
+      startDate: { $lte: new Date() },
+      endDate: { $gte: new Date() }
+    });
     const product = await productSchema.find({ isActive : true })
-    res.render('user/home', { title: 'Home', product, user: req.session.user })
+    res.render('user/home', { title: 'Home', product, user: req.session.user , popup })
   } catch (error) {
     console.log(`error while rendering home ${error}`)
   }

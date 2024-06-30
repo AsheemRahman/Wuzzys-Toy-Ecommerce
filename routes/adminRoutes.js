@@ -7,6 +7,9 @@ const productController = require('../controller/adminController/productControll
 const userContoller = require('../controller/adminController/userController')
 const orderController = require('../controller/adminController/orderController')
 
+const isPopup = require('../middleware/popup');
+const popController = require('../controller/adminController/popupController')
+
 
 //-----------------------------  login  ----------------------------
 
@@ -43,20 +46,28 @@ admin.get('/editproduct/:id',isAdmin,productController.editProduct)
 admin.post('/editproduct/:id',isAdmin,productController.multer,productController.editProductPost)
 
 
-//--------------------------- user details ----------------------------
+//--------------------------- Customer Details ----------------------------
 
 admin.get('/users',isAdmin,userContoller.users)
 admin.get('/userstatus',isAdmin,userContoller.status)
 
 
-// ------------------------------ Order  ------------------------------
+// ----------------------------- Order Details ----------------------------
 
 admin.get('/order', isAdmin , orderController.orderpage)
-admin.get("/order-view/:id", orderController.orderView)
-admin.post("/order/:orderId/status",orderController.orderStatus)
+admin.get("/order-view/:id", isAdmin , orderController.orderView)
+admin.post("/order/:orderId/status", isAdmin , orderController.orderStatus)
 
+// -------------------------------- Popup --------------------------------
 
-//---------------------------- admin logout ----------------------------
+//------- popup management ---------
+admin.get('/popups',isPopup , popController.getPopups);
+//------- Create popup--------
+admin.post('/create-popup',isPopup , popController.createPopup);
+//------- Update popup -------
+admin.post('/update-popup/:id', popController.updatePopup);
+
+//---------------------------- admin logout ------------------------------
 
 admin.get('/logout',adminController.logout)
 

@@ -1,0 +1,227 @@
+<style>
+    .admin-product {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product-head {
+            border-radius: 10px;
+            margin: 24px;
+            background: #232323;
+            width: 90%;
+        }
+
+        .product-header {
+            margin-left: 30px;
+        }
+
+
+        .form-input {
+            height: 80%;
+        }
+
+        .form-product {
+            display: flex;
+            align-items: center;
+        }
+</style>
+
+<%- include('navbar') %>
+<div class="admin-home">
+    <div class="sidebar">
+        <div class="menu-item">
+            <a href="/admin/home">
+                <div class="admin-menu"><i class="bi bi-grid"></i>Dashboard</div>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="/admin/collection">
+                <div class="admin-menu"><i class="bi bi-collection-fill"></i>Category</div>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="/admin/products">
+                <div class="admin-menu"><i class="bi bi-basket-fill"></i>Products</div>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="/admin/users">
+                <div class="admin-menu"><i class="bi bi-people"></i>Customers</div>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="/admin/order">
+                <div class="admin-menu"><i class="bi bi-cart"></i>Orders</div>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="#">
+                <div class="admin-menu"><i class="bi bi-receipt"></i>Coupons</div>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="#">
+                <div class="admin-menu"><i class="bi bi-image"></i>Banner</div>
+            </a>
+        </div>
+        <div class="menu-item admin-menu-loyout">
+            <a href="/admin/logout">
+                <div class="admin-menu"><i class="bi bi-box-arrow-right"></i>Logout</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="admin-product mb-4">
+        <div class="product-head d-flex justify-content-between">
+            <div class="product-header d-flex justify-content-between align-items-center gap-5">
+                <h2 class="text-white">
+                    <%= title %>
+                </h2>
+                <form action="/admin/popups" method="get" class="form-product  d-flex gap-1">
+                    <input type="text" name="search" placeholder="search" class="form-input form-control">
+                    <input type="submit" class="btn submit-btn" value="Search">
+                </form>
+            </div>
+            <button class="btn btn-primary m-3" data-toggle="modal" data-target="#addPopupModal">Add Popup</button>
+        </div>
+
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr class="product-table-head">
+                        <th scope="col" class="product-table-first">SL.No</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Content</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col" class="product-table-last">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                            <% popups.forEach(( popup , index) => { %>
+                            <tr>
+                                <td>
+                                    <%= index + 1 %>
+                                </td>
+                                <td>
+                                    <%= popup.title %>
+                                </td>
+                                <td>
+                                    <%= popup.content %>
+                                </td>
+                                <td>
+                                    <%= popup.startDate.toISOString().split('T')[0] %>
+                                </td>
+                                <td>
+                                    <%= popup.endDate.toISOString().split('T')[0] %>
+                                </td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm" onclick="showUpdateForm(
+                                        '<%= popup._id %>',
+                                        '<%= popup.title %>',
+                                        '<%= popup.content %>',
+                                        '<%= popup.startDate.toISOString().split('T')[0] %>',
+                                        '<%= popup.endDate.toISOString().split('T')[0] %>')">Update
+                                    </button>
+                                </td>
+                            </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Add Popup Modal -->
+<div class="modal" id="addPopupModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="addPopupForm" action="/admin/create-popup" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Popup</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="addTitle">Title</label>
+                        <input type="text" class="form-control" id="addTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addContent">Content</label>
+                        <textarea class="form-control" id="addContent" name="content" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="addStartDate">Start Date</label>
+                        <input type="date" class="form-control" id="addStartDate" name="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addEndDate">End Date</label>
+                        <input type="date" class="form-control" id="addEndDate" name="endDate" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create Popup</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Update Popup Modal -->
+    <div class="modal" id="updatePopupModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="updatePopupForm" action="" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update Popup</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="updateTitle">Title</label>
+                            <input type="text" class="form-control" id="updateTitle" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateContent">Content</label>
+                            <textarea class="form-control" id="updateContent" name="content" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateStartDate">Start Date</label>
+                            <input type="date" class="form-control" id="updateStartDate" name="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateEndDate">End Date</label>
+                            <input type="date" class="form-control" id="updateEndDate" name="endDate" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Popup</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<%- include('footer') %>
+
+
+<script>
+    function showUpdateForm(id, title, content, startDate, endDate) {
+        $('#updatePopupForm').attr('action', '/admin/update-popup/' + id);
+        $('#updateTitle').val(title);
+        $('#updateContent').val(content);
+        $('#updateStartDate').val(startDate);
+        $('#updateEndDate').val(endDate);
+        $('#updatePopupModal').modal('show');
+    }
+</script>
