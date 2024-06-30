@@ -11,6 +11,10 @@
         color: #fefeeb;
         border-radius: 5px;
     }
+    .pagination-controls{
+        display: flex;
+        justify-content: center;
+    }
 </style>
 
 <%- include('navbar') %>
@@ -76,7 +80,30 @@
     </div>
 </div>
 
-<%- include('pagination') %>
+<!------------------------------------ Pagination Controls -------------------------------->
+
+<div class="pagination-controls d-flex  mt-3">
+    <ul class="pagination">
+        <% if (currentPage> 1) { %>
+            <li class="page-item"><a class="page-link"
+                    href="/user/allproduct/?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
+            </li>
+            <% } %>
+                <% for (let i=1; i <=totalPages; i++) { %>
+                    <li class="page-item <%= currentPage == i ? 'active' : '' %>">
+                        <a class="page-link"
+                            href="/user/allproduct/?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
+                            <%= i %>
+                        </a>
+                    </li>
+                    <% } %>
+                        <% if (currentPage < totalPages) { %>
+                            <li class="page-item"><a class="page-link pagination-next-btn"
+                                    href="/user/allproduct/?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                            </li>
+                            <% } %>
+    </ul>
+</div>
 
 <%- include('footer') %>
 

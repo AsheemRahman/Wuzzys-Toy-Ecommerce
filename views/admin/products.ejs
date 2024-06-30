@@ -17,7 +17,6 @@
             margin-left: 30px;
         }
 
-
         .form-input {
             height: 80%;
         }
@@ -26,7 +25,6 @@
             display: flex;
             align-items: center;
         }
-
 
 </style>
 
@@ -140,8 +138,7 @@
                                     <td class="products-icon">
                                         <a href="/admin/editproduct/<%= product.id %>"><i
                                                 class="bi bi-pencil-square product-icons"></i></a>
-                                        <a
-                                            href="/admin/productstatus?id=<%= product.id %>&&status=<%= product.isActive%>"><i
+                                        <a href="/admin/productstatus?id=<%= product.id %>&&status=<%= product.isActive%>"><i
                                                 class="bi bi-x-circle product-icons"></i></a>
                                         <a href="/admin/products/<%= product.id %>" class="sweet-alert-delete"><i
                                                 class="bi bi-trash3 product-icons"></i></a>

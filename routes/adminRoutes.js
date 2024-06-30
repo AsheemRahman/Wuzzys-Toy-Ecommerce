@@ -63,9 +63,12 @@ admin.post("/order/:orderId/status", isAdmin , orderController.orderStatus)
 //------- popup management ---------
 admin.get('/popups',isPopup , popController.getPopups);
 //------- Create popup--------
-admin.post('/create-popup',isPopup , popController.createPopup);
+admin.post('/create-popup', isPopup , popController.createPopup);
 //------- Update popup -------
 admin.post('/update-popup/:id', popController.updatePopup);
+//------- delete popup -------
+admin.get('/popups/:id',isAdmin , popController.deletePopup);
+
 
 //---------------------------- admin logout ------------------------------
 

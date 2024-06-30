@@ -12,7 +12,6 @@ const checkPopup = async (req, res, next) => {
     } else {
         res.locals.popup = null;
     }
-
     next();
 };
 

@@ -38,11 +38,9 @@ const product = async (req, res) => {
 
 const addProduct = async (req,res) => {
     try {
-        
         const productCollection = await categorySchema.find()
 
         res.render('admin/addProduct',{title: "Add Product",productCollection})
-
     } catch (error) {
         console.log(`error while rendering addproduct page ${error}`)
     }

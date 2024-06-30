@@ -17,7 +17,6 @@
             margin-left: 30px;
         }
 
-
         .form-input {
             height: 80%;
         }
@@ -84,7 +83,7 @@
                     <input type="submit" class="btn submit-btn" value="Search">
                 </form>
             </div>
-            <button class="btn btn-primary m-3" data-toggle="modal" data-target="#addPopupModal">Add Popup</button>
+            <button class="btn btn-danger m-3" data-toggle="modal" data-target="#addPopupModal">Add Popup</button>
         </div>
 
         <div class="table-container">
@@ -115,7 +114,11 @@
                                     <%= popup.startDate.toISOString().split('T')[0] %>
                                 </td>
                                 <td>
-                                    <%= popup.endDate.toISOString().split('T')[0] %>
+                                    <% if(popup.endDate > today ) { %>
+                                        <%= popup.endDate.toISOString().split('T')[0] %>
+                                    <% }else { %>
+                                        <p>Expired</p>
+                                    <% } %>
                                 </td>
                                 <td>
                                     <button class="btn btn-secondary btn-sm" onclick="showUpdateForm(
@@ -125,6 +128,9 @@
                                         '<%= popup.startDate.toDateString() %>',
                                         '<%= popup.endDate.toDateString() %>')">Update
                                     </button>
+                                    <a href="/admin/popups/<%= popup.id %>" class="btn btn-danger btn-sm sweet-alert-delete">
+                                        Delete
+                                    </a>
                                 </td>
                             </tr>
                         <% }); %>
@@ -135,7 +141,8 @@
 </div>
 
 
-<!-- Add Popup Modal -->
+<!---------------------------- Add Popup Modal -------------------------------->
+
 <div class="modal" id="addPopupModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -174,7 +181,8 @@
 </div>
 
 
-    <!-- Update Popup Modal -->
+    <!------------------------------ Update Popup Modal ------------------------>
+
     <div class="modal" id="updatePopupModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -212,6 +220,32 @@
         </div>
     </div>
 
+    <!------------------------------------ Pagination Controls -------------------------------->
+
+    <div class="pagination-controls d-flex  mt-3">
+        <ul class="pagination">
+            <% if (currentPage> 1) { %>
+                <li class="page-item"><a class="page-link"
+                        href="/admin/popups=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
+                </li>
+                <% } %>
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                        <li class="page-item <%= currentPage == i ? 'active' : '' %>">
+                            <a class="page-link"
+                                href="/admin/popups?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
+                                <%= i %>
+                            </a>
+                        </li>
+                        <% } %>
+                            <% if (currentPage < totalPages) { %>
+                                <li class="page-item"><a class="page-link pagination-next-btn"
+                                        href="/admin/popups?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                                </li>
+                                <% } %>
+        </ul>
+    </div>
+
+
 <%- include('footer') %>
 
 
@@ -224,4 +258,26 @@
         $('#updateEndDate').val(endDate);
         $('#updatePopupModal').modal('show');
     }
+
+    //------------------- sweet alert for delete confirmation --------------
+    const alertDelete = document.querySelectorAll('.sweet-alert-delete')
+            alertDelete.forEach(element => {
+                element.addEventListener('click', event => {
+                    event.preventDefault()
+                    Swal.fire({
+                        title: 'Delete the Product',
+                        text: 'Are you sure you want to delete the Product?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#DB4444',
+                        cancelButtonColor: '#D5D2FF',
+                        confirmButtonText: 'Confirm'
+                    }).then(res => {
+                        if (res.isConfirmed) {
+                            window.location.href = event.target.closest('a').href
+                        }
+                    })
+                })
+            })
+
 </script>
