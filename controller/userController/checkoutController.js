@@ -6,6 +6,8 @@ const orderSchema = require('../../model/orderSchema')
 const mongoose = require('mongoose')
 
 
+//--------------------------------- checkout page render -----------------------------------
+
 const checkout = async (req, res) => {
     try {
         if (!req.session.user) {
@@ -38,9 +40,7 @@ const checkout = async (req, res) => {
 };
 
 
-
-
-//---------------------------------checkout order place -----------------------------------
+//--------------------------------- checkout orderplace -----------------------------------
 
 const placeOrder = async (req, res) => {
     try {
@@ -56,17 +56,17 @@ const placeOrder = async (req, res) => {
         const paymentDetails = ["Cash on delivery", "razorpay", "Wallet"];
         const products = [];
         let totalQuantity = 0;
-        cartItems.items.forEach((ele) => {
+        cartItems.items.forEach((item) => {
             products.push({
-                product_id: ele.productId._id,
-                product_name: ele.productId.productName,
-                product_category: ele.productId.productCategory,
-                product_quantity: ele.productCount,
-                product_price: ele.productId.productPrice,
-                product_image: ele.productId.productImage[0],
+                product_id: item.productId._id,
+                product_name: item.productId.productName,
+                product_category: item.productId.productCategory,
+                product_quantity: item.productCount,
+                product_price: item.productId.productPrice,
+                product_image: item.productId.productImage[0],
                 product_status: 'Confirmed'
             });
-            totalQuantity += ele.productCount;
+            totalQuantity += item.productCount;
         });
         const userDetails = await userSchema.findById(req.session.user);
         if (!userDetails || !userDetails.address || !userDetails.address[addressIndex]) {
@@ -96,10 +96,10 @@ const placeOrder = async (req, res) => {
             isCancelled: false
         });
         await newOrder.save();
-        for (const ele of cartItems.items) {
-            const product = await productSchema.findById(ele.productId._id);
+        for (const element of cartItems.items) {
+            const product = await productSchema.findById(element.productId._id);
             if (product) {
-                product.productQuantity -= ele.productCount;
+                product.productQuantity -= element.productCount;
                 if (product.productQuantity < 0) {
                     product.productQuantity = 0;
                 }
