@@ -1,49 +1,68 @@
 <style>
-    .modal-dialog {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+.modal-dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    .modal-content {
-        width: 988px;
-        height: 650px;
-    }
+.modal-content {
+    width: 100%;
+    max-width: 988px;
+    height: 500px;
+    background: #232323;
+    color: #fefeeb;
+    border: .5px solid #fefeeb;
+    box-shadow: 0 0 15px rgba(255, 252, 252, 0.5);
+}
 
-    .modal-body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+.modal-header, .modal-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    .modal-header {
-        display: flex;
-        justify-content: center;
-    }
+.modal-header {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-top: 3rem;
+}
+.modal-body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.modal-header .modal-title {
+    margin: 0;
+}
 
-    .modal-header button {
-        display: flex;
-        right: 0;
-    }
+.modal-footer {
+    border-top: none;
+    padding-top: 0;
+    margin-bottom: 5rem;
+}
+
+.modal-footer .btn {
+    margin: 0;
+}
+
 </style>
 
+<!--------------------------------------- Modal Structure ------------------------------->
 
-
-
-<!-- Modal Structure -->
 <div class="modal fade" id="popupModal" tabindex="-1" role="dialog" aria-labelledby="popupModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="popupModalLabel">Modal title</h5>
-                </button>
+                <h1 class="modal-title" id="popupModalLabel">Modal title</h1>
             </div>
             <div class="modal-body">
                 Modal content
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Shop Now</button>
             </div>
         </div>
     </div>
@@ -69,18 +88,16 @@
                         const modalBody = document.querySelector('.modal-body');
                         if (modalTitle && modalBody) {
                             modalTitle.innerText = popup.title;
-                            modalBody.innerText = popup.text;
+                            modalBody.innerText = popup.content;
                         } else {
                             console.error('Modal elements not found.');
                             return;
                         }
-                        // Show modal
                         $('#popupModal').modal('show');
                         console.log('Popup modal triggered to show.');
 
                         sessionStorage.setItem('popupShown', 'true');
                         console.log('Popup shown, session storage updated.');
-                        // Wait for modal to be closed
                         await new Promise(resolve => {
                             $('#popupModal').on('hidden.bs.modal', resolve);
                         });
