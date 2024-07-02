@@ -16,17 +16,17 @@ const cart = async (req, res) => {
         var totalPriceWithOutDiscount = 0;
         var cartItemCount = 0;
         if (cart) {
-            cart.items.forEach((ele) => {
-                if (ele.productId.productDiscount === 0) {
-                    totalPrice += (ele.productId.productPrice * ele.productCount);
-                    totalPriceWithOutDiscount += (ele.productId.productPrice * ele.productCount);
+            cart.items.forEach((item) => {
+                if (item.productId.productDiscount === 0) {
+                    totalPrice += (item.productId.productPrice * item.productCount);
+                    totalPriceWithOutDiscount += (item.productId.productPrice * item.productCount);
                 }
                 else {
-                    const discountPrice = (ele.productId.productPrice * ele.productCount) - ((ele.productId.productDiscount / 100) * (ele.productId.productPrice * ele.productCount))
+                    const discountPrice = (item.productId.productPrice * item.productCount) - ((item.productId.productDiscount / 100) * (item.productId.productPrice * item.productCount))
                     totalPrice += discountPrice
-                    totalPriceWithOutDiscount += (ele.productId.productPrice * ele.productCount)
+                    totalPriceWithOutDiscount += (item.productId.productPrice * item.productCount)
                 }
-                cartItemCount += ele.productCount
+                cartItemCount += item.productCount
             })
             if (cart.payableAmount != totalPrice || cart.totalPrice != totalPriceWithOutDiscount) {
                 cart.payableAmount = Math.round(totalPrice);
@@ -40,6 +40,7 @@ const cart = async (req, res) => {
     }
 }
 
+
 //------------------------------ add product to cart -----------------------------
 
 const addToCartPost = async (req, res) => {
@@ -48,28 +49,28 @@ const addToCartPost = async (req, res) => {
         const userId = req.session.user;
         const productPrice = parseInt(req.query.price);
         const productQuantity = 1;
-        const actualProductDetails = await productSchema.findById(productId);
-        if (actualProductDetails.productQuantity <=0) {
+        const ProductDetails = await productSchema.findById(productId);
+        if (ProductDetails.productQuantity <=0) {
             return res.status(404).json({ error: "Product is out of stock" })
         }
         const checkCart = await cartSchema.findOne({ userId: req.session.user }).populate('items.productId');
         if (checkCart) {
             let productExist = false;
-            checkCart.items.forEach((ele) => {
-                if (ele.productId.id === productId) {
+            checkCart.items.forEach((item) => {
+                if (item.productId.id === productId) {
                     productExist = true;
                     return res.status(404).json({ error: "Product is already in the cart" })
                 }
             });
             if (!productExist) {
-                checkCart.items.push({ productId: actualProductDetails._id, productCount: 1, productPrice: productPrice });
+                checkCart.items.push({ productId: ProductDetails._id, productCount: 1, productPrice: productPrice });
             }
             await checkCart.save();
         }
         else {
             const newCart = new cartSchema({
                 userId: userId,
-                items: [{ productId: actualProductDetails._id, productCount: 1, productPrice: productPrice }]
+                items: [{ productId: ProductDetails._id, productCount: 1, productPrice: productPrice }]
             });
             await newCart.save();
         }
@@ -113,6 +114,7 @@ const removeItem = async (req, res) => {
 };
 
 //--------------------------------------- Quantity in cart ---------------------------------
+
 
 //------------- Increment Function ---------------
 

@@ -1,54 +1,50 @@
 <style>
-    #popupModal{
+
+    .modal-content {
+        width: 100%;
+        max-width: 988px;
+        height: 400px;
+        background: #232323;
+        color: #ADD8E6;
+        border: .5px solid #fefeeb;
+        box-shadow: 0 0 15px rgba(255, 252, 252, 0.5);
+        border-radius: 15px;
+        margin-top: 9rem;
+    }
+
+    .modal-header, .modal-footer {
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
-.modal-content {
-    width: 100%;
-    max-width: 988px;
-    height: 400px;
-    background: #232323;
-    color: #ADD8E6;
-    border: .5px solid #fefeeb;
-    box-shadow: 0 0 15px rgba(255, 252, 252, 0.5);
-    border-radius: 15px;
-    margin-top: 9rem;
-}
+    .modal-header {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-top: 3rem;
+    }
 
-.modal-header, .modal-footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .modal-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
 
-.modal-header {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-top: 3rem;
-}
-.modal-body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-.modal-header .modal-title {
-    margin: 0;
-}
+    .modal-header .modal-title {
+        margin: 0;
+    }
 
-.modal-footer {
-    border-top: none;
-    padding-top: 0;
-    margin-bottom: 5rem;
-}
+    .modal-footer {
+        border-top: none;
+        padding-top: 0;
+        margin-bottom: 5rem;
+    }
 
-.modal-footer .btn {
-    margin: 0;
-}
-
+    .modal-footer .btn {
+        margin: 0;
+    }
 </style>
 
 <!--------------------------------------- Modal for popup  Alert ------------------------------->
@@ -68,7 +64,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -99,6 +94,12 @@
 
                         sessionStorage.setItem('popupShown', 'true');
                         console.log('Popup shown, session storage updated.');
+
+                        // Automatically hide the modal after 5 seconds (5000 milliseconds)
+                        setTimeout(() => {
+                            $('#popupModal').modal('hide');
+                        }, 5000);
+
                         await new Promise(resolve => {
                             $('#popupModal').on('hidden.bs.modal', resolve);
                         });

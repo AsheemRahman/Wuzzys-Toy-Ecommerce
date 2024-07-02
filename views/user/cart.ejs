@@ -256,7 +256,7 @@
 
 <%- include('navbar') %>
 
-    <% if (cart && cart.items.length> 0) { %>
+    <% if (cart && cart.items.length > 0) { %>
         <div class="cart-card">
             <div class="card">
                 <div class="row">
@@ -480,12 +480,10 @@
                         }
 
                         function showError(message) {
-                            // Swal.fire('Error', message, 'error');
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
                                 text: message,
                             });
                         }
-
                     </script>

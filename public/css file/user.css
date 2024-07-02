@@ -98,6 +98,7 @@ input.form-control:focus{
     color: gray;
     margin-right: 10px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .wishlist-icon:hover,

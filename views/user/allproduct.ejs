@@ -29,6 +29,7 @@
 </nav>
 
 <!-------------------------------------------- All Products ------------------------------------------------->
+
 <div class="product-container">
     <div class="product-sort mb-3">
         <select name="sort-box" class="sort-box" onchange="sortbyCategory('<%= title %>')">
@@ -70,11 +71,11 @@
                     </h5>
                 </div>
                 <div>
-                    <a href="#" class="wishlist-icon"><i class="fas fa-heart"></i></a>
+                    <a onclick="addwishlist('<%= product.id %>', '<%= product.productPrice %>', '<%= user %>')" class="wishlist-icon">
+                        <i class="fas fa-heart"></i></a>
                     <a onclick="addToCart('<%= product.id %>', '<%= product.productPrice %>', '<%= user %>')" class="cart-icon">
-                        <i class="fas fa-shopping-cart"></i>
+                        <i class="fas fa-shopping-cart"></i></a>
                 </div>
-                </a>
             </div>
         <% }) %>
     </div>

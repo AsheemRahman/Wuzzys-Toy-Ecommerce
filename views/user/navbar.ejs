@@ -179,13 +179,16 @@
             </div>
             <li><a href="#footer">About</a></li>
             <li><a href="#">Contact</a></li>
-            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+            <% if (user) { %>
+            <li><a href="/user/wishlist"><i class="fa fa-heart"></i></a></li>
+            <% } else { %>
+                <li><a href="#" onclick="wishlistClick(event)"><i class="fa fa-heart"></i></a></li>
+                <% } %>
             <% if (user) { %>
                 <li><a href="/user/cart"><i class="fa fa-shopping-cart"></i></a></li>
             <% } else { %>
                 <li><a href="#" onclick="handleCartClick(event)"><i class="fa fa-shopping-cart"></i></a></li>
             <% } %>
-
         </ul>
 
         <!--------------------------- Check the user is login or not , Based on that the icon will change ----------------------------------->
@@ -229,7 +232,6 @@
 
 function handleCartClick(event) {
             event.preventDefault();
-            // User is not logged in, show SweetAlert
             Swal.fire({
                 icon: 'warning',
                 title: 'Please Login',
@@ -239,7 +241,24 @@ function handleCartClick(event) {
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Redirect to login page
+                    window.location.href = '/user/login';
+                }
+            });
+        }
+
+//--------------- when user login only then we can go to Wishlist ---------------------
+
+function wishlistClick(event) {
+            event.preventDefault();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Please Login',
+                text: 'You need to login to access your Wishlist.',
+                showCancelButton: true,
+                confirmButtonText: 'Login',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
                     window.location.href = '/user/login';
                 }
             });

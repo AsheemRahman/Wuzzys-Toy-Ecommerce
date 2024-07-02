@@ -27,7 +27,8 @@
                     </h5>
                 </div>
                 <div>
-                    <a href="#" class="wishlist-icon"><i class="fas fa-heart"></i></a>
+                    <a onclick="addwishlist('<%= product.id %>', '<%= product.productPrice %>', '<%= user %>')" class="wishlist-icon">
+                        <i class="fas fa-heart"></i></a>
                     <a onclick="addToCart('<%= product.id %>','<%= product.productPrice %>','<%=user %>')"
                         class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
                 </div>

@@ -12,6 +12,8 @@ const checkoutController = require('../controller/userController/checkoutControl
 const orderController = require('../controller/userController/orderController')
 const forgotPassword = require('../controller/userController/forgotPassword')
 
+const wishlistController = require('../controller/userController/wishlistcontroller')
+
 //------------------------------- main -------------------------------
 
 user.get('/',userController.user)
@@ -68,11 +70,15 @@ user.get('/productDetail/:id' , checkUser , productController.productDetail);
 //----------------------------- profile route --------------------------
 
 user.get('/profile', checkUser , profileController.profile)
+
 user.post('/update-profile', checkUser , profileController.updateProfile)
 
 user.post('/add-address', checkUser , profileController.addAddress)
+
 user.get('/remove-address/:index', checkUser,profileController.removeAddress);
+
 user.get('/edit-address/:index',checkUser,profileController.editAddress)
+
 user.post('/update-address/:index',checkUser,profileController.updateAddress)
 
 //----------------------------- cart route --------------------------
@@ -83,7 +89,14 @@ user.get('/remove-item/:id',checkUser,cartController.removeItem)
 user.post('/cart/increment',isUser,cartController.increment)
 user.post('/cart/decrement',isUser,cartController.decrement)
 
-//---------------------------------- checkout -----------------------
+
+//------------------------------- Wishlist ---------------------------
+
+user.get('/wishlist', checkUser , wishlistController.wishlistpage )
+user.get('/add-wishlist/:id',wishlistController.addWishlist )
+
+
+//-------------------------------- checkout --------------------------
 
 user.get('/checkout', checkUser , checkoutController.checkout)
 user.post('/checkout-address',checkUser,checkoutController.addAddress)
@@ -95,9 +108,6 @@ user.post('/place-order/:address/:payment',checkUser,checkoutController.placeOrd
 
 user.get('/orders', checkUser , orderController.orderPage)
 user.post('/cancelOrder/:id', checkUser , orderController.cancelOrder)
-
-
-
 
 
 //------------------------- forgot password ---------------------------
@@ -113,8 +123,6 @@ user.get('/forgotpassword-resend/:email' , forgotPassword.forgotResend)
 //------------------------------- logout --------------------------------
 
 user.get('/logout' , userController.logout)
-
-
 
 
 module.exports = user;
