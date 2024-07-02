@@ -94,6 +94,7 @@ user.post('/cart/decrement',isUser,cartController.decrement)
 
 user.get('/wishlist', checkUser , wishlistController.wishlistpage )
 user.get('/add-wishlist/:id',wishlistController.addWishlist )
+user.get('/delete-wish/:id',wishlistController.deleteWishlist )
 
 
 //-------------------------------- checkout --------------------------

@@ -75,11 +75,10 @@
 
             if (popup && Object.keys(popup).length > 0) {
                 console.log('Processing popup:', popup);
-
                 if (!sessionStorage.getItem('popupShown')) {
                     try {
                         console.log('Popup not shown before, showing now.');
-                        // Set modal title and content
+                        //--------- Set modal title and content ---------------
                         const modalTitle = document.getElementById('popupModalLabel');
                         const modalBody = document.querySelector('.modal-body');
                         if (modalTitle && modalBody) {
@@ -94,12 +93,10 @@
 
                         sessionStorage.setItem('popupShown', 'true');
                         console.log('Popup shown, session storage updated.');
-
-                        // Automatically hide the modal after 5 seconds (5000 milliseconds)
+                        //---- Automatically hide the modal after 5 seconds (5000 milliseconds) ----
                         setTimeout(() => {
                             $('#popupModal').modal('hide');
                         }, 5000);
-
                         await new Promise(resolve => {
                             $('#popupModal').on('hidden.bs.modal', resolve);
                         });

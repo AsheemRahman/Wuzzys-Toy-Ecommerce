@@ -1,5 +1,6 @@
 const wishlistSchema = require('../../model/wishlistSchema')
-
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 const productSchema = require('../../model/productSchema')
 
 const wishlistpage = async(req,res)=>{
@@ -56,5 +57,36 @@ const addWishlist = async (req, res) => {
     }
 };
 
+const deleteWishlist = async (req, res) => {
+    const userId = req.session.user;
+    const itemId = req.params.id;
+    // Validate userId and itemId
+    if (!userId) {
+        req.flash('error', 'User not authenticated.');
+        return res.redirect("/user/login");
+    }
+    if (!itemId || !ObjectId.isValid(itemId)) {
+        req.flash('error', 'Invalid item ID.');
+        return res.redirect("/user/wishlist");
+    }
+    try {
+        const wish = await wishlistSchema.findOne({ userID: userId });
+        if (wish) {
+            // Pull the item from the wish
+            wish.products.pull({ productID: new ObjectId(itemId) });
+            await wish.save();
+            req.flash('success', 'Item removed from wishlist.');
+        } else {
+            console.log('No wishlist found for the specified user.');
+            req.flash('error', 'Wishlist not found.');
+        }
+    } catch (err) {
+        req.flash('error', 'Something went wrong. Please try again later.');
+        console.error(`Error in removing the item from wishlist: ${err}`);
+    }
+    res.redirect("/user/wishlist");
+}
 
-module.exports = { wishlistpage , addWishlist }
+
+
+module.exports = { wishlistpage , addWishlist , deleteWishlist }
