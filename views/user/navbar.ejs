@@ -227,7 +227,7 @@
 
 <%- include('alert') %>
 
-    <!------------------------ toggle side bar -------------------------------->
+<!------------------------ toggle side bar -------------------------------->
 
     <script>
 
@@ -276,7 +276,7 @@ function wishlistClick(event) {
             });
         }
 
-    //--------------------- item count of wishlist and cart ---------------------------
+//--------------------- item count of wishlist and cart ---------------------------
 
     async function fetchCounts() {
             try {
@@ -288,8 +288,7 @@ function wishlistClick(event) {
                 console.error('Error fetching counts:', error);
             }
         }
-
-        setInterval(fetchCounts, 3000);
-
+        setInterval(fetchCounts, 2000);
         document.addEventListener('DOMContentLoaded', fetchCounts);
+
     </script>
