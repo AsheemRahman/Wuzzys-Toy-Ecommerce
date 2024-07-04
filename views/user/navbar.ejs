@@ -152,6 +152,18 @@
         background: #232323;
         border-radius: 10px;
     }
+
+    .badge {
+            background-color: red;
+            color: white;
+            padding: 3px 7px;
+            border-radius: 50%;
+            font-size: 0.8em;
+            position: relative;
+            top: -10px;
+            right: 10px;
+        }
+
 </style>
 
 
@@ -180,12 +192,12 @@
             <li><a href="#footer">About</a></li>
             <li><a href="#">Contact</a></li>
             <% if (user) { %>
-            <li><a href="/user/wishlist"><i class="fa fa-heart"></i></a></li>
+                <li><a href="/user/wishlist"><i class="fa fa-heart"></i><span id="wishlist-count" class="badge"></span></a></li>
             <% } else { %>
                 <li><a href="#" onclick="wishlistClick(event)"><i class="fa fa-heart"></i></a></li>
-                <% } %>
+            <% } %>
             <% if (user) { %>
-                <li><a href="/user/cart"><i class="fa fa-shopping-cart"></i></a></li>
+                <li><a href="/user/cart"><i class="fa fa-shopping-cart"></i><span id="cart-count" class="badge"></span></a></li>
             <% } else { %>
                 <li><a href="#" onclick="handleCartClick(event)"><i class="fa fa-shopping-cart"></i></a></li>
             <% } %>
@@ -263,4 +275,21 @@ function wishlistClick(event) {
                 }
             });
         }
+
+    //--------------------- item count of wishlist and cart ---------------------------
+
+    async function fetchCounts() {
+            try {
+                const response = await fetch('/user/getCounts');
+                const data = await response.json();
+                document.getElementById('wishlist-count').textContent = data.wishlistItemsCount;
+                document.getElementById('cart-count').textContent = data.cartItemsCount;
+            } catch (error) {
+                console.error('Error fetching counts:', error);
+            }
+        }
+
+        setInterval(fetchCounts, 3000);
+
+        document.addEventListener('DOMContentLoaded', fetchCounts);
     </script>

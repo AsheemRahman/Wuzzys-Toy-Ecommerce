@@ -97,6 +97,10 @@ user.get('/add-wishlist/:id',wishlistController.addWishlist )
 user.get('/delete-wish/:id',wishlistController.deleteWishlist )
 
 
+//------------------ item count in wishlist and cart -----------------
+
+user.get('/getCounts', checkUser, wishlistController.getCounts);
+
 //-------------------------------- checkout --------------------------
 
 user.get('/checkout', checkUser , checkoutController.checkout)

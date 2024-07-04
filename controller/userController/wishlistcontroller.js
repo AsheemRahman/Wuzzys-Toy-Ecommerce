@@ -2,6 +2,7 @@ const wishlistSchema = require('../../model/wishlistSchema')
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const productSchema = require('../../model/productSchema')
+const cartSchema = require('../../model/cartSchema')
 
 const wishlistpage = async(req,res)=>{
     try{
@@ -85,6 +86,25 @@ const deleteWishlist = async (req, res) => {
     res.redirect("/user/wishlist");
 }
 
+const getCounts = async (req, res) => {
+    try {
+        if (req.session.user) {
+            const userId = req.session.user;
 
+            const cart = await cartSchema.findOne({ userId }).select('items').lean().exec();
+            const wishlist = await wishlistSchema.findOne({ userID: userId }).select('products').lean().exec();
 
-module.exports = { wishlistpage , addWishlist , deleteWishlist }
+            const cartItemsCount = cart ? cart.items.length : 0;
+            const wishlistItemsCount = wishlist ? wishlist.products.length : 0;
+
+            return res.json({ cartItemsCount, wishlistItemsCount });
+        } else {
+            return res.json({ cartItemsCount: 0, wishlistItemsCount: 0 });
+        }
+    } catch (error) {
+        console.error('Error fetching counts:', error);
+        return res.status(500).json({ error: 'Internal Server Error', details: error.message });
+    }
+};
+
+module.exports = { wishlistpage , addWishlist , deleteWishlist , getCounts }

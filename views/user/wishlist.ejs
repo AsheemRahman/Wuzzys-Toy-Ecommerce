@@ -10,6 +10,7 @@
     .cart-empty {
         display: flex;
         justify-content: center;
+        width: 100%;
     }
 
     .empty-cart {
@@ -50,14 +51,13 @@
 </style>
 <%-include('navbar') %>
     <div class="container mb-5">
-        <div class="wishlist-header">
-            <h3>Wishlist</h3>
-            <h3>( <%= products.length %> )</h3>
-        </div>
-        <div class="products-list-box container d-flex">
-            <% if(products.length!=0){ %>
+        <% if(products.length!=0){ %>
+            <div class="wishlist-header">
+                <h3>Wishlist</h3>
+                <h3>( <%= products.length %> )</h3>
+            </div>
+            <div class="products-list-box container d-flex">
                 <% products.forEach((product)=>{ %>
-
                     <div class="product-box">
                         <% if(new Date(product.productID.createdAt).getTime()> (Date.now() - (10 * 24 * 60 * 60 *1000)))
                             { %>
@@ -120,7 +120,7 @@
                                 </div>
                             </div>
                             <% } %>
-        </div>
+            </div>
     </div>
     <%-include('footer') %>
 
