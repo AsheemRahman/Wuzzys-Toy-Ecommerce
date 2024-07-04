@@ -199,7 +199,7 @@
             <% if (user) { %>
                 <li><a href="/user/cart"><i class="fa fa-shopping-cart"></i><span id="cart-count" class="badge"></span></a></li>
             <% } else { %>
-                <li><a href="#" onclick="handleCartClick(event)"><i class="fa fa-shopping-cart"></i></a></li>
+                <li><a href="#" onclick="CartClick(event)"><i class="fa fa-shopping-cart"></i></a></li>
             <% } %>
         </ul>
 
@@ -219,9 +219,9 @@
                         </ul>
                     </div>
                     
-            <% } else { %>
-                <a href="/user/login" class="btn btn-outline-secondary user-login-btn">Login</a>
-                <% } %>
+        <% } else { %>
+            <a href="/user/login" class="btn btn-outline-secondary user-login-btn">Login</a>
+        <% } %>
     </div>
 </div>
 
@@ -242,7 +242,7 @@
 
 //--------------- when user login only then we can go to cart ---------------------
 
-function handleCartClick(event) {
+function CartClick(event) {
             event.preventDefault();
             Swal.fire({
                 icon: 'warning',

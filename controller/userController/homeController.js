@@ -22,7 +22,7 @@ const home = async (req, res) => {
 
 const allproduct = async (req, res) => {
   try {
-    const sortby = req.query.sortby || ""
+    const sortby = req.query.sortby || "";
     const search = req.query.search || "";
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 12;
@@ -45,7 +45,7 @@ const allproduct = async (req, res) => {
       sort={createdAt:-1}
     }
 
-    const product = await productSchema.find({ isActive : true })
+    const product = await productSchema.find({ productName: { $regex: search, $options: 'i' }, isActive: true})
         .sort(sort)
         .limit(limit)
         .skip((page - 1) * limit)
@@ -69,7 +69,11 @@ const allproduct = async (req, res) => {
 
 const latestProduct = async (req, res) => {
   try {
-    const sortby = req.query.sortby || ""
+    const sortby = req.query.sortby || "";
+    const search = req.query.search || "";
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    
     let sort="";
     if(sortby){
         switch(sortby){
@@ -88,12 +92,25 @@ const latestProduct = async (req, res) => {
       sort={createdAt:-1}
     }
 
-    const product = await productSchema.find({ isActive : true }).sort(sort)
+    const today = new Date();
+    const productAge = new Date(today.setDate(today.getDate() - 10));
+    
+    const product = await productSchema.find({ productName: { $regex: search, $options: 'i' }, isActive: true , createdAt :{$gte : productAge}})
+    .sort(sort)
+    .limit(limit)
+    .skip((page - 1) * limit)
+
+      const count = await productSchema.countDocuments({ productName: { $regex: search, $options: 'i' },isActive: true , createdAt :{$gte : productAge} });
 
     res.render('user/view-more', {
       title: 'Latest Products',
       product,
-      user: req.session.user
+      user: req.session.user,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+      search,
+      limit,page,
+      productAge
     })
   } catch (error) {
     console.log(`error in Latest products page rendering ${error}`)
