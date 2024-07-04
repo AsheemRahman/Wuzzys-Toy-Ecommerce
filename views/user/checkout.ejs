@@ -493,7 +493,22 @@
                                             <% } %>
                             </tbody>
                             <thead>
-
+                                <tr>
+                                    <th>Sub total</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>
+                                        <%= Math.round(cartDetails.payableAmount - cartDetails.payableAmount * (12 / 100)) %>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>GST</th>
+                                    <th></th>
+                                    <th>12%</th>
+                                    <th>
+                                        <%= Math.round(cartDetails.payableAmount * (12 / 100)) %>
+                                    </th>
+                                </tr>
                                 <tr>
                                     <th>Total</th>
                                     <th></th>

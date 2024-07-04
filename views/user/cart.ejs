@@ -359,10 +359,18 @@
                             </div>
                         </div>
                         <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                            <div class="col">GST</div>
+                            <div class="col">12%</div>
+                            <div class="col text-right d-flex justify-content-end">
+                                <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
+                                <%= Math.round(cart.payableAmount * (12 / 100)) %>
+                            </div>
+                        </div>
+                        <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                             <div class="col">TOTAL PRICE</div>
                             <div class="col text-right d-flex justify-content-end">
                                 <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                                <% if ( cart.totalPrice> 1000 ) { %>
+                                <% if ( cart.totalPrice > 1000 ) { %>
                                     <%= (cart.payableAmount).toFixed(2) %>
                                         <% } else { %>
                                             <%= (cart.payableAmount + 50).toFixed(2) %>

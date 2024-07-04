@@ -60,19 +60,17 @@ const addWishlist = async (req, res) => {
 const deleteWishlist = async (req, res) => {
     const userId = req.session.user;
     const itemId = req.params.id;
-    // Validate userId and itemId
     if (!userId) {
-        req.flash('error', 'User not authenticated.');
+        req.flash('error', 'User not found , Please login again.');
         return res.redirect("/user/login");
     }
     if (!itemId || !ObjectId.isValid(itemId)) {
-        req.flash('error', 'Invalid item ID.');
+        req.flash('error', 'Invalid item .');
         return res.redirect("/user/wishlist");
     }
     try {
         const wish = await wishlistSchema.findOne({ userID: userId });
         if (wish) {
-            // Pull the item from the wish
             wish.products.pull({ productID: new ObjectId(itemId) });
             await wish.save();
             req.flash('success', 'Item removed from wishlist.');
