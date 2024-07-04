@@ -120,8 +120,9 @@ const latestProduct = async (req, res) => {
 //--------------------------------------- Category wise product Page ---------------------------------
 
 const category = async (req, res) => {
-  const categoryName = req.params.category || ""
-  const sortby = req.query.sortby || ""
+  const categoryName = req.params.category || "";
+  const search = req.query.search || "";
+  const sortby = req.query.sortby || "";
   try {
 
     let sort="";
@@ -142,7 +143,9 @@ const category = async (req, res) => {
     }else{
       sort={createdAt:-1}
     }
-    const categoryProduct = await productSchema.find({productCollection: categoryName , isActive : true }).sort(sort)
+    const categoryProduct = await productSchema.find({productCollection: categoryName , isActive : true , productName: { $regex: search, $options: 'i' }})
+      .sort(sort)
+      
     res.render('user/category-product', {
       title: categoryName,
       product: categoryProduct,
