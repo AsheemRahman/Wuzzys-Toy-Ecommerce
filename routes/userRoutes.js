@@ -113,6 +113,7 @@ user.post('/place-order/:address/:payment',checkUser,checkoutController.placeOrd
 
 user.get('/orders', checkUser , orderController.orderPage)
 user.post('/cancelOrder/:id', checkUser , orderController.cancelOrder)
+user.get("/orderDetail/:id", checkUser , orderController.orderDetail)
 
 
 //------------------------- forgot password ---------------------------

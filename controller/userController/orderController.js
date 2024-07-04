@@ -63,4 +63,18 @@ const cancelOrder = async (req, res) => {
 };
 
 
-module.exports = { orderPage , cancelOrder }
+const orderDetail = async (req,res) =>{
+    const user =req.session.user
+    const order_id = req.params.id;
+    try{
+        const orderDetails = await orderSchema.findOne({ _id : order_id})
+        res.render('user/orderDetail',{ title:"Order view" , orderDetails , user })
+    }
+    catch(error){
+        console.log(`Error while render Order view page in user ${error}`)
+        res.redirect('/user/order')
+    }
+}
+
+
+module.exports = { orderPage , cancelOrder , orderDetail}
