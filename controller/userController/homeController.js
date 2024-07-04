@@ -123,6 +123,8 @@ const category = async (req, res) => {
   const categoryName = req.params.category || "";
   const search = req.query.search || "";
   const sortby = req.query.sortby || "";
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 12;
   try {
 
     let sort="";
@@ -141,18 +143,28 @@ const category = async (req, res) => {
                   break;
       }
     }else{
-      sort={createdAt:-1}
+      sort = { createdAt: -1 }
     }
     const categoryProduct = await productSchema.find({productCollection: categoryName , isActive : true , productName: { $regex: search, $options: 'i' }})
       .sort(sort)
-      
+      .limit(limit)
+      .skip((page - 1) * limit)
+
+      const count = await productSchema.countDocuments({productCollection: categoryName , productName: { $regex: search, $options: 'i' },isActive: true});
+
     res.render('user/category-product', {
       title: categoryName,
       product: categoryProduct,
-      user: req.session.user
+      user: req.session.user,
+      categoryName,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+      search,
+      limit,page
     })
   } catch (error) {
-    console.log(`Error in Category-wise product rendering: ${error}`)
+    console.log(`Error in Category-wise product rendering: ${error.message}`)
+    res.status(500).send('Internal Server Error');
   }
 }
 
