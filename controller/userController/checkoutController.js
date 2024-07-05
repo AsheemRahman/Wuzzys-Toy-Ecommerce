@@ -120,8 +120,8 @@ const placeOrder = async (req, res) => {
         }
 
         await cartSchema.deleteOne({ userId: req.session.user });
-
-        return res.status(200).json({ success: true, message: 'Order placed successfully' });
+        res.redirect('/user/conform-order');
+        return res.status(200)
     } catch (err) {
         console.error(`Error on place order ${err}`);
         return res.status(500).json({ success: false, message: `Error on placing order: ${err.message}` });
