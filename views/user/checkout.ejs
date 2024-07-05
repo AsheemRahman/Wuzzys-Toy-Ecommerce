@@ -498,7 +498,8 @@
                                     <th></th>
                                     <th></th>
                                     <th>
-                                        <%= Math.round(cartDetails.payableAmount - cartDetails.payableAmount * (12 / 100)) %>
+                                        <%= Math.round(cartDetails.payableAmount - cartDetails.payableAmount * (12 /
+                                            100)) %>
                                     </th>
                                 </tr>
                                 <tr>
@@ -524,7 +525,11 @@
                         <div class="mt-3 checkout-button">
                             <a href="/user/cart"><button class="btn submit-btn-light">Cancel</button></a>
                             <form action="" method="post" id="place-order-form">
-                                <button type="submit" class="btn btn-danger" id="place-order-btn">Place order</button>
+                                <button type="submit" class="btn btn-danger"
+                                    data-amount="<%=cartDetails.payableAmount%>" data-username="<%= user.name %>"
+                                    data-mail="<%= user.email %>" data-phone="<%= user.phone %>"
+                                    id="place-order-btn">Place
+                                    order</button>
                             </form>
                         </div>
                     </div>
@@ -607,12 +612,18 @@
         </div>
     </div>
 
-
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         //------------------------- selecting one item -------------------------
 
         let selectedAddressIndex = null;
         let selectedPaymentMethod = null;
+
+        const orderPlacementBtn = document.getElementById('place-order-btn');
+        const totalAmount = orderPlacementBtn.getAttribute('data-amount');
+        const username = orderPlacementBtn.getAttribute('data-username');
+        const email = orderPlacementBtn.getAttribute('data-email');
+        const phone = orderPlacementBtn.getAttribute('data-phone');
 
         function selectAddress(element, index) {
             const cards = document.querySelectorAll('.address-card');
@@ -622,11 +633,11 @@
         }
 
         function selectPaymentMethod(element, method) {
-            if (method === 1 || method === 2) {
+            if (selectedAddressIndex === null) {
                 Swal.fire({
-                    icon: 'info',
-                    title: 'Unavailable',
-                    text: 'This payment method is currently unavailable. Please choose another method.',
+                    icon: "warning",
+                    title: "Please select a shipping address first.",
+                    text: "Select One"
                 });
                 return;
             }
@@ -635,9 +646,98 @@
             methods.forEach(methodElement => methodElement.classList.remove('selected'));
             element.classList.add('selected');
             selectedPaymentMethod = method;
+
+            if (method === 2) { // Assuming 2 is the Razorpay method
+                const URL = `/user/payment-render/${totalAmount}`;
+                fetch(URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then((res) => {
+                    if (!res.ok) {
+                        throw new Error("Cannot render the payment page");
+                    }
+                    return res.json().catch(err => {
+                        console.error("Response is not JSON:", res);
+                        throw new Error("Response is not JSON");
+                    });
+                }).then((data) => {
+                    if (data.orderID) {
+                        const options = {
+                            "key": "rzp_test_jyh8u3FB51sm3I",
+                            "amount": totalAmount * 100,
+                            "currency": "INR",
+                            "name": "Wuzzy's Toys",
+                            "order_id": data.orderID,
+                            "handler": function (response) {
+                                const URL = `/user/place-order/${selectedAddressIndex}/${selectedPaymentMethod}`;
+                                fetch(URL, {
+                                    method: "POST",
+                                    headers: {
+                                        'Content-Type': "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        addressIndex: selectedAddressIndex,
+                                        paymentMode: selectedPaymentMethod,
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_signature: response.razorpay_signature
+                                    })
+                                }).then((res) => {
+                                    return res.json().catch(err => {
+                                        console.error("Response is not JSON:", res);
+                                        throw new Error("Response is not JSON");
+                                    });
+                                }).then((data) => {
+                                    if (data.success) {
+                                        window.location.href = "/user/conform-order";
+                                    } else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Error",
+                                            text: "Payment was successful but order placement failed."
+                                        });
+                                        console.error("Order placement failed:", data);
+                                    }
+                                }).catch((err) => {
+                                    console.error("Error on razorpay payment callback:", err);
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Error",
+                                        text: "An error occurred while processing the order."
+                                    });
+                                });
+                            },
+                            "prefill": {
+                                "name": username,
+                                "email": email,
+                                "contact": phone
+                            },
+                            "notes": {
+                                "address": "Razorpay Corporate Office"
+                            },
+                            "theme": {
+                                "color": "#6351CE"
+                            }
+                        };
+                        const rzp1 = new Razorpay(options);
+                        rzp1.open();
+                    } else {
+                        throw new Error("Order ID not received");
+                    }
+                }).catch((error) => {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error on loading payment method",
+                        text: error.message
+                    });
+                    console.error("Error during payment initiation:", error);
+                });
+            }
         }
 
-        document.getElementById('place-order-btn').addEventListener('click', (e) => {
+        orderPlacementBtn.addEventListener('click', (e) => {
             e.preventDefault();
             if (selectedAddressIndex === null) {
                 Swal.fire({

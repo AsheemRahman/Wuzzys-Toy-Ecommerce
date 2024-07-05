@@ -4,6 +4,7 @@ const userSchema = require('../../model/userSchema')
 const addressSchema = require('../../model/addressSchema')
 const orderSchema = require('../../model/orderSchema')
 const mongoose = require('mongoose')
+const Razorpay = require('razorpay')
 
 
 //--------------------------------- checkout page render -----------------------------------
@@ -40,7 +41,7 @@ const checkout = async (req, res) => {
 };
 
 
-//--------------------------------- checkout orderplace -----------------------------------
+//--------------------------------- checkout order place ----------------------------------
 
 const placeOrder = async (req, res) => {
     try {
@@ -48,12 +49,20 @@ const placeOrder = async (req, res) => {
         const addressIndex = parseInt(req.params.address);
         const paymentMode = parseInt(req.params.payment);
         let paymentId = "";
+
+        if (paymentMode === 1) {
+            const razorpay_payment_id = req.body.razorpay_payment_id;
+            const razorpay_order_id = req.body.razorpay_order_id;
+            const razorpay_signature = req.body.razorpay_signature;
+            paymentId = razorpay_payment_id;
+        }
+
         const cartItems = await cartSchema.findOne({ userId }).populate("items.productId");
         if (!cartItems || !cartItems.items || cartItems.items.length === 0) {
-            req.flash('error', 'Your cart is empty or could not be found.');
-            return res.redirect('/user/cart');
+            return res.status(400).json({ success: false, message: 'Your cart is empty or could not be found.' });
         }
-        const paymentDetails = ["Cash on delivery", "razorpay", "Wallet"];
+
+        const paymentDetails = ["Cash on delivery", "Wallet", "razorpay"];
         const products = [];
         let totalQuantity = 0;
         cartItems.items.forEach((item) => {
@@ -68,11 +77,12 @@ const placeOrder = async (req, res) => {
             });
             totalQuantity += item.productCount;
         });
+
         const userDetails = await userSchema.findById(req.session.user);
         if (!userDetails || !userDetails.address || !userDetails.address[addressIndex]) {
-            req.flash('error', 'Selected address is not valid.');
-            return res.redirect('/user/cart');
+            return res.status(400).json({ success: false, message: 'Selected address is not valid.' });
         }
+
         const newOrder = new orderSchema({
             customer_id: req.session.user,
             order_id: Math.floor(Math.random() * 1000000),
@@ -95,7 +105,9 @@ const placeOrder = async (req, res) => {
             paymentId: paymentId,
             isCancelled: false
         });
+
         await newOrder.save();
+
         for (const element of cartItems.items) {
             const product = await productSchema.findById(element.productId._id);
             if (product) {
@@ -106,16 +118,49 @@ const placeOrder = async (req, res) => {
                 await product.save();
             }
         }
+
         await cartSchema.deleteOne({ userId: req.session.user });
 
-        res.redirect('/user/conform-order');
+        return res.status(200).json({ success: true, message: 'Order placed successfully' });
     } catch (err) {
-        console.log(`Error on place order ${err}`);
-        req.flash('error', `Error on placing order ${err}`);
-        return res.redirect('/user/cart');
+        console.error(`Error on place order ${err}`);
+        return res.status(500).json({ success: false, message: `Error on placing order: ${err.message}` });
     }
 };
 
+
+const paymentRender = (req, res) => {
+    try {
+        const totalAmount = req.params.amount;
+        
+        if (!totalAmount) {
+            console.error("Amount parameter is missing");
+            return res.status(404).json({ error: "Amount parameter is missing" });
+        }
+
+        const instance = new Razorpay({
+            key_id: "rzp_test_jyh8u3FB51sm3I",
+            key_secret: "5Cz0sGy9qDgUqCLLieURAfkD"
+        });
+
+        const options = {
+            amount: totalAmount * 100,
+            currency: "INR",
+            receipt: "receipt#1"
+        };
+
+        instance.orders.create(options, (err, order) => {
+            if (err) {
+                console.error(`Failed to create order: ${err}`);
+                return res.status(500).json({ error: `Failed to create order: ${err.message}` });
+            }
+            return res.status(200).json({ orderID: order.id });
+        });
+    } catch (err) {
+        console.error(`Error on orders in checkout: ${err}`);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
 
 const addAddress = async (req, res) => {
@@ -165,5 +210,5 @@ const orderPage = async (req, res) => {
 
 
 
-module.exports = { checkout , placeOrder ,addAddress , orderPage };
+module.exports = { checkout , placeOrder ,addAddress , orderPage ,  paymentRender};
 

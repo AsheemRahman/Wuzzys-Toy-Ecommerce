@@ -104,9 +104,10 @@ user.get('/getCounts', activeUser, wishlistController.getCounts);
 //-------------------------------- checkout --------------------------
 
 user.get('/checkout', activeUser , checkoutController.checkout)
-user.post('/checkout-address',activeUser,checkoutController.addAddress)
-user.get('/conform-order',activeUser,checkoutController.orderPage)
-user.post('/place-order/:address/:payment',activeUser,checkoutController.placeOrder)
+user.post('/checkout-address', activeUser ,checkoutController.addAddress)
+user.get('/conform-order', activeUser , checkoutController.orderPage)
+user.post('/place-order/:address/:payment', activeUser , checkoutController.placeOrder)
+user.post('/payment-render/:amount', activeUser , checkoutController.paymentRender)
 
 
 //---------------------------------- Order  ------------------------
