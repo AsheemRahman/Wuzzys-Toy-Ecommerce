@@ -98,19 +98,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% collection.forEach((collection,index)=> { %>
+                        <% category.forEach((category,index)=> { %>
                             <tr scope="row">
                                 <td>
                                     <%= index + 1 + ((page - 1) * 6) %>
                                 </td>
                                 <td>
-                                    <%= collection.collectionName %>
+                                    <%= category.collectionName %>
                                 </td>
                                 <td>
-                                    <%= collection.createdAt.toLocaleDateString() %>
+                                    <%= category.createdAt.toLocaleDateString() %>
                                 </td>
                                 <td>
-                                    <% if(collection.isActive) { %>
+                                    <% if(category.isActive) { %>
                                         <span class="status active">Active</span>
                                         <% }else{ %>
                                             <span class="status block">Blocked</span>
@@ -118,12 +118,12 @@
                                 </td>
                                 <td class="category-action">
                                     <a href="" id="edit-collection-modal" data-bs-toggle="modal"
-                                        data-bs-target="#editCollection" data-name="<%=collection.collectionName%>"
-                                        data-id="<%=collection.id %>"><i class="bi bi-pencil-square"></i></a>
+                                        data-bs-target="#editCollection" data-name="<%=category.collectionName%>"
+                                        data-id="<%= category.id %>"><i class="bi bi-pencil-square"></i></a>
                                     <a
-                                        href="/admin/collectionstatus?id=<%= collection.id %>&status=<%=collection.isActive %>"><i
+                                        href="/admin/collectionstatus?id=<%= category.id %>&status=<%= category.isActive %>"><i
                                             class="bi bi-x-circle"></i></a>
-                                    <a href="/admin/deletecollection/<%= collection.id %>" class="sweet-alert-delete"><i
+                                    <a href="/admin/deletecollection/<%= category.id %>" class="sweet-alert-delete"><i
                                             class="bi bi-trash3"></i></a>
                                 </td>
                             </tr>

@@ -11,12 +11,12 @@ const product = async (req, res) => {
         const search = req.query.search || "";
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 6;
-        //------ Fetch products with pagination ------
+        
         const products = await productSchema.find({ productName: { $regex: search, $options: 'i' } })
             .limit(limit)
             .skip((page - 1) * limit)
             .sort({ updatedAt : -1 });
-        //---- Fetch the total number of products matching the search query ----
+
         const count = await productSchema.countDocuments({ productName: { $regex: search, $options: 'i' } });
 
         res.render('admin/products', {

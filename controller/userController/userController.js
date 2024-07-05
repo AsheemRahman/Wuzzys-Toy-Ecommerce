@@ -105,7 +105,7 @@ const verifyPost = async (req, res) => {
             console.log(`error while user signup ${err}`)
           })
       } else {
-        req.flash('error', 'Invaild OTP')
+        req.flash('error', 'Invaild OTP , Try Again')
         res.redirect('/user/verify')
       }
     }
@@ -230,39 +230,31 @@ const googleAuthCallback = (req, res, next) => {
 //-------------------------------------- Facebook auth -----------------------------------
 
 const facebookAuth = (req, res, next) => {
-  try {
-    passport.authenticate('facebook', {
-      scope: ['email', 'profile']
-    })(req, res, next)
-  } catch (err) {
-    console.log(`Error on facebook authentication ${err}`)
-    res.status(500).send('Authentication failed')
-  }
+  passport.authenticate('facebook', {
+    scope: ['email', 'profile']
+  })(req, res, next)
 }
 
 //----------------------------------- facebook auth callback  ----------------------------
 
 const facebookAuthCallback = (req, res, next) => {
-  try {
-    passport.authenticate('facebook', (err, user, info) => {
+  passport.authenticate('facebook', (err, user, info) => {
+    if (err) {
+      console.log(`Error on facebook auth callback: ${err}`)
+      return res.status(500).send('Authentication failed')
+    }
+    if (!user) {
+      return res.redirect('/user/login')
+    }
+    req.logIn(user, err => {
       if (err) {
-        console.log(`Error on facebook auth callback: ${err}`)
-        return next(err)
+        console.log(`Error logging in user: ${err}`)
+        return res.status(500).send('Login failed')
       }
-      if (!user) {
-        return res.redirect('/user/login')
-      }
-      req.logIn(user, err => {
-        if (err) {
-          return next(err)
-        }
-        req.session.user = user.id
-        return res.redirect('/user/home')
-      })
-    })(req, res, next)
-  } catch (err) {
-    console.log(`Error on facebook callback ${err}`)
-  }
+      req.session.user = user.id
+      return res.redirect('/user/home')
+    })
+  })(req, res, next)
 }
 
 module.exports = {

@@ -1,6 +1,6 @@
 const express = require('express')
 const user = express.Router();
-const isUser = require('../middleware/userSession')
+const activeUser = require('../middleware/userSession')
 const checkUser= require('../middleware/checkUserSession')
 
 const userController = require('../controller/userController/userController')
@@ -11,7 +11,6 @@ const cartController = require('../controller/userController/cartController')
 const checkoutController = require('../controller/userController/checkoutController')
 const orderController = require('../controller/userController/orderController')
 const forgotPassword = require('../controller/userController/forgotPassword')
-
 const wishlistController = require('../controller/userController/wishlistcontroller')
 
 //------------------------------- main -------------------------------
@@ -69,51 +68,52 @@ user.get('/productDetail/:id' , checkUser , productController.productDetail);
 
 //----------------------------- profile route --------------------------
 
-user.get('/profile', checkUser , profileController.profile)
+user.get('/profile', activeUser , profileController.profile)
 
-user.post('/update-profile', checkUser , profileController.updateProfile)
+user.post('/update-profile', activeUser , profileController.updateProfile)
 
-user.post('/add-address', checkUser , profileController.addAddress)
+user.post('/add-address', activeUser , profileController.addAddress)
 
-user.get('/remove-address/:index', checkUser,profileController.removeAddress);
+user.get('/remove-address/:index', activeUser , profileController.removeAddress);
 
-user.get('/edit-address/:index',checkUser,profileController.editAddress)
+user.get('/edit-address/:index', activeUser , profileController.editAddress)
 
-user.post('/update-address/:index',checkUser,profileController.updateAddress)
+user.post('/update-address/:index', activeUser , profileController.updateAddress)
 
 //----------------------------- cart route --------------------------
 
-user.get('/cart', checkUser , cartController.cart)
-user.get('/add-to-cart/:id', checkUser, cartController.addToCartPost)
-user.get('/remove-item/:id',checkUser,cartController.removeItem)
-user.post('/cart/increment',isUser,cartController.increment)
-user.post('/cart/decrement',isUser,cartController.decrement)
+user.get('/cart', activeUser , cartController.cart)
+user.get('/add-to-cart/:id', activeUser, cartController.addToCartPost)
+user.get('/remove-item/:id',activeUser,cartController.removeItem)
+user.post('/cart/increment',activeUser,cartController.increment)
+user.post('/cart/decrement',activeUser,cartController.decrement)
 
 
 //------------------------------- Wishlist ---------------------------
 
-user.get('/wishlist', checkUser , wishlistController.wishlistpage )
-user.get('/add-wishlist/:id',wishlistController.addWishlist )
-user.get('/delete-wish/:id',wishlistController.deleteWishlist )
+user.get('/wishlist', activeUser , wishlistController.wishlistpage )
+user.get('/add-wishlist/:id', activeUser, wishlistController.addWishlist )
+user.get('/delete-wish/:id', activeUser , wishlistController.deleteWishlist )
 
 
 //------------------ item count in wishlist and cart -----------------
 
-user.get('/getCounts', checkUser, wishlistController.getCounts);
+user.get('/getCounts', activeUser, wishlistController.getCounts);
+
 
 //-------------------------------- checkout --------------------------
 
-user.get('/checkout', checkUser , checkoutController.checkout)
-user.post('/checkout-address',checkUser,checkoutController.addAddress)
-user.get('/conform-order',checkUser,checkoutController.orderPage)
-user.post('/place-order/:address/:payment',checkUser,checkoutController.placeOrder)
+user.get('/checkout', activeUser , checkoutController.checkout)
+user.post('/checkout-address',activeUser,checkoutController.addAddress)
+user.get('/conform-order',activeUser,checkoutController.orderPage)
+user.post('/place-order/:address/:payment',activeUser,checkoutController.placeOrder)
 
 
 //---------------------------------- Order  ------------------------
 
-user.get('/orders', checkUser , orderController.orderPage)
-user.post('/cancelOrder/:id', checkUser , orderController.cancelOrder)
-user.get("/orderDetail/:id", checkUser , orderController.orderDetail)
+user.get('/orders', activeUser , orderController.orderPage)
+user.post('/cancelOrder/:id', activeUser , orderController.cancelOrder)
+user.get("/orderDetail/:id", activeUser , orderController.orderDetail)
 
 
 //------------------------- forgot password ---------------------------
@@ -126,7 +126,7 @@ user.post('/resetpassword' , forgotPassword.resetPasswordPost)
 user.get('/forgotpassword-resend/:email' , forgotPassword.forgotResend)
 
 
-//------------------------------- logout --------------------------------
+//------------------------------- logout -------------------------------
 
 user.get('/logout' , userController.logout)
 

@@ -1,7 +1,8 @@
 const Popup = require('../../model/PopupSchema');
 
 
-// Render admin popup management page
+//------------------ Render admin popup management page ------------
+
 const getPopups = async (req, res) => {
     try {
         const today = new Date();
@@ -22,19 +23,18 @@ const getPopups = async (req, res) => {
             search,
             limit,page
         });
-
     } catch (error) {
         console.error('Error fetching popups:', error);
         res.status(500).send('Error fetching popups: ' + error.message);
     }
 };
 
-// Create a new popup
+//---------------------- Create a new popup ---------------------------
+
 const createPopup = async (req, res) => {
     try {
         const { title, content, startDate, endDate } = req.body;
 
-        // Basic validation
         if (!title || !content || !startDate || !endDate) {
             return res.status(400).send('All fields are required.');
         }
@@ -49,7 +49,8 @@ const createPopup = async (req, res) => {
 };
 
 
-// Update an existing popup
+//------------------- Update an existing popup ------------------------
+
 const updatePopup = async (req, res) => {
     try {
         const { title, content, startDate, endDate } = req.body;

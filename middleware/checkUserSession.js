@@ -14,7 +14,7 @@ async function checkUser (req, res, next) {
       next()
     }
   } catch (err) {
-    console.log(`error in checkuser is blocked  ${err}`)
+    console.log(`Error in checkuser Middleware  ${err}`)
   }
 }
 

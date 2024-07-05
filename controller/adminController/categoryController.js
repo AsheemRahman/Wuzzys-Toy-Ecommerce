@@ -9,7 +9,7 @@ const category = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 6;
 
-        const collection = await categorySchema.find({collectionName: { $regex: search, $options: 'i' }})
+        const category = await categorySchema.find({collectionName: { $regex: search, $options: 'i' }})
             .sort({ updatedAt: -1 })
             .limit(limit)
             .skip((page - 1) * limit)
@@ -17,7 +17,7 @@ const category = async (req, res) => {
         const count = await categorySchema.countDocuments({ collectionName: { $regex: search, $options: 'i' } })
 
         res.render('admin/collection', { title: 'Category',
-            collection ,
+            category,
             totalPages: Math.ceil(count / limit),
             currentPage: page,
             search,
@@ -35,23 +35,23 @@ const addCategoryPost = async (req, res) => {
     try {
         const name = req.body.collectionName
 
-    const collection = {collectionName: name , isActive: true}
+    const category = {collectionName: name , isActive: true}
     const check = await categorySchema.findOne({collectionName: { $regex: name, $options: 'i' }})
     if (check == null) {
-        await categorySchema.insertMany(collection)
+        await categorySchema.insertMany(category)
         .then(() => {
-            req.flash('success', 'New collection added')
+            req.flash('success', 'New category added')
             res.redirect('/admin/collection')
         })
         .catch(error => {
-            console.log(`error while adding collection ${error}`)
+            console.log(`error while adding category ${error}`)
             })
         } else {
-            req.flash('error', 'Collection already exists')
+            req.flash('error', 'Category already exists')
             res.redirect('/admin/collection')
         }
     } catch (error) {
-        console.log(`error from add collection post ${error}`)
+        console.log(`error from add Category post ${error}`)
     }
 }
 
@@ -59,21 +59,21 @@ const addCategoryPost = async (req, res) => {
 
 const status = async (req, res) => {
     try {
-        const collectionId = req.query.id
+        const categoryId = req.query.id
         const status = !(req.query.status === 'true')
-        const category = await categorySchema.findByIdAndUpdate(collectionId, {isActive: status})
+        const category = await categorySchema.findByIdAndUpdate(categoryId, {isActive: status})
         res.redirect('/admin/collection')
     } catch (error) {
         console.log(`error while status update ${error}`)
     }
 }
 
-//------------------------------ Delete a Colection --------------------------------
+//------------------------------ Delete a Category --------------------------------
 
 const deleteCategory = async (req, res) => {
     try {
-        const collectionId = req.params.id
-        const deleteCategory = await categorySchema.findByIdAndDelete(collectionId)
+        const categoryId = req.params.id
+        const deleteCategory = await categorySchema.findByIdAndDelete(categoryId)
         if (deleteCategory != null) {
             req.flash('success', 'Category Successfully deleted')
             res.redirect('/admin/collection')
@@ -82,7 +82,7 @@ const deleteCategory = async (req, res) => {
             res.redirect('/admin/collection')
         }
     } catch (error) {
-        console.log(`error while deleting collection ${error}`)
+        console.log(`error while deleting category ${error}`)
     }
 }
 
@@ -91,8 +91,8 @@ const deleteCategory = async (req, res) => {
 const editCategory = async (req, res) => {
     try {
 
-        const { collectionId, collectionName } = req.body
-        const editCategory = await categorySchema.findByIdAndUpdate(collectionId,{ collectionName: collectionName })
+        const { categoryId, categoryName } = req.body
+        const editCategory = await categorySchema.findByIdAndUpdate(categoryId,{ collectionName: categoryName })
         if (editCategory != null) {
             req.flash('success', 'Category Successfully edited')
             res.redirect('/admin/collection')

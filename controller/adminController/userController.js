@@ -5,7 +5,6 @@ const userSchema = require('../../model/userSchema')
 //-------------------------------- User Page Render ----------------------------------
 
 const users = async (req,res)=> {
-
     try {
         
         const search = req.query.search || ''
@@ -35,9 +34,7 @@ const users = async (req,res)=> {
 //------------------------------------ User Status ---------------------------------
 
 const status = async (req,res)=> {
-
     try {
-        
         const {id,status} = req.query;
         const newStatus = !(status === 'true')
 

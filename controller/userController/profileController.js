@@ -5,6 +5,7 @@ const { ObjectId } = require('mongodb');
 
 
 //------------------------------------------- profile ----------------------------------------------
+
 const profile = async (req, res) => {
     try {
         const userDetail = await userSchema.findById(req.session.user)
@@ -23,10 +24,9 @@ const profile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
     try {
-        // get the form data
         const userName = req.body.userName;
         const phone = req.body.phoneNumber;
-        // update the user details
+
         const profileUpdate = await userSchema.findByIdAndUpdate(req.session.user, { name: userName, phone: phone })
         if (profileUpdate) {
             req.flash('success', 'Profile updated');
@@ -44,7 +44,6 @@ const updateProfile = async (req, res) => {
 
 const addAddress = async (req, res) => {
     try {
-        // user address details added
         const userAddress = {
             building:req.body.building,
             street:req.body.street,
@@ -55,9 +54,8 @@ const addAddress = async (req, res) => {
             state:req.body.state,
             country:req.body.country
         }
-        // get current user data from collection
         const user = await userSchema.findById(req.session.user)
-        // if maximum address size reached then redirect to login page
+        // if maximum address size reached then show alert
         if (user.address.length > 3) {
             req.flash("error", "Maximum Address limit Reached")
             return res.redirect('/user/profile')
@@ -81,20 +79,18 @@ const removeAddress = async (req, res) => {
     try {
         const userId = req.session.user;
         const index = parseInt(req.params.index, 10);
-        // Find the user by userId
+
         const user = await userSchema.findById(userId).populate('address');
         if (!user) {
             req.flash('error', 'User not found');
             return res.redirect('/user/profile');
         }
-        // Validate the index
+
         if (isNaN(index) || index < 0 || index >= user.address.length) {
             req.flash('error', 'Invalid address index');
             return res.redirect('/user/profile');
         }
-        // Remove the address by index
         user.address.splice(index, 1);
-        // Save the updated user document
         await user.save();
 
         req.flash('success', 'Address deleted successfully');

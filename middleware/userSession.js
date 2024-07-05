@@ -21,4 +21,4 @@ async function isUser (req,res,next){
     }
 }
 
-module.exports=isUser
+module.exports = isUser

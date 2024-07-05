@@ -1,12 +1,16 @@
 const userSchema = require('../model/userSchema')
 const passport = require('passport')
 const FacebookStrategy = require('passport-facebook').Strategy
-const dotenv = require('dotenv').config()
+const dotenv = require('dotenv')
 
+// Load environment variables from .env file
+dotenv.config()
+
+// Initialize the Facebook strategy
 passport.use(
   new FacebookStrategy(
     {
-      clientID: process.env.FACEBOOK_APP_ID,    
+      clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
       callbackURL: process.env.FACEBOOK_CALLBACK_URL,
       passReqToCallback: true,
@@ -34,23 +38,25 @@ passport.use(
 
         done(null, user)
       } catch (err) {
-        console.error(err) // Log the error
+        console.error(`Error in Facebook strategy: ${err.message}`) // Log the error
         done(err, null)
       }
     }
   )
 )
 
+// Serialize the user ID to save in the session
 passport.serializeUser((user, done) => {
   done(null, user.id)
 })
 
+// Deserialize the user by finding the user by ID from the session
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await userSchema.findById(id)
     done(null, user)
   } catch (err) {
-    console.error(err) // Log the error
+    console.error(`Error deserializing user: ${err.message}`) // Log the error
     done(err, null)
   }
 })

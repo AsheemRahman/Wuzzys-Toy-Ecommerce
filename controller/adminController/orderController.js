@@ -8,10 +8,8 @@ const orderpage = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 6;
 
-        // Initialize query object
         let query = {};
 
-        // Parse search query as a number if provided
         if (search) {
             const searchNumber = Number(search);
             if (!isNaN(searchNumber)) {
@@ -38,7 +36,7 @@ const orderpage = async (req, res) => {
     }
 }
 
-// ------------------------- Show Single order details --------------------------- 
+// ------------------------- Show Single order details ---------------------------
 
 const orderView = async (req,res) =>{
     const order_id = req.params.id;
@@ -51,6 +49,9 @@ const orderView = async (req,res) =>{
         res.redirect('/admin/order')
     }
 }
+
+
+// ---------------------------------- status change ------------------------------
 
 const orderStatus=async (req, res) => {
     try {
