@@ -385,53 +385,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="row">
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label class="form-label" for="billing-address">Flat , House no , Building</label>
-                                <input type="text" class="form-control" name="building" placeholder="Enter Address"
-                                    value="">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label class="form-label" for="billing-email-address">Area , Street , Sector ,
-                                    Village</label>
-                                <input type="text" class="form-control" name="street" placeholder="Enter Area"
-                                    value="">
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- <div class="row">
-                        <div class="mb-3">
-                            <label class="form-label" for="billing-name">Land mark</label>
-                            <input type="text" class="form-control" name="landmark" placeholder="Enter landmark"
-                                value="">
-                        </div>
-                    </div> -->
-                    <!-- <div class="row">
-                        <div class="col-lg-4">
-                            <div class="mb-4 mb-lg-0">
-                                <label class="form-label">City</label>
-                                <input type="text" class="form-control" name="city" placeholder="Enter City"
-                                    value="">
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="mb-4 mb-lg-0">
-                                <label class="form-label">State</label>
-                                <input type="text" class="form-control" name="state" placeholder="Enter state"
-                                    value="">
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="mb-4 mb-lg-0">
-                                <label class="form-label">Pincode</label>
-                                <input type="text" class="form-control" name="pincode" placeholder="Enter pincode"
-                                    value="">
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
             <!---------------------------- Payment Options ------------------------------->
@@ -650,8 +603,7 @@
             element.classList.add('selected');
             selectedPaymentMethod = method;
 
-            // Handle Razorpay payment method
-            if (method === 2) { // Assuming 2 is the Razorpay method
+            if (method === 2) {
                 const URL = `/user/payment-render/${totalAmount}`;
                 fetch(URL, {
                     method: "POST",
@@ -667,7 +619,7 @@
                     if (data.orderID) {
                         const options = {
                             key: "rzp_test_jyh8u3FB51sm3I",
-                            amount: totalAmount * 100, // Convert amount to paise
+                            amount: totalAmount * 100,
                             currency: "INR",
                             name: "Wuzzy's Toys",
                             order_id: data.orderID,
