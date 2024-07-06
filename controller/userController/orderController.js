@@ -2,6 +2,7 @@ const orderSchema = require("../../model/orderSchema");
 const userSchema = require("../../model/userSchema");
 const mongoose = require("mongoose");
 const productSchema = require("../../model/productSchema");
+const walletSchema = require('../../model/walletSchema');
 
 
 
@@ -94,10 +95,37 @@ const returnOrder = async (req, res) => {
             return res.status(400).json({ status: 'error', message: 'Order is already returned or cancelled' });
         }
 
+        // Update order status and save
         order.orderStatus = 'Returned';
         order.returnReason = returnReason;
         await order.save();
-
+        // Check if payment method was Razorpay
+        if (order.paymentMethod === 'razorpay') {
+            const userWallet = await walletSchema.findOne({ userID: order.customer_id });
+            if (userWallet) {
+                // Update wallet balance and add transaction record
+                userWallet.wallet_balance = (userWallet.wallet_balance || 0) + order.totalPrice;
+                userWallet.transaction.push({
+                    wallet_amount: order.totalPrice,
+                    order_id: orderId,
+                    transactionType: 'Credited',
+                    transaction_date: new Date()
+                });
+                await userWallet.save();
+            } else {
+                // Create a new wallet entry for the user if it doesn't exist
+                await walletSchema.create({
+                    userID: order.customer_id,
+                    wallet_balance: order.totalPrice,
+                    transaction: [{
+                        wallet_amount: order.totalPrice,
+                        order_id: orderId,
+                        transactionType: 'Credited',
+                        transaction_date: new Date()
+                    }]
+                });
+            }
+        }
         return res.status(200).json({ status: 'success', message: 'Order return request submitted successfully' });
     } catch (error) {
         console.error('Error processing return request:', error);
