@@ -76,5 +76,33 @@ const orderDetail = async (req,res) =>{
     }
 }
 
+const returnOrder = async (req, res) => {
+    try {
+        const { orderId, returnReason } = req.body;
 
-module.exports = { orderPage , cancelOrder , orderDetail}
+        if (!orderId || !returnReason) {
+            return res.status(400).json({ status: 'error', message: 'Order ID and return reason are required' });
+        }
+
+        const order = await orderSchema.findById(orderId);
+
+        if (!order) {
+            return res.status(404).json({ status: 'error', message: 'Order not found' });
+        }
+
+        if (order.orderStatus === 'Returned' || order.orderStatus === 'Cancelled') {
+            return res.status(400).json({ status: 'error', message: 'Order is already returned or cancelled' });
+        }
+
+        order.orderStatus = 'Returned';
+        order.returnReason = returnReason;
+        await order.save();
+
+        return res.status(200).json({ status: 'success', message: 'Order return request submitted successfully' });
+    } catch (error) {
+        console.error('Error processing return request:', error);
+        return res.status(500).json({ status: 'error', message: 'An error occurred while processing the return request' });
+    }
+};
+
+module.exports = { orderPage , cancelOrder , orderDetail , returnOrder }

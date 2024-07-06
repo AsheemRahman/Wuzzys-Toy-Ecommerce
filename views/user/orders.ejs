@@ -1,10 +1,11 @@
 <style>
-    .my-order{
+    .my-order {
         display: flex;
         justify-content: center;
         color: #fefeeb;
         margin: 3rem;
     }
+
     .avatar-lg {
         height: 5rem;
         width: 5rem;
@@ -115,173 +116,270 @@
         outline: none;
         box-shadow: none;
     }
-
 </style>
 
 
 
 <%- include('navbar') %>
-<div class="container mt-5">
-    <h1 class="my-order">My Orders</h1>
-    <div class="row order-div">
-        <div>
-            <% if(orderDetails.length != 0) { %>
-                <% orderDetails.forEach((item, index) => { %>
-                    <div class="card border shadow-none order-container">
-                        <div class="card-body">
-                            <% item.products.forEach((product, index) => { %>
-                                <div class="d-flex align-items-start">
-                                    <div class="me-4">
-                                        <img src="../../<%= product.product_image %>" class="avatar-lg rounded">
-                                    </div>
-                                    <div class="flex-grow-1 align-self-center overflow-hidden">
-                                        <div class="order-place">
-                                            <h5 class="font-size-18"><%= product.product_name %></h5>
-                                            <p class="mb-0 mt-1">Quantity: <b><%= product.product_quantity %></b></p>
-                                            <p class="mb-0 mt-1">Price: <b>&#8377; <%= (product.product_price).toLocaleString() %></b></p>
+    <div class="container mt-5">
+        <h1 class="my-order">My Orders</h1>
+        <div class="row order-div">
+            <div>
+                <% if(orderDetails.length !=0) { %>
+                    <% orderDetails.forEach((item, index)=> { %>
+                        <div class="card border shadow-none order-container">
+                            <div class="card-body">
+                                <% item.products.forEach((product, index)=> { %>
+                                    <div class="d-flex align-items-start">
+                                        <div class="me-4">
+                                            <img src="../../<%= product.product_image %>" class="avatar-lg rounded">
+                                        </div>
+                                        <div class="flex-grow-1 align-self-center overflow-hidden">
+                                            <div class="order-place">
+                                                <h5 class="font-size-18">
+                                                    <%= product.product_name %>
+                                                </h5>
+                                                <p class="mb-0 mt-1">Quantity: <b>
+                                                        <%= product.product_quantity %>
+                                                    </b></p>
+                                                <p class="mb-0 mt-1">Price: <b>&#8377; <%=
+                                                            (product.product_price).toLocaleString() %></b></p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <hr>
-                            <% }) %>
-                            <div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="mt-3">
-                                            <p class="mb-2">Order Placed</p>
-                                            <h6 class="mb-0 mt-2"><%= item.createdAt.toDateString() %></h6>
+                                    <hr>
+                                    <% }) %>
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="mt-3">
+                                                        <p class="mb-2">Order Placed</p>
+                                                        <h6 class="mb-0 mt-2">
+                                                            <%= item.createdAt.toDateString() %>
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="mt-3">
+                                                        <p class="mb-2">Order ID</p>
+                                                        <h6 class="mb-0 mt-2">
+                                                            <%= item.order_id %>
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="mt-3">
+                                                        <p class="mb-2">Order Status</p>
+                                                        <h6 class="mb-0 mt-2">
+                                                            <% if(item.orderStatus==='Pending' ) { %>
+                                                                <p class="text-primary">
+                                                                    <%= item.orderStatus %>
+                                                                </p>
+                                                                <% } else if(item.orderStatus==='Confirmed' ) { %>
+                                                                    <p class="text-primary">
+                                                                        <%= item.orderStatus %>
+                                                                    </p>
+                                                                    <% } else if(item.orderStatus==='Returned' ) { %>
+                                                                        <p class="text-danger">
+                                                                            <%= item.orderStatus %>
+                                                                        </p>
+                                                                        <% } else if(item.orderStatus==='Delivered' ) {
+                                                                            %>
+                                                                            <p class="text-success">
+                                                                                <%= item.orderStatus %>
+                                                                            </p>
+                                                                            <% } else if(item.orderStatus==='Cancelled'
+                                                                                ) { %>
+                                                                                <p class="text-warning">
+                                                                                    <%= item.orderStatus %>
+                                                                                </p>
+                                                                                <% } else
+                                                                                    if(item.orderStatus==='Shipped' ) {
+                                                                                    %>
+                                                                                    <p class="text-secondary">
+                                                                                        <%= item.orderStatus %>
+                                                                                    </p>
+                                                                                    <% } %>
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="mt-3">
+                                                        <p class="mb-2">Total Price</p>
+                                                        <b class="mb-0 mt-2">&#8377; <%=
+                                                                item.totalPrice.toLocaleString() %></b>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="mt-3" style="text-align: center;">
+                                                        <a href="/user/orderDetail/<%= item._id %>"
+                                                            style="color: #fefeeb;">
+                                                            <p class="mb-2">Order View</p>
+                                                            <b class="mb-0 mt-2">
+                                                                <i class="bi bi-eye" style="color: #db4444;;"></i>
+                                                            </b>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="mt-3">
-                                            <p class="mb-2">Order ID</p>
-                                            <h6 class="mb-0 mt-2"><%= item.order_id %></h6>
+                                        <div class="order-actions-top">
+                                            <% if(item.orderStatus==='Delivered' ){ %>
+                                                <a class="btn btn-danger" id="returnOrder" data-bs-toggle="modal"
+                                                    data-bs-target="#modalreturnOrder" data-id="<%= item._id %>">Return
+                                                    Order</a>
+                                                <% } else if(item.orderStatus==='Confirmed' ||
+                                                    item.orderStatus==='Shipped' ){ %>
+                                                    <a class="btn btn-danger" id="cancelOrder" data-bs-toggle="modal"
+                                                        data-bs-target="#cancelOrderModal"
+                                                        data-id="<%= item._id %>">Cancel Order</a>
+                                                    <% } %>
                                         </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mt-3">
-                                            <p class="mb-2">Order Status</p>
-                                            <h6 class="mb-0 mt-2">
-                                                <% if(item.orderStatus === 'Pending') { %>
-                                                    <p class="text-primary"><%= item.orderStatus %></p>
-                                                <% } else if(item.orderStatus === 'Confirmed') { %>
-                                                    <p class="text-primary"><%= item.orderStatus %></p>
-                                                <% } else if(item.orderStatus === 'Returned') { %>
-                                                    <p class="text-danger"><%= item.orderStatus %></p>
-                                                <% } else if(item.orderStatus === 'Delivered') { %>
-                                                    <p class="text-success"><%= item.orderStatus %></p>
-                                                <% } else if(item.orderStatus === 'Cancelled') { %>
-                                                    <p class="text-warning"><%= item.orderStatus %></p>
-                                                <% } else if(item.orderStatus === 'Shipped') { %>
-                                                    <p class="text-secondary"><%= item.orderStatus %></p>
-                                                <% } %>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="mt-3">
-                                            <p class="mb-2">Total Price</p>
-                                            <b class="mb-0 mt-2">&#8377; <%= item.totalPrice.toLocaleString() %></b>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="mt-3" style="text-align: center;">
-                                            <a href="/user/orderDetail/<%= item._id %>" style="color: #fefeeb;">
-                                            <p class="mb-2">Order View</p>
-                                            <b class="mb-0 mt-2">
-                                                <i class="bi bi-eye" style="color: #db4444;;"></i>
-                                            </b>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="order-actions-top">
-                                <% if(item.orderStatus ==='Delivered' ){ %>
-                                    <a class="btn btn-danger">Return Order</a>
-                                <% } else if(item.orderStatus === 'Confirmed' || item.orderStatus === 'Shipped' ){ %>
-                                    <a class="btn btn-danger" id="cancelOrder" data-bs-toggle="modal" data-bs-target="#cancelOrderModal" data-id="<%= item._id %>">Cancel Order</a>
-                                    <% } %>
                             </div>
                         </div>
-                    </div>
-                <% }) %>
-            <% } else { %>
-                <div class="row d-flex justify-content-center">
-                    <div class="no-orders">
-                        <h2 class="nothing">You have no orders</h2>
-                        <a href="/user/home" class="btn btn-danger d-flex">Shop Now</a>
-                    </div>
-                </div>
-                <% } %>
+                        <% }) %>
+                            <% } else { %>
+                                <div class="row d-flex justify-content-center">
+                                    <div class="no-orders">
+                                        <h2 class="nothing">You have no orders</h2>
+                                        <a href="/user/home" class="btn btn-danger d-flex">Shop Now</a>
+                                    </div>
+                                </div>
+                                <% } %>
             </div>
         </div>
     </div>
-    
+
     <%- include('footer') %>
 
 
-<!---------------------- modal for cancel order ----------------------------->
+        <!---------------------- modal for cancel order ----------------------------->
 
 
-<div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="cancelOrderModalLabel">Cancel Order</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="cancelReason" class="form-label">Reason for Cancellation</label>
-                        <textarea class="form-control" id="cancelReason" rows="3" required></textarea>
+        <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cancelOrderModalLabel">Cancel Order</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <a class="btn submit-btn btn-primary" id="submitCancelOrder">Confirm</a>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="cancelReason" class="form-label">Reason for Cancellation</label>
+                                <textarea class="form-control" id="cancelReason" rows="3" required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a class="btn submit-btn btn-primary" id="submitCancelOrder">Confirm</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<script>
-    document.querySelectorAll('#cancelOrder').forEach((btn) => {
-    btn.addEventListener('click', function () {
-        const orderId = this.getAttribute('data-id');
-        document.getElementById('submitCancelOrder').setAttribute('href', `/user/cancelOrder/${orderId}`);
-    });
-});
 
-document.getElementById('submitCancelOrder').addEventListener('click', function (event) {
-    event.preventDefault();
-    const href = this.getAttribute('href');
-    fetch(href, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ reason: document.getElementById('cancelReason').value })
-    })
-    .then(response => {
-        if (response.ok) {
-            window.location.href = '/user/orders';
-            Swal.fire({
-            icon: "success",
-            title: "Order Cancelled Successfully",
-            text: "Shop more"
+        <!-- Return Order Modal -->
+        <div class="modal fade" id="modalreturnOrder" tabindex="-1" aria-labelledby="returnOrderLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="returnOrderLabel">Return Order</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="returnOrderForm">
+                            <input type="hidden" id="orderId" name="orderId" value="">
+                            <div class="mb-3">
+                                <label for="returnReason" class="form-label">Reason for Return</label>
+                                <textarea class="form-control" id="returnReason" name="returnReason" rows="3"
+                                    required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Submit Return</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.querySelectorAll('#cancelOrder').forEach((btn) => {
+                btn.addEventListener('click', function () {
+                    const orderId = this.getAttribute('data-id');
+                    document.getElementById('submitCancelOrder').setAttribute('href', `/user/cancelOrder/${orderId}`);
+                });
             });
-        } else {
-            Swal.fire({
-            icon: "warning",
-            title: "Failed to cancel order",
-            text: "Try Again"
-            });
-        }
-    })
-    .catch(error => console.error('Error:', error));
-});
 
-</script>
+            document.getElementById('submitCancelOrder').addEventListener('click', function (event) {
+                event.preventDefault();
+                const href = this.getAttribute('href');
+                fetch(href, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ reason: document.getElementById('cancelReason').value })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = '/user/orders';
+                            Swal.fire({
+                                icon: "success",
+                                title: "Order Cancelled Successfully",
+                                text: "Shop more"
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Failed to cancel order",
+                                text: "Try Again"
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+
+
+            // return order
+            document.addEventListener('DOMContentLoaded', () => {
+                const returnOrderModal = document.getElementById('modalreturnOrder');
+                returnOrderModal.addEventListener('show.bs.modal', (event) => {
+                    const button = event.relatedTarget;
+                    const orderId = button.getAttribute('data-id');
+                    document.getElementById('orderId').value = orderId;
+                });
+
+                document.getElementById('returnOrderForm').addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    const orderId = document.getElementById('orderId').value;
+                    const returnReason = document.getElementById('returnReason').value;
+
+                    try {
+                        const response = await fetch('/user/returnOrder', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ orderId, returnReason }),
+                        });
+
+                        const result = await response.json();
+                        if (result.status === 'success') {
+                            Swal.fire('Success', 'Order return request submitted successfully', 'success').then(() => {
+                                returnOrderModal.querySelector('.btn-close').click();
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire('Error', result.message, 'error');
+                        }
+                    } catch (error) {
+                        Swal.fire('Error', 'An error occurred while submitting the return request', 'error');
+                    }
+                });
+            });
+
+
+        </script>
