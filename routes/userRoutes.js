@@ -84,7 +84,7 @@ user.post('/update-address/:index', activeUser , profileController.updateAddress
 
 user.get('/cart', activeUser , cartController.cart)
 user.get('/add-to-cart/:id', activeUser, cartController.addToCartPost)
-user.get('/remove-item/:id',activeUser,cartController.removeItem)
+user.delete('/remove-item/:id',activeUser,cartController.removeItem)
 user.post('/cart/increment',activeUser,cartController.increment)
 user.post('/cart/decrement',activeUser,cartController.decrement)
 
@@ -93,7 +93,7 @@ user.post('/cart/decrement',activeUser,cartController.decrement)
 
 user.get('/wishlist', activeUser , wishlistController.wishlistpage )
 user.get('/add-wishlist/:id', activeUser, wishlistController.addWishlist )
-user.get('/delete-wish/:id', activeUser , wishlistController.deleteWishlist )
+user.delete('/delete-wish/:id', activeUser , wishlistController.deleteWishlist )
 
 
 //------------------ item count in wishlist and cart -----------------

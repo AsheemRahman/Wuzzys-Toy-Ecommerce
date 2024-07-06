@@ -256,7 +256,7 @@
 
 <%- include('navbar') %>
 
-    <% if (cart && cart.items.length > 0) { %>
+    <% if (cart && cart.items.length> 0) { %>
         <div class="cart-card">
             <div class="card">
                 <div class="row">
@@ -370,7 +370,7 @@
                             <div class="col">TOTAL PRICE</div>
                             <div class="col text-right d-flex justify-content-end">
                                 <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                                <% if ( cart.totalPrice > 1000 ) { %>
+                                <% if ( cart.totalPrice> 1000 ) { %>
                                     <%= (cart.payableAmount).toFixed(2) %>
                                         <% } else { %>
                                             <%= (cart.payableAmount + 50).toFixed(2) %>
@@ -439,7 +439,38 @@
                                         confirmButtonText: 'Yes, delete it!'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            window.location.href = '/user/remove-item/' + productId;
+                                            fetch(`/user/remove-item/${productId}`, {
+                                                method: 'DELETE',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                }
+                                            })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if (data.success) {
+                                                        Swal.fire(
+                                                            'Deleted!',
+                                                            data.message,
+                                                            'success'
+                                                        ).then(() => {
+                                                            location.reload();
+                                                        });
+                                                    } else {
+                                                        Swal.fire(
+                                                            'Error!',
+                                                            data.message,
+                                                            'error'
+                                                        );
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    Swal.fire(
+                                                        'Error!',
+                                                        'There was a problem with the request.',
+                                                        'error'
+                                                    );
+                                                    console.error('Error:', error);
+                                                });
                                         }
                                     });
                                 });

@@ -141,7 +141,30 @@
                             confirmButtonText: 'Yes, delete it!'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = '/user/delete-wish/' + productId;
+                                fetch(`/user/delete-wish/${productId}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({ productId }),
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            Swal.fire(
+                                                'Deleted!',
+                                                data.message,
+                                                'success'
+                                            ).then(() => {
+                                                window.location.reload();
+                                            });
+                                        } else {
+                                            Swal.fire('Error', data.message, 'error');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        Swal.fire('Error', 'There was a problem deleting the item.', 'error');
+                                    });
                             }
                         });
                     });

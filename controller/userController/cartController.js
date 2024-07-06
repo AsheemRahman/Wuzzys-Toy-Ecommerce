@@ -88,25 +88,25 @@ const removeItem = async (req, res) => {
     const itemId = req.params.id;
 
     if (!itemId || !ObjectId.isValid(itemId)) {
-        req.flash('error', 'Invalid item.');
-        return res.redirect("/user/cart");
+        return res.status(400).json({ success: false, message: 'Invalid item.' });
     }
+
     try {
         const cart = await cartSchema.findOne({ userId: userId });
         if (cart) {
             cart.items.pull({ productId: new ObjectId(itemId) });
             await cart.save();
-            req.flash('success', 'Item Removed from Cart');
+            return res.status(200).json({ success: true, message: 'Item removed from cart.' });
         } else {
             console.log('No cart found for the specified user.');
-            req.flash('error', 'Cart not found.');
+            return res.status(404).json({ success: false, message: 'Cart not found.' });
         }
     } catch (err) {
-        req.flash('error', 'Something went wrong, Please try again later.');
         console.error(`Error in removing the item from cart: ${err}`);
+        return res.status(500).json({ success: false, message: 'Something went wrong, please try again later.' });
     }
-    res.redirect("/user/cart");
 };
+
 
 //--------------------------------------- Quantity in cart ---------------------------------
 

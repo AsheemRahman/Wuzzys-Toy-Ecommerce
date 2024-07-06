@@ -62,29 +62,25 @@ const deleteWishlist = async (req, res) => {
     const userId = req.session.user;
     const itemId = req.params.id;
     if (!userId) {
-        req.flash('error', 'User not found , Please login again.');
-        return res.redirect("/user/login");
+        return res.status(401).json({ success: false, message: 'User not found. Please login again.' });
     }
     if (!itemId || !ObjectId.isValid(itemId)) {
-        req.flash('error', 'Invalid item .');
-        return res.redirect("/user/wishlist");
+        return res.status(400).json({ success: false, message: 'Invalid item.' });
     }
     try {
         const wish = await wishlistSchema.findOne({ userID: userId });
         if (wish) {
             wish.products.pull({ productID: new ObjectId(itemId) });
             await wish.save();
-            req.flash('success', 'Item removed from wishlist.');
+            return res.json({ success: true, message: 'Item removed from wishlist.' });
         } else {
-            console.log('No wishlist found for the specified user.');
-            req.flash('error', 'Wishlist not found.');
+            return res.status(404).json({ success: false, message: 'Wishlist not found.' });
         }
     } catch (err) {
-        req.flash('error', 'Something went wrong. Please try again later.');
         console.error(`Error in removing the item from wishlist: ${err}`);
+        return res.status(500).json({ success: false, message: 'Something went wrong. Please try again later.' });
     }
-    res.redirect("/user/wishlist");
-}
+};
 
 const getCounts = async (req, res) => {
     try {
