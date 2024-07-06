@@ -8,14 +8,20 @@ const { ObjectId } = require('mongodb');
 
 const profile = async (req, res) => {
     try {
-        const userDetail = await userSchema.findById(req.session.user)
-        if (!userDetail) {
-            req.flash('error', 'Error while getting user data. Please try again later.')
+        const userId = req.session.user
+        const userDetail = await userSchema.findById(userId)
+        if (!userId) {
+            req.flash('error', 'User Not found . Please login again.')
+            return res.redirect('/user/login')
+        }
+        if(!userDetail){
+            req.flash('error','Profile is not found ,Please try again later')
             return res.redirect('/user/home')
         }
-        res.render('user/profile', { title: "Profile", alertMessage: req.flash('success'), user: req.session.user, userDetail })
+        res.render('user/profile', { title: "Profile", user: req.session.user , userDetail })
     } catch (err) {
         console.log(`Error during profile page render ${err}`);
+        res.status(404)
     }
 }
 

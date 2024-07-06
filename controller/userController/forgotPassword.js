@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt')
 
 const forgotPassword = (req, res) => {
     try {
-        // req.session.user = ''
+        req.session.user = ''
         res.render('user/forgotPassword', {title: 'Forgot Password',user: req.session.user})
     } catch (error) {
         console.log(`error while rendering forgot Password page ${error}`)

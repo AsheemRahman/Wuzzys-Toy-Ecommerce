@@ -3,6 +3,7 @@ const cartSchema = require('../../model/cartSchema')
 const userSchema = require('../../model/userSchema')
 const addressSchema = require('../../model/addressSchema')
 const orderSchema = require('../../model/orderSchema')
+const walletSchema = require('../../model/walletSchema');
 const mongoose = require('mongoose')
 const Razorpay = require('razorpay')
 
@@ -28,11 +29,19 @@ const checkout = async (req, res) => {
         if (items.length === 0) {
             return res.redirect('/user/cart');
         }
+
+        let wallet = await walletSchema.findOne({ userID: userId });
+
+        if (!wallet) {
+            wallet = { balance: 0, transaction: [] };
+        }
+
         res.render('user/checkOut', {
             title: 'Checkout',
             user,
             cartDetails,
-            userDetails: user
+            userDetails: user,
+            wallet
         });
     } catch (err) {
         console.error(`Error while rendering the checkout page: ${err}`);
