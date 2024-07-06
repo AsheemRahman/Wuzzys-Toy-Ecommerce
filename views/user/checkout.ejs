@@ -625,6 +625,7 @@
         const email = orderPlacementBtn.getAttribute('data-email');
         const phone = orderPlacementBtn.getAttribute('data-phone');
 
+        // Function to handle address selection
         function selectAddress(element, index) {
             const cards = document.querySelectorAll('.address-card');
             cards.forEach(card => card.classList.remove('selected'));
@@ -632,6 +633,7 @@
             selectedAddressIndex = index;
         }
 
+        // Function to handle payment method selection
         function selectPaymentMethod(element, method) {
             if (selectedAddressIndex === null) {
                 Swal.fire({
@@ -647,6 +649,7 @@
             element.classList.add('selected');
             selectedPaymentMethod = method;
 
+            // Handle Razorpay payment method
             if (method === 2) { // Assuming 2 is the Razorpay method
                 const URL = `/user/payment-render/${totalAmount}`;
                 fetch(URL, {
@@ -658,19 +661,16 @@
                     if (!res.ok) {
                         throw new Error("Cannot render the payment page");
                     }
-                    return res.json().catch(err => {
-                        console.error("Response is not JSON:", res);
-                        throw new Error("Response is not JSON");
-                    });
+                    return res.json();
                 }).then((data) => {
                     if (data.orderID) {
                         const options = {
-                            "key": "rzp_test_jyh8u3FB51sm3I",
-                            "amount": totalAmount * 100,
-                            "currency": "INR",
-                            "name": "Wuzzy's Toys",
-                            "order_id": data.orderID,
-                            "handler": function (response) {
+                            key: "rzp_test_jyh8u3FB51sm3I",
+                            amount: totalAmount * 100, // Convert amount to paise
+                            currency: "INR",
+                            name: "Wuzzy's Toys",
+                            order_id: data.orderID,
+                            handler: function (response) {
                                 const URL = `/user/place-order/${selectedAddressIndex}/${selectedPaymentMethod}`;
                                 fetch(URL, {
                                     method: "POST",
@@ -685,10 +685,12 @@
                                         razorpay_signature: response.razorpay_signature
                                     })
                                 }).then((res) => {
-                                    return res.json().catch(err => {
-                                        console.error("Response is not JSON:", res);
-                                        throw new Error("Response is not JSON");
-                                    });
+                                    if(res.redirected)
+                                    window.location.href=res.url
+                                    if (!res.ok) {
+                                        throw new Error("Order placement failed");
+                                    }
+                                    return res.json();
                                 }).then((data) => {
                                     if (data.success) {
                                         window.location.href = "/user/conform-order";
@@ -709,16 +711,16 @@
                                     });
                                 });
                             },
-                            "prefill": {
-                                "name": username,
-                                "email": email,
-                                "contact": phone
+                            prefill: {
+                                name: username,
+                                email: email,
+                                contact: phone
                             },
-                            "notes": {
-                                "address": "Razorpay Corporate Office"
+                            notes: {
+                                address: "Razorpay Corporate Office"
                             },
-                            "theme": {
-                                "color": "#6351CE"
+                            theme: {
+                                color: "#6351CE"
                             }
                         };
                         const rzp1 = new Razorpay(options);
@@ -737,6 +739,7 @@
             }
         }
 
+        // Event listener for the place order button
         orderPlacementBtn.addEventListener('click', (e) => {
             e.preventDefault();
             if (selectedAddressIndex === null) {

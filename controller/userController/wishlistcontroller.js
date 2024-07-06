@@ -90,8 +90,10 @@ const getCounts = async (req, res) => {
             const cart = await cartSchema.findOne({ userId }).select('items').lean().exec();
             const wishlist = await wishlistSchema.findOne({ userID: userId }).select('products').lean().exec();
 
-            const cartItemsCount = cart ? cart.items.length : 0;
-            const wishlistItemsCount = wishlist ? wishlist.products.length : 0;
+            console.log(cart.items.length)
+
+            const cartItemsCount = cart.items.length > 0 ? cart.items.length : 0;
+            const wishlistItemsCount = wishlist.products.length > 0 ? wishlist.products.length : 0;
 
             return res.json({ cartItemsCount, wishlistItemsCount });
         } else {
