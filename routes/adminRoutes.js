@@ -6,6 +6,7 @@ const categoryController = require('../controller/adminController/categoryContro
 const productController = require('../controller/adminController/productController')
 const userContoller = require('../controller/adminController/userController')
 const orderController = require('../controller/adminController/orderController')
+const couponController = require('../controller/adminController/couponController')
 
 const isPopup = require('../middleware/popup');
 const popController = require('../controller/adminController/popupController')
@@ -60,14 +61,19 @@ admin.post("/order/:orderId/status", isAdmin , orderController.orderStatus)
 
 // -------------------------------- Popup --------------------------------
 
-//------- popup management ---------
 admin.get('/popups',isPopup , popController.getPopups);
-//------- Create popup--------
 admin.post('/create-popup', isPopup , popController.createPopup);
-//------- Update popup -------
 admin.post('/update-popup/:id', popController.updatePopup);
-//------- delete popup -------
 admin.get('/popups/:id',isAdmin , popController.deletePopup);
+
+
+// -------------------------------- coupon --------------------------------
+
+admin.get('/coupons', isAdmin ,couponController.getCoupons);
+admin.post('/addcoupon', isAdmin , couponController.addCoupon);
+admin.post('/editcoupon',  isAdmin ,couponController.editCoupon);
+admin.patch('/statuscoupon/:id',  isAdmin ,couponController.toggleCouponStatus);
+admin.delete('/deletecoupon/:id',  isAdmin ,couponController.deleteCoupon);
 
 
 //---------------------------- admin logout ------------------------------

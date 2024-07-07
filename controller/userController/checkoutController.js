@@ -59,10 +59,14 @@ const placeOrder = async (req, res) => {
         const paymentMode = parseInt(req.params.payment);
         let paymentId = "";
 
-        if (paymentMode === 1) {
-            const razorpay_payment_id = req.body.razorpay_payment_id;
-            const razorpay_order_id = req.body.razorpay_order_id;
-            const razorpay_signature = req.body.razorpay_signature;
+        // if (paymentMode === 2 ) {
+        //     const razorpay_payment_id = req.body.razorpay_payment_id;
+        //     const razorpay_order_id = req.body.razorpay_order_id;
+        //     const razorpay_signature = req.body.razorpay_signature;
+        //     paymentId = razorpay_payment_id;
+        // }
+        if (paymentMode === 2) {  // Razorpay
+            const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
             paymentId = razorpay_payment_id;
         }
 
@@ -91,11 +95,11 @@ const placeOrder = async (req, res) => {
         if (!userDetails || !userDetails.address || !userDetails.address[addressIndex]) {
             return res.status(400).json({ success: false, message: 'Selected address is not valid.' });
         }
-        const wallet = await walletSchema.findOne({ userID: userId });
+        if(paymentDetails[paymentMode] === 'Wallet'){
+            const wallet = await walletSchema.findOne({ userID: userId });
         if (!wallet || wallet.balance < cartItems.payableAmount) {
             return res.status(400).json({ success: false, message: 'Insufficient wallet balance.' });
         }
-        if(paymentDetails[paymentMode] === 'Wallet'){
             wallet.balance -= cartItems.payableAmount;
             wallet.transaction.push({
                 wallet_amount: cartItems.payableAmount,
@@ -103,9 +107,9 @@ const placeOrder = async (req, res) => {
                 transaction_date: new Date(),
                 order_id: new mongoose.Types.ObjectId(),
         });
+        await wallet.save();
         }
 
-        await wallet.save();
 
         const newOrder = new orderSchema({
             customer_id: req.session.user,
@@ -144,8 +148,7 @@ const placeOrder = async (req, res) => {
         }
 
         await cartSchema.deleteOne({ userId: req.session.user });
-        res.redirect('/user/conform-order');
-        return res.status(200)
+        return res.status(200).json({ success: true, message: 'Order placed successfully!' });
     } catch (err) {
         console.error(`Error on place order ${err}`);
         return res.status(500).json({ success: false, message: `Error on placing order: ${err.message}` });
