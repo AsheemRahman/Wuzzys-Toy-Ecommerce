@@ -95,16 +95,14 @@ const returnOrder = async (req, res) => {
             return res.status(400).json({ status: 'error', message: 'Order is already returned or cancelled' });
         }
 
-        // Update order status and save
         order.orderStatus = 'Returned';
         order.returnReason = returnReason;
         await order.save();
-        // Check if payment method was Razorpay
+
         if (order.paymentMethod === 'razorpay') {
             const userWallet = await walletSchema.findOne({ userID: order.customer_id });
             if (userWallet) {
-                // Update wallet balance and add transaction record
-                userWallet.wallet_balance = (userWallet.wallet_balance || 0) + order.totalPrice;
+                userWallet.balance = (userWallet.balance || 0) + order.totalPrice;
                 userWallet.transaction.push({
                     wallet_amount: order.totalPrice,
                     order_id: orderId,
@@ -113,10 +111,9 @@ const returnOrder = async (req, res) => {
                 });
                 await userWallet.save();
             } else {
-                // Create a new wallet entry for the user if it doesn't exist
                 await walletSchema.create({
                     userID: order.customer_id,
-                    wallet_balance: order.totalPrice,
+                    balance: order.totalPrice,
                     transaction: [{
                         wallet_amount: order.totalPrice,
                         order_id: orderId,
