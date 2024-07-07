@@ -1,3 +1,8 @@
+const categorySchema = require('../../model/categorySchema')
+const orderSchema = require('../../model/orderSchema')
+const productSchema = require('../../model/productSchema')
+const userSchema = require('../../model/userSchema')
+
 
 //--------------------------- admin routes ------------------------------
 
@@ -48,9 +53,37 @@ const loginPost = (req,res)=>{
 
 //------------------------- admin home get request --------------------
 
-const home = (req,res)=>{
+const home = async (req,res)=>{
     try {
-        res.render('admin/home',{title: "Home"})
+        const orderCount = await orderSchema.countDocuments()
+        const userCount = await userSchema.countDocuments()
+
+        const revenueResult = await orderSchema.aggregate([
+            {
+                $match: {
+                    orderStatus: { $in: ['Shipped', 'Confirmed', 'Delivered'] }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    total: { $sum: "$totalPrice" }
+                }
+            }
+        ]);
+        const Revenue = revenueResult.length > 0 ? revenueResult[0].total : 0;
+
+        const product = await orderSchema.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    total: { $sum: "$totalQuantity" }
+                }
+            }
+        ]);
+        const productCount = product.length > 0 ? product[0].total : 0;
+
+        res.render('admin/home',{title: "Home" , orderCount , userCount , Revenue , productCount })
     } catch (error) {
         console.log(`error from home ${error}`)
     }
