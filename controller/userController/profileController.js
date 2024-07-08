@@ -148,7 +148,7 @@ const data= {
 }
     try {
         const updateQuery = {};
-        updateQuery[`address.${index}`] = data; // Constructing the dynamic update object
+        updateQuery[`address.${index}`] = data;
 
         const result = await userSchema.updateOne(
             { _id: new ObjectId(id) },
