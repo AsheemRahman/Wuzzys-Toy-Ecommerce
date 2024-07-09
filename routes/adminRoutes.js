@@ -7,6 +7,7 @@ const productController = require('../controller/adminController/productControll
 const userContoller = require('../controller/adminController/userController')
 const orderController = require('../controller/adminController/orderController')
 const couponController = require('../controller/adminController/couponController')
+const saleController = require('../controller/adminController/saleController');
 
 const isPopup = require('../middleware/popup')
 const popController = require('../controller/adminController/popupController')
@@ -64,6 +65,14 @@ admin.post('/addcoupon', isAdmin, couponController.addCoupon)
 admin.post('/editcoupon/:id', isAdmin, couponController.editCoupon)
 admin.get('/statuscoupon', isAdmin, couponController.toggleCouponStatus);
 admin.delete('/deletecoupon/:id', isAdmin, couponController.deleteCoupon)
+
+
+// -------------------------------- coupon --------------------------------
+
+admin.get('/salesReport',isAdmin , saleController.salePage)
+admin.get('/getsalesbymonth', isAdmin, saleController.getSalesByMonth);
+admin.post('/fetch-sales-data',isAdmin, saleController.getOrderDetails);
+admin.post('/downloadPDF',isAdmin,saleController.downloadPDF)
 
 //---------------------------- admin logout ------------------------------
 

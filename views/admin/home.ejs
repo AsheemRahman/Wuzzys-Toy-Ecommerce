@@ -68,10 +68,6 @@
     .sales-chart {
         width: 100%;
     }
-    /* .revenue{
-        display: flex;
-        justify-content: center;
-    } */
 </style>
 
 
@@ -85,6 +81,11 @@
             <div class="menu-item ">
                 <a href="/admin/home">
                     <div class="admin-menu"><i class="bi bi-grid"></i>Dashboard</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="/admin/salesReport">
+                    <div class="admin-menu"><i class="bi bi-archive"></i>Sales Report</div>
                 </a>
             </div>
             <div class="menu-item">
@@ -109,7 +110,7 @@
             </div>
             <div class="menu-item">
                 <a href="/admin/coupons">
-                    <div class="admin-menu"><i class="bi bi-receipt"></i>Coupons</div>
+                    <div class="admin-menu"><i class="bi bi-ticket-perforated"></i>Coupons</div>
                 </a>
             </div>
             <div class="menu-item">
@@ -134,16 +135,6 @@
         <div class="main-content">
             <div class="sidebar-header">
                 <h1 class="text-white">Sales Summary</h1>
-                <div class="controls">
-                    <select class="year-select">
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2022">2021</option>
-                        <option value="2022">2020</option>
-                    </select>
-                    <button class="download-btn">Download</button>
-                </div>
             </div>
             <div class="stats">
                 <div class="stat-item">
@@ -170,9 +161,9 @@
                     <!-- <span class="stat-change positive">+4%</span> -->
                 </div>
             </div>
-            <div class="chart">
+            <!-- <div class="chart">
                 <img src="" class="sales-chart">
-            </div>
+            </div> -->
         </div>
     </div>
 
