@@ -80,6 +80,8 @@ user.get('/edit-address/:index', activeUser , profileController.editAddress)
 
 user.post('/update-address/:index', activeUser , profileController.updateAddress)
 
+user.get('/wallet', activeUser , profileController.walletPage)
+
 //----------------------------- cart route --------------------------
 
 user.get('/cart', activeUser , cartController.cart)

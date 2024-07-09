@@ -154,16 +154,15 @@
     }
 
     .badge {
-            background-color: red;
-            color: white;
-            padding: 3px 7px;
-            border-radius: 50%;
-            font-size: 0.8em;
-            position: relative;
-            top: -10px;
-            right: 10px;
-        }
-
+        background-color: red;
+        color: white;
+        padding: 3px 7px;
+        border-radius: 50%;
+        font-size: 0.8em;
+        position: relative;
+        top: -10px;
+        right: 10px;
+    }
 </style>
 
 
@@ -192,42 +191,34 @@
             <li><a href="#footer">About</a></li>
             <li><a href="#">Contact</a></li>
             <% if (user) { %>
-                <li><a href="/user/wishlist"><i class="fa fa-heart"></i><span id="wishlist-count" class="badge"></span></a></li>
-            <% } else { %>
-                <li><a href="#" onclick="wishlistClick(event)"><i class="fa fa-heart"></i></a></li>
-            <% } %>
-            <% if (user) { %>
-                <li><a href="/user/cart"><i class="fa fa-shopping-cart"></i><span id="cart-count" class="badge"></span></a></li>
-            <% } else { %>
-                <li><a href="#" onclick="CartClick(event)"><i class="fa fa-shopping-cart"></i></a></li>
-            <% } %>
+                <li><a href="/user/wishlist"><i class="fa fa-heart"></i><span id="wishlist-count"
+                            class="badge"></span></a></li>
+                <% } else { %>
+                    <li><a href="#" onclick="wishlistClick(event)"><i class="fa fa-heart"></i></a></li>
+                    <% } %>
+                        <% if (user) { %>
+                            <li><a href="/user/cart"><i class="fa fa-shopping-cart"></i><span id="cart-count"
+                                        class="badge"></span></a></li>
+                            <% } else { %>
+                                <li><a href="#" onclick="CartClick(event)"><i class="fa fa-shopping-cart"></i></a></li>
+                                <% } %>
         </ul>
 
         <!--------------------------- Check the user is login or not , Based on that the icon will change ----------------------------------->
 
         <% if (user) { %>
-            <span class="nav-link-items user-login-icon" onclick="toggleSidebar()"><i
-                    class="fa-solid fa-user"></i></span>
-                    <div class="sidebar" id="sidebar">
-                        <ul>
-                            <li id="go-back-home" onclick="toggleSidebar()"><span><i class="fas fa-chevron-left"></i> Go Back</span></li>
-                            <li><a href="/user/profile"><i class="fas fa-user-circle"></i> View Profile</a></li>
-                            <li><a href="/user/orders"><i class="fas fa-list-alt"></i> My Orders</a></li>
-                            <li><a href="#"><i class="fas fa-ban"></i> Cancelled Orders</a></li>
-                            <li><a href="/user/forgotpassword"><i class="fas fa-key"></i> Reset Password</a></li>
-                            <li><a href="/user/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a></li>
-                        </ul>
-                    </div>
-                    
-        <% } else { %>
-            <a href="/user/login" class="btn btn-outline-secondary user-login-btn">Login</a>
-        <% } %>
+            <a class="nav-link-items user-login-icon" href="/user/profile">
+                <i class="fa-solid fa-user"></i>
+            </a>
+            <% } else { %>
+                <a href="/user/login" class="btn btn-outline-secondary user-login-btn">Login</a>
+                <% } %>
     </div>
 </div>
 
 <%- include('alert') %>
 
-<!------------------------ toggle side bar -------------------------------->
+    <!------------------------ toggle side bar -------------------------------->
 
     <script>
 
@@ -240,9 +231,9 @@
             }
         }
 
-//--------------- when user login only then we can go to cart ---------------------
+        //--------------- when user login only then we can go to cart ---------------------
 
-function CartClick(event) {
+        function CartClick(event) {
             event.preventDefault();
             Swal.fire({
                 icon: 'warning',
@@ -258,9 +249,9 @@ function CartClick(event) {
             });
         }
 
-//--------------- when user login only then we can go to Wishlist ---------------------
+        //--------------- when user login only then we can go to Wishlist ---------------------
 
-function wishlistClick(event) {
+        function wishlistClick(event) {
             event.preventDefault();
             Swal.fire({
                 icon: 'warning',
@@ -276,9 +267,9 @@ function wishlistClick(event) {
             });
         }
 
-//--------------------- item count of wishlist and cart ---------------------------
+        //--------------------- item count of wishlist and cart ---------------------------
 
-    async function fetchCounts() {
+        async function fetchCounts() {
             try {
                 const response = await fetch('/user/getCounts');
                 const data = await response.json();

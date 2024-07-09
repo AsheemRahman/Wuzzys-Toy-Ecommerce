@@ -25,7 +25,7 @@ input.form-control:focus{
     margin: 20px;
     background-color: #232323;
     color: white;
-    height: 80vh;
+    height: 95vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -239,14 +239,15 @@ input.form-control:focus{
     .pagination-controls {
         display: flex;
         justify-content: end;
-        margin-right: 4rem;
+        margin-right: 7rem;
+        width: 100%;
     }
 
     .pagination {
         display: flex;
         list-style: none;
         padding: 18px;
-        width: 76%;
+        width: 91%;
         justify-content: center;
         background: #232323;
         border-radius: 10px;

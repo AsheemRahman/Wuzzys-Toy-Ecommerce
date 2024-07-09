@@ -1,31 +1,30 @@
 <style>
-        .admin-product {
-            width: 80%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    .admin-product {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        .product-head {
-            border-radius: 10px;
-            margin: 24px;
-            background: #232323;
-            width: 90%;
-        }
+    .product-head {
+        border-radius: 10px;
+        margin: 24px;
+        background: #232323;
+        width: 90%;
+    }
 
-        .product-header {
-            margin-left: 30px;
-        }
+    .product-header {
+        margin-left: 30px;
+    }
 
-        .form-input {
-            height: 80%;
-        }
+    .form-input {
+        height: 80%;
+    }
 
-        .form-product {
-            display: flex;
-            align-items: center;
-        }
-
+    .form-product {
+        display: flex;
+        align-items: center;
+    }
 </style>
 
 
@@ -64,6 +63,11 @@
             <div class="menu-item">
                 <a href="/admin/coupons">
                     <div class="admin-menu"><i class="bi bi-receipt"></i>Coupons</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="/admin/popups">
+                    <div class="admin-menu"><i class="bi bi-receipt"></i>Popups</div>
                 </a>
             </div>
             <div class="menu-item">
@@ -138,7 +142,8 @@
                                     <td class="products-icon">
                                         <a href="/admin/editproduct/<%= product.id %>"><i
                                                 class="bi bi-pencil-square product-icons"></i></a>
-                                        <a href="/admin/productstatus?id=<%= product.id %>&&status=<%= product.isActive%>"><i
+                                        <a
+                                            href="/admin/productstatus?id=<%= product.id %>&&status=<%= product.isActive%>"><i
                                                 class="bi bi-x-circle product-icons"></i></a>
                                         <a href="/admin/products/<%= product.id %>" class="sweet-alert-delete"><i
                                                 class="bi bi-trash3 product-icons"></i></a>
@@ -149,39 +154,37 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
-
-    <!------------------------------------ Pagination Controls -------------------------------->
-
-    <div class="pagination-controls d-flex  mt-3">
-        <ul class="pagination">
-            <% if (currentPage> 1) { %>
-                <li class="page-item"><a class="page-link"
-                        href="/admin/products?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
-                </li>
-                <% } %>
-                    <% for (let i=1; i <=totalPages; i++) { %>
-                        <li class="page-item <%= currentPage == i ? 'active' : '' %>">
-                            <a class="page-link"
-                                href="/admin/products?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
-                                <%= i %>
-                            </a>
+            <!------------------------------------ Pagination Controls -------------------------------->
+            <div class="pagination-controls d-flex  mt-3">
+                <ul class="pagination">
+                    <% if (currentPage> 1) { %>
+                        <li class="page-item"><a class="page-link"
+                                href="/admin/products?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
                         </li>
                         <% } %>
-                            <% if (currentPage < totalPages) { %>
-                                <li class="page-item"><a class="page-link pagination-next-btn"
-                                        href="/admin/products?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                            <% for (let i=1; i <=totalPages; i++) { %>
+                                <li class="page-item <%= currentPage == i ? 'active' : '' %>">
+                                    <a class="page-link"
+                                        href="/admin/products?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
+                                        <%= i %>
+                                    </a>
                                 </li>
                                 <% } %>
-        </ul>
+                                    <% if (currentPage < totalPages) { %>
+                                        <li class="page-item"><a class="page-link pagination-next-btn"
+                                                href="/admin/products?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                                        </li>
+                                        <% } %>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <%- include('footer') %>
 
-    <script>
-        //------------------- sweet alert for delete confirmation --------------
-        const alertDelete = document.querySelectorAll('.sweet-alert-delete')
+        <script>
+            //------------------- sweet alert for delete confirmation --------------
+            const alertDelete = document.querySelectorAll('.sweet-alert-delete')
             alertDelete.forEach(ele => {
                 ele.addEventListener('click', event => {
                     event.preventDefault()
@@ -200,4 +203,4 @@
                     })
                 })
             })
-    </script>
+        </script>

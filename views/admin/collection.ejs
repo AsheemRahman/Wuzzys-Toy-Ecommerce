@@ -56,6 +56,11 @@
                 </a>
             </div>
             <div class="menu-item">
+                <a href="/admin/popups">
+                    <div class="admin-menu"><i class="bi bi-receipt"></i>Popups</div>
+                </a>
+            </div>
+            <div class="menu-item">
                 <a href="#">
                     <div class="admin-menu"><i class="bi bi-image"></i>Banner</div>
                 </a>
@@ -131,6 +136,29 @@
                     </tbody>
                 </table>
             </div>
+            <!------------------------------------ Pagination Controls -------------------------------->
+            <div class="pagination-controls d-flex  mt-3">
+                <ul class="pagination">
+                    <% if (currentPage> 1) { %>
+                        <li class="page-item"><a class="page-link"
+                                href="/admin/collection=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
+                        </li>
+                        <% } %>
+                            <% for (let i=1; i <=totalPages; i++) { %>
+                                <li class="page-item <%= currentPage == i ? 'active' : '' %>">
+                                    <a class="page-link"
+                                        href="/admin/collection?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
+                                        <%= i %>
+                                    </a>
+                                </li>
+                                <% } %>
+                                    <% if (currentPage < totalPages) { %>
+                                        <li class="page-item"><a class="page-link pagination-next-btn"
+                                                href="/admin/collection=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                                        </li>
+                                        <% } %>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -170,30 +198,7 @@
         </div>
     </div>
 
-    <!------------------------------------ Pagination Controls -------------------------------->
 
-    <div class="pagination-controls d-flex  mt-3">
-        <ul class="pagination">
-            <% if (currentPage> 1) { %>
-                <li class="page-item"><a class="page-link"
-                        href="/admin/collection=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
-                </li>
-                <% } %>
-                    <% for (let i=1; i <=totalPages; i++) { %>
-                        <li class="page-item <%= currentPage == i ? 'active' : '' %>">
-                            <a class="page-link"
-                                href="/admin/collection?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
-                                <%= i %>
-                            </a>
-                        </li>
-                        <% } %>
-                            <% if (currentPage < totalPages) { %>
-                                <li class="page-item"><a class="page-link pagination-next-btn"
-                                        href="/admin/collection=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
-                                </li>
-                                <% } %>
-        </ul>
-    </div>
 
     <%- include('footer') %>
 

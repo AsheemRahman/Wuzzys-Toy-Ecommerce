@@ -70,6 +70,11 @@
                 </a>
             </div>
             <div class="menu-item">
+                <a href="/admin/popups">
+                    <div class="admin-menu"><i class="bi bi-receipt"></i>Popups</div>
+                </a>
+            </div>
+            <div class="menu-item">
                 <a href="#">
                     <div class="admin-menu"><i class="bi bi-image"></i>Banner</div>
                 </a>
@@ -131,8 +136,10 @@
                                         <%= order.orderStatus %>
                                     </td>
                                     <td>
-                                        <% if (order.orderStatus !=='Delivered' && order.orderStatus !=='Cancelled' &&   order.orderStatus !== 'Returned') {%>
-                                            <select class="status-dropdown"onchange="updateOrderStatus('<%= order._id %>', this.value)">
+                                        <% if (order.orderStatus !=='Delivered' && order.orderStatus !=='Cancelled' &&
+                                            order.orderStatus !=='Returned' ) {%>
+                                            <select class="status-dropdown"
+                                                onchange="updateOrderStatus('<%= order._id %>', this.value)">
                                                 <option value="Confirmed">Confirmed</option>
                                                 <option value="Shipped">Shipped</option>
                                                 <option value="Delivered">Delivered</option>
@@ -142,7 +149,8 @@
                                             <% } %>
                                     </td>
                                     <td>
-                                        <a href="/admin/order-view/<%= order._id %>"><i class="bi bi-eye" style="color: #db4444;;"></i></a>
+                                        <a href="/admin/order-view/<%= order._id %>"><i class="bi bi-eye"
+                                                style="color: #db4444;;"></i></a>
                                     </td>
                                 </tr>
                                 <% slNo++; %>
@@ -150,38 +158,39 @@
                     </tbody>
                 </table>
             </div>
+            <!------------------------------- pagination ---------------------->
+            <div class="pagination-controls d-flex mt-3">
+                <ul class="pagination">
+                    <% if (currentPage> 1) { %>
+                        <li class="page-item"><a class="page-link"
+                                href="/admin/order?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
+                        </li>
+                        <% } %>
+                            <% for (let i=1; i <=totalPages; i++) { %>
+                                <li class="page-item <%= currentPage == i ? 'active' : '' %>">
+                                    <a class="page-link"
+                                        href="/admin/order?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
+                                        <%= i %>
+                                    </a>
+                                </li>
+                                <% } %>
+                                    <% if (currentPage < totalPages) { %>
+                                        <li class="page-item"><a class="page-link pagination-next-btn"
+                                                href="/admin/order?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                                        </li>
+                                        <% } %>
+                </ul>
+            </div>
         </div>
     </div>
 
-    <div class="pagination-controls d-flex mt-3">
-        <ul class="pagination">
-            <% if (currentPage> 1) { %>
-                <li class="page-item"><a class="page-link"
-                        href="/admin/order?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
-                </li>
-                <% } %>
-                    <% for (let i=1; i <=totalPages; i++) { %>
-                        <li class="page-item <%= currentPage == i ? 'active' : '' %>">
-                            <a class="page-link"
-                                href="/admin/order?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
-                                <%= i %>
-                            </a>
-                        </li>
-                        <% } %>
-                            <% if (currentPage < totalPages) { %>
-                                <li class="page-item"><a class="page-link pagination-next-btn"
-                                        href="/admin/order?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
-                                </li>
-                                <% } %>
-        </ul>
-    </div>
 
     <%- include('footer') %>
 
 
         <script>
             function updateOrderStatus(orderId, newStatus) {
-                fetch(`/admin/order/${orderId}/status`,{
+                fetch(`/admin/order/${orderId}/status`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

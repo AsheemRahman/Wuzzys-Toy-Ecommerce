@@ -1,105 +1,110 @@
 <style>
     .admin-product {
-            width: 80%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        .product-head {
-            border-radius: 10px;
-            margin: 24px;
-            background: #232323;
-            width: 90%;
-        }
+    .product-head {
+        border-radius: 10px;
+        margin: 24px;
+        background: #232323;
+        width: 90%;
+    }
 
-        .product-header {
-            margin-left: 30px;
-        }
+    .product-header {
+        margin-left: 30px;
+    }
 
-        .form-input {
-            height: 80%;
-        }
+    .form-input {
+        height: 80%;
+    }
 
-        .form-product {
-            display: flex;
-            align-items: center;
-        }
+    .form-product {
+        display: flex;
+        align-items: center;
+    }
 </style>
 
 <%- include('navbar') %>
-<div class="admin-home">
-    <div class="sidebar">
-        <div class="menu-item">
-            <a href="/admin/home">
-                <div class="admin-menu"><i class="bi bi-grid"></i>Dashboard</div>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="/admin/collection">
-                <div class="admin-menu"><i class="bi bi-collection-fill"></i>Category</div>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="/admin/products">
-                <div class="admin-menu"><i class="bi bi-basket-fill"></i>Products</div>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="/admin/users">
-                <div class="admin-menu"><i class="bi bi-people"></i>Customers</div>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="/admin/order">
-                <div class="admin-menu"><i class="bi bi-cart"></i>Orders</div>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="/admin/coupons">
-                <div class="admin-menu"><i class="bi bi-receipt"></i>Coupons</div>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="#">
-                <div class="admin-menu"><i class="bi bi-image"></i>Banner</div>
-            </a>
-        </div>
-        <div class="menu-item admin-menu-loyout">
-            <a href="/admin/logout">
-                <div class="admin-menu"><i class="bi bi-box-arrow-right"></i>Logout</div>
-            </a>
-        </div>
-    </div>
-
-    <div class="admin-product mb-4">
-        <div class="product-head d-flex justify-content-between">
-            <div class="product-header d-flex justify-content-between align-items-center gap-5">
-                <h2 class="text-white">
-                    <%= title %>
-                </h2>
-                <form action="/admin/popups" method="get" class="form-product  d-flex gap-1">
-                    <input type="text" name="search" placeholder="search" class="form-input form-control">
-                    <input type="submit" class="btn submit-btn" value="Search">
-                </form>
+    <div class="admin-home">
+        <div class="sidebar">
+            <div class="menu-item">
+                <a href="/admin/home">
+                    <div class="admin-menu"><i class="bi bi-grid"></i>Dashboard</div>
+                </a>
             </div>
-            <button class="btn btn-danger m-3" data-toggle="modal" data-target="#addPopupModal">Add Popup</button>
+            <div class="menu-item">
+                <a href="/admin/collection">
+                    <div class="admin-menu"><i class="bi bi-collection-fill"></i>Category</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="/admin/products">
+                    <div class="admin-menu"><i class="bi bi-basket-fill"></i>Products</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="/admin/users">
+                    <div class="admin-menu"><i class="bi bi-people"></i>Customers</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="/admin/order">
+                    <div class="admin-menu"><i class="bi bi-cart"></i>Orders</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="/admin/coupons">
+                    <div class="admin-menu"><i class="bi bi-receipt"></i>Coupons</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="/admin/popups">
+                    <div class="admin-menu"><i class="bi bi-receipt"></i>Popups</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="#">
+                    <div class="admin-menu"><i class="bi bi-image"></i>Banner</div>
+                </a>
+            </div>
+            <div class="menu-item admin-menu-loyout">
+                <a href="/admin/logout">
+                    <div class="admin-menu"><i class="bi bi-box-arrow-right"></i>Logout</div>
+                </a>
+            </div>
         </div>
 
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                    <tr class="product-table-head">
-                        <th scope="col" class="product-table-first">SL.No</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Content</th>
-                        <th scope="col">Start Date</th>
-                        <th scope="col">End Date</th>
-                        <th scope="col" class="product-table-last">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                            <% popups.forEach(( popup , index) => { %>
+        <div class="admin-product mb-4">
+            <div class="product-head d-flex justify-content-between">
+                <div class="product-header d-flex justify-content-between align-items-center gap-5">
+                    <h2 class="text-white">
+                        <%= title %>
+                    </h2>
+                    <form action="/admin/popups" method="get" class="form-product  d-flex gap-1">
+                        <input type="text" name="search" placeholder="search" class="form-input form-control">
+                        <input type="submit" class="btn submit-btn" value="Search">
+                    </form>
+                </div>
+                <button class="btn btn-danger m-3" data-toggle="modal" data-target="#addPopupModal">Add Popup</button>
+            </div>
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr class="product-table-head">
+                            <th scope="col" class="product-table-first">SL.No</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Content</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">End Date</th>
+                            <th scope="col" class="product-table-last">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% popups.forEach(( popup , index)=> { %>
                             <tr>
                                 <td>
                                     <%= index + 1 %>
@@ -114,11 +119,11 @@
                                     <%= popup.startDate.toISOString().split('T')[0] %>
                                 </td>
                                 <td>
-                                    <% if(popup.endDate > today ) { %>
+                                    <% if(popup.endDate> today ) { %>
                                         <%= popup.endDate.toISOString().split('T')[0] %>
-                                    <% }else { %>
-                                        <p>Expired</p>
-                                    <% } %>
+                                            <% }else { %>
+                                                <p>Expired</p>
+                                                <% } %>
                                 </td>
                                 <td>
                                     <button class="btn btn-secondary btn-sm" onclick="showUpdateForm(
@@ -128,57 +133,82 @@
                                         '<%= popup.startDate.toDateString() %>',
                                         '<%= popup.endDate.toDateString() %>')">Update
                                     </button>
-                                    <a href="/admin/popups/<%= popup.id %>" class="btn btn-danger btn-sm sweet-alert-delete">
+                                    <a href="/admin/popups/<%= popup.id %>"
+                                        class="btn btn-danger btn-sm sweet-alert-delete">
                                         Delete
                                     </a>
                                 </td>
                             </tr>
-                        <% }); %>
-                </tbody>
-            </table>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            <!------------------------------------ Pagination Controls -------------------------------->
+            <div class="pagination-controls d-flex  mt-3">
+                <ul class="pagination">
+                    <% if (currentPage> 1) { %>
+                        <li class="page-item"><a class="page-link"
+                                href="/admin/popups=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
+                        </li>
+                        <% } %>
+                            <% for (let i=1; i <=totalPages; i++) { %>
+                                <li class="page-item <%= currentPage == i ? 'active' : '' %>">
+                                    <a class="page-link"
+                                        href="/admin/popups?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
+                                        <%= i %>
+                                    </a>
+                                </li>
+                                <% } %>
+                                    <% if (currentPage < totalPages) { %>
+                                        <li class="page-item"><a class="page-link pagination-next-btn"
+                                                href="/admin/popups?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                                        </li>
+                                        <% } %>
+                </ul>
+            </div>
+
         </div>
     </div>
-</div>
 
 
-<!---------------------------- Add Popup Modal -------------------------------->
+    <!---------------------------- Add Popup Modal -------------------------------->
 
-<div class="modal" id="addPopupModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form id="addPopupForm" action="/admin/create-popup" method="POST">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Popup</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="addTitle">Title</label>
-                        <input type="text" class="form-control" id="addTitle" name="title" required>
+    <div class="modal" id="addPopupModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="addPopupForm" action="/admin/create-popup" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Popup</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label for="addContent">Content</label>
-                        <textarea class="form-control" id="addContent" name="content" rows="4" required></textarea>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="addTitle">Title</label>
+                            <input type="text" class="form-control" id="addTitle" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addContent">Content</label>
+                            <textarea class="form-control" id="addContent" name="content" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="addStartDate">Start Date</label>
+                            <input type="date" class="form-control" id="addStartDate" name="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addEndDate">End Date</label>
+                            <input type="date" class="form-control" id="addEndDate" name="endDate" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="addStartDate">Start Date</label>
-                        <input type="date" class="form-control" id="addStartDate" name="startDate" required>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create Popup</button>
                     </div>
-                    <div class="form-group">
-                        <label for="addEndDate">End Date</label>
-                        <input type="date" class="form-control" id="addEndDate" name="endDate" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create Popup</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 
     <!------------------------------ Update Popup Modal ------------------------>
@@ -200,7 +230,8 @@
                         </div>
                         <div class="form-group">
                             <label for="updateContent">Content</label>
-                            <textarea class="form-control" id="updateContent" name="content" rows="4" required></textarea>
+                            <textarea class="form-control" id="updateContent" name="content" rows="4"
+                                required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="updateStartDate">Start Date</label>
@@ -220,47 +251,21 @@
         </div>
     </div>
 
-    <!------------------------------------ Pagination Controls -------------------------------->
-
-    <div class="pagination-controls d-flex  mt-3">
-        <ul class="pagination">
-            <% if (currentPage> 1) { %>
-                <li class="page-item"><a class="page-link"
-                        href="/admin/popups=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
-                </li>
-                <% } %>
-                    <% for (let i=1; i <=totalPages; i++) { %>
-                        <li class="page-item <%= currentPage == i ? 'active' : '' %>">
-                            <a class="page-link"
-                                href="/admin/popups?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
-                                <%= i %>
-                            </a>
-                        </li>
-                        <% } %>
-                            <% if (currentPage < totalPages) { %>
-                                <li class="page-item"><a class="page-link pagination-next-btn"
-                                        href="/admin/popups?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
-                                </li>
-                                <% } %>
-        </ul>
-    </div>
+    <%- include('footer') %>
 
 
-<%- include('footer') %>
+        <script>
+            function showUpdateForm(id, title, content, startDate, endDate) {
+                $('#updatePopupForm').attr('action', '/admin/update-popup/' + id);
+                $('#updateTitle').val(title);
+                $('#updateContent').val(content);
+                $('#updateStartDate').val(startDate);
+                $('#updateEndDate').val(endDate);
+                $('#updatePopupModal').modal('show');
+            }
 
-
-<script>
-    function showUpdateForm(id, title, content, startDate, endDate) {
-        $('#updatePopupForm').attr('action', '/admin/update-popup/' + id);
-        $('#updateTitle').val(title);
-        $('#updateContent').val(content);
-        $('#updateStartDate').val(startDate);
-        $('#updateEndDate').val(endDate);
-        $('#updatePopupModal').modal('show');
-    }
-
-    //------------------- sweet alert for delete confirmation --------------
-    const alertDelete = document.querySelectorAll('.sweet-alert-delete')
+            //------------------- sweet alert for delete confirmation --------------
+            const alertDelete = document.querySelectorAll('.sweet-alert-delete')
             alertDelete.forEach(element => {
                 element.addEventListener('click', event => {
                     event.preventDefault()
@@ -280,4 +285,4 @@
                 })
             })
 
-</script>
+        </script>

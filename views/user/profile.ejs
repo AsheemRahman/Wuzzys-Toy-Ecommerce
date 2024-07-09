@@ -10,11 +10,25 @@
 
     .card-body {
         color: #fefeeb;
+        display: flex;
+        align-items: center;
+        gap: 10rem;
+        justify-content: center;
+    }
+
+    .card-address {
+        color: #fefeeb;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .pen-option {
         display: flex;
         justify-content: end;
+        margin-right: 5rem;
+        margin-bottom: 2rem;
     }
 
     .pen-option a {
@@ -24,13 +38,25 @@
 
     .user-profile-div {
         margin-bottom: 20px;
+        height: 95%;
+    }
+
+    .address-cards {
+        display: flex;
+        gap: 10px;
     }
 
     .single-address-div {
         border: 1px solid #444;
         border-radius: 10px;
-        padding: 10px;
+        padding: 20px;
         margin-bottom: 10px;
+        width: 90%;
+    }
+
+    .address-profile h1 {
+        display: flex;
+        justify-content: center;
     }
 
     .address-icons {
@@ -63,8 +89,7 @@
         color: #fefeeb;
     }
 
-    .form-control,
-    .dataTable-input {
+    .form-control{
         display: block;
         width: 100%;
         padding: 0.875rem 1.125rem;
@@ -86,6 +111,47 @@
         background: #232323;
         color: #fefeeb;
     }
+
+    .user-side-div {
+        height: 95%;
+    }
+
+    .card-sidebar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+    }
+
+    .card-sidebar h2 {
+        padding: 1.5rem;
+        color: #fefeeb;
+        display: flex;
+        gap: 1rem;
+    }
+
+    .list-group {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .list-group-item {
+        background: transparent;
+        border: none;
+        font-size: 1.1rem;
+        border-radius: 5px;
+    }
+
+    .list-group-item:hover {
+        background: #DB4444;
+    }
+
+    .list-group-item a {
+        color: #fefeeb;
+        text-decoration: none;
+        display: flex;
+        gap: 1rem;
+    }
 </style>
 
 <%- include('navbar') %>
@@ -94,15 +160,43 @@
 
     <div class="container mt-5">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-3">
+                <div class="card user-side-div">
+                    <div class="card-sidebar">
+                        <h2><i class="bi bi-list"></i>Menu</h2>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="/user/profile"><i class="bi bi-person-fill"></i>Profile</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="/user/orders"><i class="bi bi-tag"></i>My Orders</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="/user/wallet"><i class="bi bi-wallet-fill"></i>Wallet</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="/user/forgotpassword"><i class="bi bi-x-octagon"></i>Reset Password</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="/user/logout"><i class="fas fa-sign-out-alt"></i>logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--------- profile ----------->
+            <div class="col-lg-9">
                 <div class="card user-profile-div">
                     <div class="card-body">
-                        <form method="post" action="/user/update-profile">
+                        <div>
+                            <i class="bi bi-person-square" style="font-size: 10rem;"></i>
                             <h2>Your Profile</h2>
+                        </div>
+                        <form method="post" action="/user/update-profile" style="width: 40%;">
                             <div class="form-group mb-3">
                                 <label class="profile-text">Name</label>
                                 <input type="text" class="form-control" name="userName" required
-                                    value="<%= userDetail.name%>" />
+                                    value="<%= userDetail.name %>" />
                             </div>
                             <div class="form-group mb-3">
                                 <label class="profile-text">Email address</label>
@@ -120,24 +214,30 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="card user-profile-div">
-                    <div class="card-body">
+
+        </div>
+        <!-------- Address Column ------->
+        <div class="col-lg-12">
+            <div class="card user-profile-div">
+                <div class="card-address">
+                    <div class="address-profile" style="width: 100%;">
+                        <h1>Your Address</h1>
                         <div class="pen-option text-right">
                             <% if (userDetail.address.length < 4) { %>
-                                <a href="#" id="add-address-btn" data-bs-toggle="modal" data-bs-target="#addressModal"
-                                    title="Add New Address">
-                                    <i class="bi bi-plus-circle"></i>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#addressModal"
+                                    title="Add New Address" class="btn btn-danger address-add">
+                                    Add Address</i>
                                 </a>
                                 <% } else { %>
-                                    <span class="">Maximum 4 addresses reached</span>
+                                    <span>Maximum 4 addresses reached</span>
                                     <% } %>
                         </div>
-                        <h2>Address</h2>
+                    </div>
+                    <div class="address-cards">
                         <% if (!userDetail.address || userDetail.address.length===0) { %>
                             <p class="mt-5">No Address Found. Please add an Address.</p>
                             <% } else { %>
-                                <% userDetail.address.forEach((address,index)=>{ %>
+                                <% userDetail.address.forEach((address, index)=> { %>
                                     <div class="single-address-div">
                                         <div class="address-icons">
                                             <a href="/user/edit-address/<%= index %>" title="Edit Address">
@@ -151,18 +251,20 @@
                                         <div class="address">
                                             <p>
                                                 <span>
-                                                    <%= address.building %>,
+                                                    <%= address.building %> ,
                                                 </span>
                                                 <span>
-                                                    <%= address.street %>
-                                                </span>
-                                                <span>
-                                                    <%= address.city %> ,
+                                                    <%= address.street %> ,
                                                 </span>
                                             </p>
                                             <p>
-                                                <%= address.state %>, <%= address.country %> ,<%= address.pincode %>,
-                                                            <%= address.phonenumber %>
+                                                <%= address.city %> ,
+                                            </p>
+                                            <p>
+                                                <%= address.state %>, <%= address.country %>, <%= address.pincode %>
+                                            </p>
+                                            <p>
+                                                <%=address.phonenumber %>
                                             </p>
                                             <span>
                                                 <%= address.landmark %>
@@ -274,7 +376,6 @@
                                 confirmButtonText: 'Yes, delete it!'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    // Here you can trigger the deletion process, for example, redirecting to a delete route
                                     window.location.href = "/user/remove-address/" + addressIndex;
                                 }
                             });
@@ -318,37 +419,37 @@
                             text: "Building field must not be empty and Not a Number.",
                             icon: "error"
                         });
-                    } else if ( building.value.length > 25 || building.value.length < 4) {
+                    } else if (building.value.length > 25 || building.value.length < 4) {
                         Swal.fire({
                             title: "Error",
                             text: "Building field must be Greater than 4 letters and less than 25 letters.",
                             icon: "error"
                         });
-                    }else if (street.value.trim() === "" || !isNaN(street.value) ) {
+                    } else if (street.value.trim() === "" || !isNaN(street.value)) {
                         Swal.fire({
                             title: "Error",
                             text: "Street field must not be empty and Not a Number.",
                             icon: "error"
                         });
-                    }else if (street.value.length > 25 || street.value.length < 4 ) {
+                    } else if (street.value.length > 25 || street.value.length < 4) {
                         Swal.fire({
                             title: "Error",
                             text: "Street Field Must be Greater than 4 Letters and less than 25 letters.",
                             icon: "error"
                         });
-                    }else if (city.value.trim() === "" || !isNaN(city.value)) {
+                    } else if (city.value.trim() === "" || !isNaN(city.value)) {
                         Swal.fire({
                             title: "Error",
                             text: "City field must not be empty and Not a Number.",
                             icon: "error"
                         });
-                    }else if (city.value.length > 25 || city.value.length < 4) {
+                    } else if (city.value.length > 25 || city.value.length < 4) {
                         Swal.fire({
                             title: "Error",
                             text: "City field must be Greater than 4 Words and less than 25 Words.",
                             icon: "error"
                         });
-                    }else if (!validatePhone(phone.value)) {
+                    } else if (!validatePhone(phone.value)) {
                         Swal.fire({
                             title: "Error",
                             text: "Phone number must be 10 digits.",
@@ -366,13 +467,13 @@
                             text: "Landmark field must not be empty.",
                             icon: "error"
                         });
-                    } else if (state.value.trim() === "" || !isNaN(state.value) ) {
+                    } else if (state.value.trim() === "" || !isNaN(state.value)) {
                         Swal.fire({
                             title: "Error",
                             text: "State field must not be empty.",
                             icon: "error"
                         });
-                    } else if (country.value.trim() === "" || !isNaN(country.value) ) {
+                    } else if (country.value.trim() === "" || !isNaN(country.value)) {
                         Swal.fire({
                             title: "Error",
                             text: "Country field must not be empty.",

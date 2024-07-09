@@ -1,5 +1,5 @@
 <style>
-.admin-product {
+    .admin-product {
         width: 80%;
         display: flex;
         flex-direction: column;
@@ -32,138 +32,142 @@
 
 <%- include('navbar') %>
 
-<!----------------------------------- Admin Menu -------------------------------------------------------->
+    <!----------------------------------- Admin Menu -------------------------------------------------------->
 
-<div class="admin-home">
-    <div class="sidebar">
-        <div class="menu-item">
-            <a href="/admin/home">
-                <div class="admin-menu"><i class="bi bi-grid"></i>Dashboard</div>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="/admin/collection">
-                <div class="admin-menu"><i class="bi bi-collection-fill"></i>Category</div>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="/admin/products">
-                <div class="admin-menu"><i class="bi bi-grid"></i>Products</div>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="/admin/users">
-                <div class="admin-menu"><i class="bi bi-people"></i>Customers</div>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="/admin/order">
-                <div class="admin-menu"><i class="bi bi-cart"></i>Orders</div>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="/admin/coupons">
-                <div class="admin-menu"><i class="bi bi-receipt"></i>Coupons</div>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="#">
-                <div class="admin-menu"><i class="bi bi-image"></i>Banner</div>
-            </a>
-        </div>
-        <div class="menu-item admin-menu-loyout">
-            <a href="/admin/logout">
-                <div class="admin-menu "><i class="bi bi-box-arrow-right"></i>Logout</div>
-            </a>
-        </div>
-    </div>
-    <!-------------------------------------- User Header  -------------------------------------------------------->
-
-
-    <div class="admin-product mb-5">
-        <div class="product-head d-flex justify-content-between">
-            <div class="product-header d-flex justify-content-between align-items-center gap-5">
-                <h2 class="text-white">
-                    <%= title %>
-                </h2>
-                <form action="/admin/users" method="get" class="form-product  d-flex gap-1">
-                    <input type="text" name="search" placeholder="search" class="form-input form-control">
-                    <input type="submit" class="btn submit-btn" value="Search">
-                </form>
+    <div class="admin-home">
+        <div class="sidebar">
+            <div class="menu-item">
+                <a href="/admin/home">
+                    <div class="admin-menu"><i class="bi bi-grid"></i>Dashboard</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="/admin/collection">
+                    <div class="admin-menu"><i class="bi bi-collection-fill"></i>Category</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="/admin/products">
+                    <div class="admin-menu"><i class="bi bi-grid"></i>Products</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="/admin/users">
+                    <div class="admin-menu"><i class="bi bi-people"></i>Customers</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="/admin/order">
+                    <div class="admin-menu"><i class="bi bi-cart"></i>Orders</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="/admin/coupons">
+                    <div class="admin-menu"><i class="bi bi-receipt"></i>Coupons</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="/admin/popups">
+                    <div class="admin-menu"><i class="bi bi-receipt"></i>Popups</div>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="#">
+                    <div class="admin-menu"><i class="bi bi-image"></i>Banner</div>
+                </a>
+            </div>
+            <div class="menu-item admin-menu-loyout">
+                <a href="/admin/logout">
+                    <div class="admin-menu "><i class="bi bi-box-arrow-right"></i>Logout</div>
+                </a>
             </div>
         </div>
+        <!-------------------------------------- User Header  -------------------------------------------------------->
 
-        <!--------------------------------------- User table ---------------------------------------------------->
 
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                    <tr scope="row" class="product-table-head">
-                        <th scope="col" class="product-table-first">SL.No</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Status</th>
-                        <th scope="col" class="product-table-last">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% user.forEach((user,index)=> { %>
-                        <tr scope="row">
-                            <td>
-                                <%= index+1 %>
-                            </td>
-                            <td>
-                                <%= user.name %>
-                            </td>
-                            <td>
-                                <%= user.email %>
-                            </td>
-                            <td>
-                                <%= user.phone %>
-                            </td>
-                            <td>
-                                <% if(user.isActive) { %>
-                                    <span class="status active">Active</span>
-                                <% }else{ %>
-                                    <span class="status block">Blocked</span>
-                                <% } %>
-                            </td>
-                            <td>
-                                <a href="/admin/userstatus?id=<%= user.id %>&&status=<%= user.isActive%>"><i class="bi bi-x-circle"></i></a>
-                            </td>
+        <div class="admin-product mb-5">
+            <div class="product-head d-flex justify-content-between">
+                <div class="product-header d-flex justify-content-between align-items-center gap-5">
+                    <h2 class="text-white">
+                        <%= title %>
+                    </h2>
+                    <form action="/admin/users" method="get" class="form-product  d-flex gap-1">
+                        <input type="text" name="search" placeholder="search" class="form-input form-control">
+                        <input type="submit" class="btn submit-btn" value="Search">
+                    </form>
+                </div>
+            </div>
+
+            <!--------------------------------------- User table ---------------------------------------------------->
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr scope="row" class="product-table-head">
+                            <th scope="col" class="product-table-first">SL.No</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="product-table-last">Action</th>
                         </tr>
-                        <% }) %>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-    <!------------------------------------ Pagination Controls -------------------------------->
-
-    <div class="pagination-controls d-flex  mt-3">
-        <ul class="pagination">
-            <% if (currentPage> 1) { %>
-                <li class="page-item"><a class="page-link"
-                        href="/admin/users=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
-                </li>
-                <% } %>
-                    <% for (let i=1; i <=totalPages; i++) { %>
-                        <li class="page-item <%= currentPage == i ? 'active' : '' %>">
-                            <a class="page-link"
-                                href="/admin/users?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
-                                <%= i %>
-                            </a>
+                    </thead>
+                    <tbody>
+                        <% user.forEach((user,index)=> { %>
+                            <tr scope="row">
+                                <td>
+                                    <%= index+1 %>
+                                </td>
+                                <td>
+                                    <%= user.name %>
+                                </td>
+                                <td>
+                                    <%= user.email %>
+                                </td>
+                                <td>
+                                    <%= user.phone %>
+                                </td>
+                                <td>
+                                    <% if(user.isActive) { %>
+                                        <span class="status active">Active</span>
+                                        <% }else{ %>
+                                            <span class="status block">Blocked</span>
+                                            <% } %>
+                                </td>
+                                <td>
+                                    <a href="/admin/userstatus?id=<%= user.id %>&&status=<%= user.isActive%>"><i
+                                            class="bi bi-x-circle"></i></a>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            <!------------------------------------ Pagination Controls -------------------------------->
+            <div class="pagination-controls d-flex  mt-3">
+                <ul class="pagination">
+                    <% if (currentPage> 1) { %>
+                        <li class="page-item"><a class="page-link"
+                                href="/admin/users=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
                         </li>
                         <% } %>
-                            <% if (currentPage < totalPages) { %>
-                                <li class="page-item"><a class="page-link pagination-next-btn"
-                                        href="/admin/users?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                            <% for (let i=1; i <=totalPages; i++) { %>
+                                <li class="page-item <%= currentPage == i ? 'active' : '' %>">
+                                    <a class="page-link"
+                                        href="/admin/users?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
+                                        <%= i %>
+                                    </a>
                                 </li>
                                 <% } %>
-        </ul>
+                                    <% if (currentPage < totalPages) { %>
+                                        <li class="page-item"><a class="page-link pagination-next-btn"
+                                                href="/admin/users?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                                        </li>
+                                        <% } %>
+                </ul>
+            </div>
+        </div>
     </div>
 
 
-<%- include('footer') %>
+    <%- include('footer') %>
