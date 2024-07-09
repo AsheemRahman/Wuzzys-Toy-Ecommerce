@@ -61,8 +61,8 @@ admin.get('/popups/:id', isAdmin, popController.deletePopup)
 
 admin.get('/coupons', isAdmin, couponController.getCoupons)
 admin.post('/addcoupon', isAdmin, couponController.addCoupon)
-admin.post('/editcoupon', isAdmin, couponController.editCoupon)
-admin.patch('/statuscoupon/:id', isAdmin, couponController.toggleCouponStatus)
+admin.post('/editcoupon/:id', isAdmin, couponController.editCoupon)
+admin.get('/statuscoupon', isAdmin, couponController.toggleCouponStatus);
 admin.delete('/deletecoupon/:id', isAdmin, couponController.deleteCoupon)
 
 //---------------------------- admin logout ------------------------------

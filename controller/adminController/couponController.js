@@ -1,12 +1,18 @@
 const Coupon = require('../../model/couponSchema');
 
-// Get all coupons
+//------------------------------------- Get all coupons ---------------------------
+
 const getCoupons = async (req, res) => {
-    const coupons = await Coupon.find({});
-    res.render('admin/coupons', { coupons, title: 'Coupons' });
+    try{
+        const coupons = await Coupon.find({});
+        res.render('admin/coupons', { coupons, title: 'Coupons' });
+    }catch(error){
+        console.log(`error while render coupon page ${error}`)
+    }
 };
 
-// Add a new coupon
+//--------------------------------- Add a new coupon -----------------------------
+
 const addCoupon = async (req, res) => {
     const { code, discountType, discountValue, startDate, endDate } = req.body;
     try {
@@ -18,29 +24,44 @@ const addCoupon = async (req, res) => {
     }
 };
 
-// Edit a coupon
+//------------------------------------- Edit a coupon ----------------------------
+
 const editCoupon = async (req, res) => {
     const { id, code, discountType, discountValue, startDate, endDate } = req.body;
+    if (!id || !code || !discountType || !discountValue || !startDate || !endDate) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
     try {
-        await Coupon.findByIdAndUpdate(id, { code, discountType, discountValue, startDate, endDate });
+        const updatedCoupon = await Coupon.findByIdAndUpdate(
+            id,{ code, discountType, discountValue, startDate, endDate },);
+        if (!updatedCoupon) {
+            return res.status(404).json({ message: 'Coupon not found' });
+        }
         res.json({ message: 'Coupon updated successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Error updating coupon' });
+        console.error(error);
+        res.status(500).json({ message: 'Error updating coupon', error: error.message });
     }
 };
 
-// Toggle coupon status
+
+//----------------------------- Toggle coupon status ----------------------------
+
 const toggleCouponStatus = async (req, res) => {
-    const { id, isActive } = req.body;
+    const couponId = req.query.id;
+    const status = req.query.status === 'true';
     try {
-        await Coupon.findByIdAndUpdate(id, { isActive });
-        res.json({ message: 'Coupon status updated successfully' });
+        await Coupon.findByIdAndUpdate(couponId, { isActive: !status });
+        req.flash('error','Coupon status updated successfully')
+        res.redirect('/admin/coupons')
     } catch (error) {
-        res.status(500).json({ message: 'Error updating coupon status' });
+        console.log(`Error while changing status: ${error}`);
+        res.flash('error' ,'Error updating coupon status' );
     }
 };
 
-// Delete a coupon
+//--------------------------------- Delete a coupon ------------------------------
+
 const deleteCoupon = async (req, res) => {
     const { id } = req.params;
     try {
