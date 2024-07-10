@@ -60,7 +60,7 @@ admin.get('/popups/:id', isAdmin, popController.deletePopup)
 
 // -------------------------------- coupon --------------------------------
 
-admin.get('/coupons', isAdmin, couponController.getCoupons)
+admin.get('/coupons/:id?', isAdmin, couponController.getCoupons)
 admin.post('/addcoupon', isAdmin, couponController.addCoupon)
 admin.post('/editcoupon/:id', isAdmin, couponController.editCoupon)
 admin.get('/statuscoupon', isAdmin, couponController.toggleCouponStatus);
