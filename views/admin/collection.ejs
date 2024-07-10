@@ -1,17 +1,4 @@
 <style>
-    .sidebar {
-        width: 260px;
-        margin: 20px;
-        background-color: #232323;
-        color: white;
-        height: 95vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border-radius: 10px;
-    }
-
     .category {
         width: 85%;
         display: flex;
@@ -29,6 +16,26 @@
     .category-action a {
         margin: 0.4rem;
     }
+
+    /* .modal-content {
+        background: #232323;
+        color: #fefeeb;
+    }
+
+    .form-control {
+        width: 80%;
+        background: #232323;
+        color: #fefeeb;
+    }
+
+    .form-control::placeholder {
+        color: #fefeeb;
+    }
+
+    .form-control:focus {
+        background: #232323;
+        color: #fefeeb;
+    } */
 </style>
 
 
@@ -45,7 +52,7 @@
             </div>
             <div class="menu-item">
                 <a href="/admin/salesReport">
-                    <div class="admin-menu"><i class="bi bi-archive"></i>Sales Report</div>
+                    <div class="admin-menu"><i class="bi bi-bar-chart"></i>Sales Report</div>
                 </a>
             </div>
             <div class="menu-item">
@@ -55,7 +62,7 @@
             </div>
             <div class="menu-item">
                 <a href="/admin/products">
-                    <div class="admin-menu"><i class="bi bi-basket-fill"></i>Products</div>
+                    <div class="admin-menu"><i class="bi bi-box"></i>Products</div>
                 </a>
             </div>
             <div class="menu-item">
@@ -74,8 +81,13 @@
                 </a>
             </div>
             <div class="menu-item">
+                <a href="/admin/offer">
+                    <div class="admin-menu"><i class="bi bi-gift"></i>Offer</div>
+                </a>
+            </div>
+            <div class="menu-item">
                 <a href="/admin/popups">
-                    <div class="admin-menu"><i class="bi bi-receipt"></i>Popups</div>
+                    <div class="admin-menu"><i class="bi bi-exclamation-triangle"></i>Popups</div>
                 </a>
             </div>
             <div class="menu-item">
@@ -187,7 +199,7 @@
             <div class="modal-content collection-modal">
                 <div class="collection-container">
                     <h2 class="text-center mb-4 mt-2">Add Collection</h2>
-                    <form class="form d-flex flex-column gap-3 pt-4" action="/admin/addcollection" method="post">
+                    <form class="form d-flex flex-column align-items-center gap-3 pt-4" action="/admin/addcollection" method="post">
                         <input type="text" name="collectionName" class="form-control form-input"
                             placeholder="Collection Name" required>
                         <button type="submit" class="btn submit-btn"> Add Collection</button>

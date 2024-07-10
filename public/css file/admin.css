@@ -21,7 +21,7 @@ input.form-control:focus{
 }
 
 .sidebar {
-    width: 250px;
+    width: 300px;
     margin: 20px;
     background-color: #232323;
     color: white;
@@ -278,4 +278,26 @@ input.form-control:focus{
     .pagination-next-btn {
         background: none;
         border: none;
+    }
+
+    /*------------------ modal and input ----------------*/
+
+    .modal-content {
+        background: #232323;
+        color: #fefeeb;
+    }
+
+    .form-control {
+        width: 80%;
+        background: #232323;
+        color: #fefeeb;
+    }
+
+    .form-control::placeholder {
+        color: #fefeeb;
+    }
+
+    .form-control:focus {
+        background: #232323;
+        color: #fefeeb;
     }

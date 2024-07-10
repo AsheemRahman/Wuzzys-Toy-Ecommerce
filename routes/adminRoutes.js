@@ -8,8 +8,9 @@ const userContoller = require('../controller/adminController/userController')
 const orderController = require('../controller/adminController/orderController')
 const couponController = require('../controller/adminController/couponController')
 const saleController = require('../controller/adminController/saleController');
+const offerController = require('../controller/adminController/offerController');
 
-const isPopup = require('../middleware/popup')
+
 const popController = require('../controller/adminController/popupController')
 
 //-----------------------------  login  ----------------------------
@@ -67,12 +68,21 @@ admin.get('/statuscoupon', isAdmin, couponController.toggleCouponStatus);
 admin.delete('/deletecoupon/:id', isAdmin, couponController.deleteCoupon)
 
 
-// -------------------------------- coupon --------------------------------
+// -------------------------------- Sales Report --------------------------------
 
 admin.get('/salesReport',isAdmin , saleController.salePage)
 admin.get('/getsalesbymonth', isAdmin, saleController.getSalesByMonth);
 admin.post('/fetch-sales-data',isAdmin, saleController.getOrderDetails);
 admin.post('/downloadPDF',isAdmin,saleController.downloadPDF)
+
+// -------------------------------- offer --------------------------------
+
+admin.get('/offer', isAdmin, offerController.getOffer)
+admin.post('/addOffer',isAdmin,offerController.addOffer)
+admin.post('/editOffer',isAdmin,offerController.editOffer)
+admin.get('/deleteOffer/:id',isAdmin,offerController.deleteOffer)
+admin.get('/offerStatus',isAdmin,offerController.offerStatus)
+
 
 //---------------------------- admin logout ------------------------------
 
