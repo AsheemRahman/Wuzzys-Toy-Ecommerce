@@ -11,10 +11,10 @@ async function isUser (req,res,next){
             }else{
                 req.session.user ='';
                 req.flash('error','user is blocked by admin')
-                res.redirect('/user/login')
+                res.redirect('/login')
             }
         }else{
-            res.redirect('/user/login')
+            res.redirect('/login')
         }
     } catch (error) {
         console.log(`user session error ${error}`)

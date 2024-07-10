@@ -13,11 +13,11 @@ const profile = async (req, res) => {
         const userDetail = await userSchema.findById(userId)
         if (!userId) {
             req.flash('error', 'User Not found . Please login again.')
-            return res.redirect('/user/login')
+            return res.redirect('/login')
         }
         if(!userDetail){
             req.flash('error','Profile is not found ,Please try again later')
-            return res.redirect('/user/home')
+            return res.redirect('/home')
         }
         res.render('user/profile', { title: "Profile", user: req.session.user , userDetail })
     } catch (err) {
@@ -40,7 +40,7 @@ const updateProfile = async (req, res) => {
         } else {
             req.flash("error", 'Could not update right now , please try again')
         }
-        res.redirect("/user/profile")
+        res.redirect("/profile")
     } catch (err) {
         console.log(`Error during updating the user profile ${err}`);
     }
@@ -65,7 +65,7 @@ const addAddress = async (req, res) => {
         // if maximum address size reached then show alert
         if (user.address.length > 3) {
             req.flash("error", "Maximum Address limit Reached")
-            return res.redirect('/user/profile')
+            return res.redirect('/profile')
         }
         // Add the new address to the user's address array
         user.address.push(userAddress);
@@ -73,7 +73,7 @@ const addAddress = async (req, res) => {
         await user.save();
 
         req.flash('success', "Address added")
-        res.redirect('/user/profile')
+        res.redirect('/profile')
     } catch (err) {
         req.flash('error', "Error While adding new address , Please try later")
         console.log(`Error adding new address in collection ${err}`);
@@ -90,22 +90,22 @@ const removeAddress = async (req, res) => {
         const user = await userSchema.findById(userId).populate('address');
         if (!user) {
             req.flash('error', 'User not found');
-            return res.redirect('/user/profile');
+            return res.redirect('/profile');
         }
 
         if (isNaN(index) || index < 0 || index >= user.address.length) {
             req.flash('error', 'Invalid address');
-            return res.redirect('/user/profile');
+            return res.redirect('/profile');
         }
         user.address.splice(index, 1);
         await user.save();
 
         req.flash('success', 'Address deleted successfully');
-        res.redirect('/user/profile');
+        res.redirect('/profile');
     } catch (err) {
         console.error(`Error during deleting address${err}`);
         req.flash('error','Failed to delete address. Please try again later.');
-        res.redirect('/user/profile');
+        res.redirect('/profile');
     }
 };
 
@@ -122,12 +122,12 @@ const editAddress = async (req, res) => {
         if (getAddress) {
             res.render('user/editAddress', { title: "edit address", data: getAddress.address[0], index , user: req.session.user});
         } else {
-            res.redirect('/user/profile');
+            res.redirect('/profile');
         }
     } catch (err) {
         console.error(`error on rendering the editaddress page`);
         req.flash('error','error while rendering the Edit Address page . Please try again later.');
-        res.redirect('/user/profile');
+        res.redirect('/profile');
     }
 };
 
@@ -156,11 +156,11 @@ const data= {
             { $set: updateQuery }
         );
         req.flash('success','Address updated Successfully');
-        res.redirect('/user/profile');
+        res.redirect('/profile');
     } catch (err) {
         console.log(`error while editing the address ${err}`)
         req.flash('error','Cannot update the address right now . Please try again later.');
-        res.redirect(`/user/edit-address/${index}`);
+        res.redirect(`/edit-address/${index}`);
     }
 }
 
@@ -170,7 +170,7 @@ const walletPage = async (req,res)=>{
         let wallet = await walletSchema.findOne({ userID: userId });
         if (!userId) {
             req.flash('error', 'User Not found . Please login again.')
-            return res.redirect('/user/login')
+            return res.redirect('/login')
         }
         if (!wallet) {
             wallet = { balance: 0, transaction: [] };
@@ -178,7 +178,7 @@ const walletPage = async (req,res)=>{
         res.render('user/wallet',{title:'Wallet' , wallet , user:userId })
     }catch(error){
         console.log(`error while render user wallet ${error}`)
-        res.redirect('/user/profile')
+        res.redirect('/profile')
     }
 }
 

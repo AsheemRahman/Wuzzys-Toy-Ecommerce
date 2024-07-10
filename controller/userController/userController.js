@@ -12,7 +12,7 @@ const facebook = require('../../services/facebook')
 
 const user = (req, res) => {
   try {
-    res.redirect('/user/home')
+    res.redirect('/home')
   } catch (error) {
     console.log(`error while rendering user page ${error}`)
   }
@@ -23,7 +23,7 @@ const user = (req, res) => {
 const signup = (req, res) => {
   try {
     if (req.session.user) {
-      res.redirect('/user/home')
+      res.redirect('/home')
     } else {
       res.render('user/signup', { title: 'Signup', user: req.session.user })
     }
@@ -46,7 +46,7 @@ const signupPost = async (req, res) => {
 
     if (check) {
       req.flash('error', 'User already exists')
-      res.redirect('/user/signup')
+      res.redirect('/signup')
     } else {
       const otp = generateOTP()
       sendOTP(details.email, otp)
@@ -59,7 +59,7 @@ const signupPost = async (req, res) => {
       req.session.phone = details.phone
       req.session.password = details.password
 
-      res.redirect('/user/verify')
+      res.redirect('/verify')
     }
   } catch (error) {
     console.log(`error while user signup post ${error}`)
@@ -99,14 +99,14 @@ const verifyPost = async (req, res) => {
           .then(() => {
             console.log(`new user registeres successfully`)
             req.flash('success', 'user signup successfull')
-            res.redirect('/user/login')
+            res.redirect('/login')
           })
           .catch(err => {
             console.log(`error while user signup ${err}`)
           })
       } else {
         req.flash('error', 'Invaild OTP , Try Again')
-        res.redirect('/user/verify')
+        res.redirect('/verify')
       }
     }
   } catch (error) {
@@ -126,7 +126,7 @@ const otpResend = (req, res) => {
     req.session.otpTime = Date.now()
 
     req.flash('success', 'OTP resend successfully')
-    res.redirect('/user/verify')
+    res.redirect('/verify')
   } catch (error) {
     console.log(`error while resend otp ${error}`)
   }
@@ -136,7 +136,7 @@ const otpResend = (req, res) => {
 
 const login = (req, res) => {
   if (req.session.user) {
-    res.redirect('/user/home')
+    res.redirect('/home')
   } else {
     res.render('user/login', { title: 'Login', user: req.session.user })
   }
@@ -150,21 +150,21 @@ const loginPost = async (req, res) => {
     if (check) {
       if (!check.isActive) {
         req.flash('error', 'User access is blocked by admin')
-        res.redirect('/user/login')
+        res.redirect('/login')
       } else {
         const password = await bcrypt.compare(req.body.password, check.password)
 
         if (check && password) {
           req.session.user = check.id
-          res.redirect('/user/home')
+          res.redirect('/home')
         } else {
           req.flash('error', 'Invalid credentails')
-          res.redirect('/user/login')
+          res.redirect('/login')
         }
       }
     } else {
       req.flash('error', 'Couldnt find user')
-      res.redirect('/user/login')
+      res.redirect('/login')
     }
   } catch (error) {
     console.log(`error while login post ${error}`)
@@ -180,7 +180,7 @@ const logout = (req, res) => {
         console.log(err)
       }
     })
-    res.redirect('/user/home')
+    res.redirect('/home')
   } catch (error) {
     console.log(`error while logout user ${error}`)
   }
@@ -208,17 +208,17 @@ const googleAuthCallback = (req, res, next) => {
           }
           if(!user.isActive){
             req.flash('error', 'User access is blocked by admin')
-            return res.redirect('/user/login')
+            return res.redirect('/login')
           }
           if (!user) {
-              return res.redirect('/user/login');
+              return res.redirect('/login');
           }
           req.logIn(user, (err) => {
               if (err) {
                   return next(err);
               }
               req.session.user = user.id;
-              return res.redirect('/user/home');
+              return res.redirect('/home');
           });
       })(req, res, next);
   } catch (err) {
@@ -244,7 +244,7 @@ const facebookAuthCallback = (req, res, next) => {
       return res.status(500).send('Authentication failed')
     }
     if (!user) {
-      return res.redirect('/user/login')
+      return res.redirect('/login')
     }
     req.logIn(user, err => {
       if (err) {
@@ -252,7 +252,7 @@ const facebookAuthCallback = (req, res, next) => {
         return res.status(500).send('Login failed')
       }
       req.session.user = user.id
-      return res.redirect('/user/home')
+      return res.redirect('/home')
     })
   })(req, res, next)
 }

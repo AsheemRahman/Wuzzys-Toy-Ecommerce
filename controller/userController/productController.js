@@ -10,14 +10,14 @@ const productDetail = async (req, res) => {
       // Validate the ObjectId
       if (!mongoose.Types.ObjectId.isValid(id)) {
          req.flash('error', 'Invalid product ID');
-         return res.redirect('/user/home');
+         return res.redirect('/home');
       }
 
       const product = await productSchema.findById(id);
 
       if (!product) {
          req.flash('error', 'Product not found');
-         return res.redirect('/user/home');
+         return res.redirect('/home');
       }
 
       if (product.isActive) {
@@ -33,12 +33,12 @@ const productDetail = async (req, res) => {
          });
       } else {
          req.flash('error', 'Product is not available');
-         return res.redirect('/user/home');
+         return res.redirect('/home');
       }
    } catch (error) {
       console.error(`Error while rendering product page: ${error}`);
       req.flash('error', 'An error occurred while product details. Please try again later.');
-      res.redirect('/user/home');
+      res.redirect('/home');
    }
 }
 

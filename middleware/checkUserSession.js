@@ -8,7 +8,7 @@ async function checkUser (req, res, next) {
         next()
       } else {
         req.session.user = ''
-        res.redirect('/user/login')
+        res.redirect('/login')
       }
     } else {
       next()

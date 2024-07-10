@@ -73,7 +73,7 @@ app.use((req,res,next)=>{
 //---------------------------- routes --------------------------
 
 app.use('/admin',adminRoutes)
-app.use('/user',userRoutes)
+app.use('/',userRoutes)
 
 
 //------------------------ first route -------------------------

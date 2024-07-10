@@ -8,7 +8,7 @@ const wishlistpage = async(req,res)=>{
     try{
         if (!req.session.user) {
             req.flash('error', "User is Not Found , Please Login Again"  )
-            return res.redirect('/user/login');
+            return res.redirect('/login');
         }
         const wishlist = await wishlistSchema.findOne({ userID: req.session.user }).populate('products.productID')
         if(wishlist){

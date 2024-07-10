@@ -8,7 +8,7 @@ const { ObjectId } = require('mongodb');
 const cart = async (req, res) => {
     if (!req.session.user) {
         req.flash('error', "User is Not Found , Please Login Again"  )
-        return res.redirect('/user/login');
+        return res.redirect('/login');
     }
     try {
         const cart = await cartSchema.findOne({ userId: req.session.user }).populate('items.productId')

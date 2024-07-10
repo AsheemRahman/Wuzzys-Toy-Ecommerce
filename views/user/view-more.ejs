@@ -62,7 +62,7 @@
                                                 <h6>New Arrival</h6>
                                             </div>
                                                 <div class="product-image-box">
-                                                    <a href="/user/productDetail/<%= product.id %>"
+                                                    <a href="/productDetail/<%= product.id %>"
                                                         class="product-name-link">
                                                         <img src="/<%= product.productImage[0] %>" alt=""
                                                             class="img-fluid">
@@ -98,20 +98,20 @@
     <ul class="pagination">
         <% if (currentPage > 1) { %>
             <li class="page-item"><a class="page-link"
-                    href="/user/View-more/?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
+                    href="/View-more/?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
             </li>
             <% } %>
                 <% for (let i=1; i <=totalPages; i++) { %>
                     <li class="page-item <%= currentPage == i ? 'active' : '' %>">
                         <a class="page-link"
-                            href="/user/View-more/?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
+                            href="/View-more/?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
                             <%= i %>
                         </a>
                     </li>
                     <% } %>
                         <% if (currentPage < totalPages) { %>
                             <li class="page-item"><a class="page-link pagination-next-btn"
-                                    href="/user/View-more/?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                                    href="/View-more/?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
                             </li>
                             <% } %>
     </ul>
@@ -128,6 +128,6 @@
             {
                 location =`?sortby=${sortBoxValue}`
             }
-            window.location.href=`/user/View-more/${location}`
+            window.location.href=`/View-more/${location}`
         }
     </script>

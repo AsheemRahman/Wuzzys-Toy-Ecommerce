@@ -78,7 +78,7 @@
                                         </a>
                                     </div>
                                     <div class="product-image-box">
-                                        <a href="/user/productDetail/<%= product.productID.id %>"
+                                        <a href="/productDetail/<%= product.productID.id %>"
                                             class="product-name-link">
                                             <img src="/<%= product.productID.productImage[0] %>" alt=""
                                                 class="img-fluid">
@@ -113,7 +113,7 @@
                                         <p>
                                             Your wish is Our Wish , Add products to Wishlist
                                         </p>
-                                        <a href="/user/home" class="btn btn-primary checkout">
+                                        <a href="/home" class="btn btn-primary checkout">
                                             <i class="bi bi-arrow-left-circle" style="margin-right: 2rem;"></i>Shop Now
                                         </a>
                                     </div>
@@ -141,7 +141,7 @@
                             confirmButtonText: 'Yes, delete it!'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                fetch(`/user/delete-wish/${productId}`, {
+                                fetch(`/delete-wish/${productId}`, {
                                     method: 'DELETE',
                                     headers: {
                                         'Content-Type': 'application/json',

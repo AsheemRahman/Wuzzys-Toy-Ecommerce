@@ -15,7 +15,7 @@ const orderPage = async (req, res) => {
         
         if (!user) {
             req.flash('error', "User not found. Please login again.");
-            return res.redirect("/user/login");
+            return res.redirect("/login");
         }
         const orderDetails = await orderSchema.find({ customer_id: user }).populate("products.product_id").sort({ updatedAt: -1 })
         res.render("user/orders", {
@@ -26,7 +26,7 @@ const orderPage = async (req, res) => {
     } catch (err) {
         console.error(`Error rendering the order page: ${err}`);
         req.flash("error", "Error rendering the order page, please Try again later.");
-        res.redirect("/user/home");
+        res.redirect("/home");
     }
 };
 
@@ -38,12 +38,12 @@ const cancelOrder = async (req, res) => {
 
         if (!orderId) {
             req.flash('error', 'Invalid order ID');
-            return res.redirect('/user/orders');
+            return res.redirect('/orders');
         }
         const order = await orderSchema.findByIdAndUpdate(orderId, { orderStatus: "Cancelled", isCancelled: true });
         if (!order) {
             req.flash('error', 'Order not found');
-            return res.redirect('/user/orders');
+            return res.redirect('/orders');
         }
         for (let product of order.products) {
             if (product.product_id && product.product_quantity !== undefined) {
@@ -51,15 +51,15 @@ const cancelOrder = async (req, res) => {
             } else {
                 console.error(`Invalid product data: ${JSON.stringify(product)}`);
                 req.flash('error', 'Error updating product quantity');
-                return res.redirect('/user/orders');
+                return res.redirect('/orders');
             }
         }
         req.flash('success', 'Order cancelled successfully');
-        res.redirect('/user/orders');
+        res.redirect('/orders');
     } catch (error) {
         console.error(`Error while cancelling the order: ${error}`);
         req.flash('error', 'Cannot cancel this order right now, please try again');
-        res.redirect('/user/orders');
+        res.redirect('/orders');
     }
 };
 
@@ -73,7 +73,7 @@ const orderDetail = async (req,res) =>{
     }
     catch(error){
         console.log(`Error while render Order view page in user ${error}`)
-        res.redirect('/user/order')
+        res.redirect('/order')
     }
 }
 

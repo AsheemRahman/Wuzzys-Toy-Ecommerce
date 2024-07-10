@@ -180,24 +180,24 @@
             <div class="dropdown">
                 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Category</a>
                 <div class="dropdown-menu">
-                    <a href="/user/allproduct" class="dropdown-item">All Toys</a>
-                    <a href="/user/product/Toy Cars" class="dropdown-item">Toy Cars</a>
-                    <a href="/user/product/Soft Toys" class="dropdown-item">Soft Toys</a>
-                    <a href="/user/product/Charactor Toy" class="dropdown-item">Character Toy</a>
-                    <a href="/user/product/Doll" class="dropdown-item">Doll</a>
-                    <a href="/user/product/Puzzle" class="dropdown-item">Puzzle</a>
+                    <a href="/allproduct" class="dropdown-item">All Toys</a>
+                    <a href="/category/Toy Cars" class="dropdown-item">Toy Cars</a>
+                    <a href="/category/Soft Toys" class="dropdown-item">Soft Toys</a>
+                    <a href="/category/Charactor Toy" class="dropdown-item">Character Toy</a>
+                    <a href="/category/Doll" class="dropdown-item">Doll</a>
+                    <a href="/category/Puzzle" class="dropdown-item">Puzzle</a>
                 </div>
             </div>
             <li><a href="#footer">About</a></li>
             <li><a href="#">Contact</a></li>
             <% if (user) { %>
-                <li><a href="/user/wishlist"><i class="fa fa-heart"></i><span id="wishlist-count"
+                <li><a href="/wishlist"><i class="fa fa-heart"></i><span id="wishlist-count"
                             class="badge"></span></a></li>
                 <% } else { %>
                     <li><a href="#" onclick="wishlistClick(event)"><i class="fa fa-heart"></i></a></li>
                     <% } %>
                         <% if (user) { %>
-                            <li><a href="/user/cart"><i class="fa fa-shopping-cart"></i><span id="cart-count"
+                            <li><a href="/cart"><i class="fa fa-shopping-cart"></i><span id="cart-count"
                                         class="badge"></span></a></li>
                             <% } else { %>
                                 <li><a href="#" onclick="CartClick(event)"><i class="fa fa-shopping-cart"></i></a></li>
@@ -207,11 +207,11 @@
         <!--------------------------- Check the user is login or not , Based on that the icon will change ----------------------------------->
 
         <% if (user) { %>
-            <a class="nav-link-items user-login-icon" href="/user/profile">
+            <a class="nav-link-items user-login-icon" href="/profile">
                 <i class="fa-solid fa-user"></i>
             </a>
             <% } else { %>
-                <a href="/user/login" class="btn btn-outline-secondary user-login-btn">Login</a>
+                <a href="/login" class="btn btn-outline-secondary user-login-btn">Login</a>
                 <% } %>
     </div>
 </div>
@@ -244,7 +244,7 @@
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = '/user/login';
+                    window.location.href = '/login';
                 }
             });
         }
@@ -262,7 +262,7 @@
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = '/user/login';
+                    window.location.href = '/login';
                 }
             });
         }
@@ -271,7 +271,7 @@
 
         async function fetchCounts() {
             try {
-                const response = await fetch('/user/getCounts');
+                const response = await fetch('/getCounts');
                 const data = await response.json();
                 document.getElementById('wishlist-count').textContent = data.wishlistItemsCount;
                 document.getElementById('cart-count').textContent = data.cartItemsCount;

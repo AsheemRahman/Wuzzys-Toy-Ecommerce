@@ -212,7 +212,7 @@
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="mt-3" style="text-align: center;">
-                                                        <a href="/user/orderDetail/<%= item._id %>"
+                                                        <a href="/orderDetail/<%= item._id %>"
                                                             style="color: #fefeeb;">
                                                             <p class="mb-2">Order View</p>
                                                             <b class="mb-0 mt-2">
@@ -242,7 +242,7 @@
                                 <div class="row d-flex justify-content-center">
                                     <div class="no-orders">
                                         <h2 class="nothing">You have no orders</h2>
-                                        <a href="/user/home" class="btn btn-danger d-flex">Shop Now</a>
+                                        <a href="/home" class="btn btn-danger d-flex">Shop Now</a>
                                     </div>
                                 </div>
                                 <% } %>
@@ -309,7 +309,7 @@
             document.querySelectorAll('#cancelOrder').forEach((btn) => {
                 btn.addEventListener('click', function () {
                     const orderId = this.getAttribute('data-id');
-                    document.getElementById('submitCancelOrder').setAttribute('href', `/user/cancelOrder/${orderId}`);
+                    document.getElementById('submitCancelOrder').setAttribute('href', `/cancelOrder/${orderId}`);
                 });
             });
 
@@ -325,7 +325,7 @@
                 })
                     .then(response => {
                         if (response.ok) {
-                            window.location.href = '/user/orders';
+                            window.location.href = '/orders';
                             Swal.fire({
                                 icon: "success",
                                 title: "Order Cancelled Successfully",
@@ -358,7 +358,7 @@
                     const returnReason = document.getElementById('returnReason').value;
 
                     try {
-                        const response = await fetch('/user/returnOrder', {
+                        const response = await fetch('/returnOrder', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',

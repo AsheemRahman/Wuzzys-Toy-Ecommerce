@@ -61,7 +61,7 @@ user.get('/allproduct', checkUser , homeController.allproduct)
 
 user.get('/view-more', checkUser , homeController.latestProduct)
 
-user.get('/product/:category', checkUser , homeController.category)
+user.get('/category/:category', checkUser , homeController.category)
 
 user.get('/productDetail/:id' , checkUser , productController.productDetail);
 

@@ -3,7 +3,7 @@
 
 async function addToCart(productId, price, user) {
 
-    const URL = `/user/add-to-cart/${productId}/?price=${price}`;
+    const URL = `/add-to-cart/${productId}/?price=${price}`;
     try {
         if (user) {
             const response = await fetch(URL, {
@@ -35,7 +35,7 @@ async function addToCart(productId, price, user) {
             cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = '/user/login';
+                window.location.href = '/login';
             }
         });
     }
@@ -54,7 +54,7 @@ async function addToCart(productId, price, user) {
 
 async function addwishlist(productId, price, user) {
 
-    const URL = `/user/add-wishlist/${productId}/?price=${price}`;
+    const URL = `/add-wishlist/${productId}/?price=${price}`;
     try {
         if (user) {
             const response = await fetch(URL, {
@@ -85,7 +85,7 @@ async function addwishlist(productId, price, user) {
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = '/user/login';
+                    window.location.href = '/login';
                 }
             });
         }

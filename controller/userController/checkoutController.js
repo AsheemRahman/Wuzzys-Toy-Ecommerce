@@ -14,7 +14,7 @@ const checkout = async (req, res) => {
     try {
         if (!req.session.user) {
             req.flash('error',"user is not Found , Login Again")
-            return res.redirect('/user/login');
+            return res.redirect('/login');
         }
         const userId = req.session.user;
         const user = await userSchema.findById(userId);
@@ -27,7 +27,7 @@ const checkout = async (req, res) => {
         }
         const items = cartDetails.items;
         if (items.length === 0) {
-            return res.redirect('/user/cart');
+            return res.redirect('/cart');
         }
 
         let wallet = await walletSchema.findOne({ userID: userId });
@@ -199,13 +199,13 @@ const addAddress = async (req, res) => {
         const user = await userSchema.findById(req.session.user)
         if (user.address.length > 3) {
             req.flash("errorMessage", "Maximum Address limit Reached")
-            return res.redirect('/user/profile')
+            return res.redirect('/profile')
         }
         user.address.push(userAddress);
         await user.save();
 
         req.flash('success', 'New address added')
-        res.redirect('/user/checkout')
+        res.redirect('/checkout')
     } catch (err) {
         console.log(`Error on adding new address from checkout ${err}`);
     }
@@ -225,7 +225,7 @@ const orderPage = async (req, res) => {
     } catch (err) {
         console.log(`Error on render in conform order ${err}`);
         req.flash('success',"user is not found , please Login again")
-        res.redirect("/user/login")
+        res.redirect("/login")
     }
 }
 

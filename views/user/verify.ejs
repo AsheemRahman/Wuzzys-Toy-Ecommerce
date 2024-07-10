@@ -62,7 +62,7 @@
         </b>
 
         <small class="verify-otp">Enter the One Time Password</small>
-        <form action="/user/verify" method="post" id="verify-otp-form">
+        <form action="/verify" method="post" id="verify-otp-form">
             <div class="user-otp-input gap-2">
                 <% for(let i=1; i <=6; i++) { %>
                     <input type="text" minlength="1" maxlength="1" name="otp<%= i %>"
@@ -74,7 +74,7 @@
         </form>
         <div id="otpTimer" class="mt-3"></div>
         <div class="verify-resend-btn">
-            <a href="/user/resend/<%= email %>" id="resend-btn" class="btn submit-btn mt-3" style="display: none; width: 10%;">Resend</a>
+            <a href="/resend/<%= email %>" id="resend-btn" class="btn submit-btn mt-3" style="display: none; width: 10%;">Resend</a>
         </div>
         <button id="verify-btn" class="mt-4 btn submit-btn" form="verify-otp-form">Verify</button>
     </div>

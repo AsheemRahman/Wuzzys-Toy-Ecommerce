@@ -23,12 +23,12 @@ const forgotPasswordPost = async (req, res) => {
 
         if (!checkEmail) {
             req.flash('error', `We couldn't find your details, Please Register.`);
-            return res.redirect('/user/signup');
+            return res.redirect('/signup');
         }
 
         if (checkEmail.isBlocked) {
             req.flash('error', 'Access to this account has been restricted By Admin.');
-            return res.redirect('/user/login');
+            return res.redirect('/login');
         }
 
         const otp = generateOTP();
@@ -39,11 +39,11 @@ const forgotPasswordPost = async (req, res) => {
         req.session.otp = otp;
         req.session.otpExpireTime = Date.now()
 
-        res.redirect('/user/forgotPasswordOtp');
+        res.redirect('/forgotPasswordOtp');
     } catch (err) {
         console.log(`Error during forgot password page ${err}`);
         req.flash('error', 'An error occurred. Please try again later.');
-        res.redirect('/user/forgotPassword');
+        res.redirect('/forgotPassword');
     }
 };
 
@@ -69,11 +69,11 @@ const forgotPasswordOtpPost = async (req, res) => {
                 res.render('user/resetpassword', { title: 'Reset Password' ,user:req.session.user})
             } else {
             req.flash('error', 'Invaild OTP')
-            res.redirect('/user/login')
+            res.redirect('/login')
             }
         } else {
             req.flash('error', 'Error occured retry')
-            res.redirect('/user/forgotpassword')
+            res.redirect('/forgotpassword')
         }
     } catch (error) {
         console.log(`error while forgot otp verification ${error}`)
@@ -88,10 +88,10 @@ const resetPasswordPost = async (req, res) => {
         const update = await userSchema.updateOne({ email: req.session.email },{ password: password })
         if (update) {
             req.flash('success', 'Password updated successfully')
-            res.redirect('/user/login')
+            res.redirect('/login')
         } else {
         req.flash('error', 'Error while password update')
-        res.redirect('/user/login')
+        res.redirect('/login')
         }
     } catch (error) {
         console.log(`error while reset password post ${error}`)
@@ -107,7 +107,7 @@ const forgotResend = (req, res) => {
         sendOTP(email, otp)
         ;(req.session.otp = otp), (req.session.otpTime = Date.now())
         req.flash('success', 'New OTP sent to mail')
-        res.redirect('/user/forgotpasswordotp')
+        res.redirect('/forgotpasswordotp')
     } catch (error) {
         console.log(`error in resend otp forgot password  ${error}`)
     }

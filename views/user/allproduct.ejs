@@ -24,7 +24,7 @@
     <ul>
         <li><a href="/">Home</a></li>
         <span>/</span>
-        <li><a href="/user/allproduct">All Product</a></li>
+        <li><a href="/allproduct">All Product</a></li>
     </ul>
 </nav>
 
@@ -57,7 +57,7 @@
                     </div>
                 <% } %>
                 <div class="product-image-box">
-                    <a href="/user/productDetail/<%= product.id %>" class="product-name-link">
+                    <a href="/productDetail/<%= product.id %>" class="product-name-link">
                         <img src="/<%= product.productImage[0] %>" alt="">
                     </a>
                 </div>
@@ -87,20 +87,20 @@
     <ul class="pagination">
         <% if (currentPage> 1) { %>
             <li class="page-item"><a class="page-link"
-                    href="/user/allproduct/?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
+                    href="/allproduct/?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
             </li>
             <% } %>
                 <% for (let i=1; i <=totalPages; i++) { %>
                     <li class="page-item <%= currentPage == i ? 'active' : '' %>">
                         <a class="page-link"
-                            href="/user/allproduct/?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
+                            href="/allproduct/?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
                             <%= i %>
                         </a>
                     </li>
                     <% } %>
                         <% if (currentPage < totalPages) { %>
                             <li class="page-item"><a class="page-link pagination-next-btn"
-                                    href="/user/allproduct/?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                                    href="/allproduct/?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
                             </li>
                             <% } %>
     </ul>
@@ -117,6 +117,6 @@
         {
             location =`?sortby=${sortBoxValue}`
         }
-        window.location.href=`/user/allproduct/${location}`
+        window.location.href=`/allproduct/${location}`
     }
 </script>

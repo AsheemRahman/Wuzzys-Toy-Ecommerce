@@ -18,15 +18,11 @@ passport.use(
     },
     async (request, accessToken, refreshToken, profile, done) => {
       try {
-        console.log(profile) // Log the profile object
-
         if (!profile.emails || !profile.emails.length) {
           return done(new Error('No email found in Facebook profile'), null)
         }
-
         const email = profile.emails[0].value
         let user = await userSchema.findOne({ email })
-
         if (!user) {
           user = new userSchema({
             name: profile.displayName,
@@ -35,7 +31,6 @@ passport.use(
           })
           await user.save()
         }
-
         done(null, user)
       } catch (err) {
         console.error(`Error in Facebook strategy: ${err.message}`) // Log the error
@@ -56,7 +51,7 @@ passport.deserializeUser(async (id, done) => {
     const user = await userSchema.findById(id)
     done(null, user)
   } catch (err) {
-    console.error(`Error deserializing user: ${err.message}`) // Log the error
+    console.error(`Error deserializing user: ${err.message}`)
     done(err, null)
   }
 })
