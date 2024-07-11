@@ -174,21 +174,21 @@ async function generatePdf(orders, res) {
 
     // Header
     doc.fontSize(24).text('Wuzzys Toys', 50, 50)
-       .fontSize(10)
-       .text('Sulthan Bathery', 50, 80)
-       .text(' Wayanad, 673592', 50, 95)
-       .fontSize(20)
-       .text('Sales Report', 250, 50, { align: 'center' })
-       .fontSize(10)
-       .text('Generated on:', 400, 50, { align: 'right' })
-       .text(new Date().toLocaleDateString(), 400, 65, { align: 'right' });
+        .fontSize(10)
+        .text('Sulthan Bathery', 50, 80)
+        .text(' Wayanad, 673592', 50, 95)
+        .fontSize(20)
+        .text('Sales Report', 250, 50, { align: 'center' })
+        .fontSize(10)
+        .text('Generated on:', 400, 50, { align: 'right' })
+        .text(new Date().toLocaleDateString(), 400, 65, { align: 'right' });
 
     // Summary
     doc.roundedRect(50, 120, 500, 60, 10).stroke();
     doc.fontSize(12).text('Summary', 60, 130);
     doc.fontSize(10)
-       .text(`Total Orders: ${totalOrders}`, 60, 150)
-       .text(`Total Revenue: Rs ${totalRevenue.toFixed(2)}`, 300, 150);
+        .text(`Total Orders: ${totalOrders}`, 60, 150)
+        .text(`Total Revenue: Rs ${totalRevenue.toFixed(2)}`, 300, 150);
 
     // Table
     doc.moveDown(2);
@@ -256,9 +256,6 @@ async function generateExcel(orders, res) {
             status,
             total
         });
-
-
-        // totalSale += order.totalPrice;
         totalOrders++;
     }
 

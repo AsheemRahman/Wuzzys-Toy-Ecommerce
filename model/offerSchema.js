@@ -13,7 +13,7 @@ const schema = new mongoose.Schema({
     },
     offerType:{
         type: String,
-        enum: ['product','collection'],
+        enum: ['product','category'],
         required: true,
     },
     isActive:{
