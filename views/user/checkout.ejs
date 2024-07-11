@@ -249,6 +249,7 @@
     }
 
     /*------------------------- order summary ------------------------------*/
+    
     .card {
         background: #232323;
     }
@@ -264,7 +265,8 @@
         gap: 2rem;
     }
 
-    /* add address modal */
+    /*------------------------- add address modal ------------------------*/
+    
     .modal-content {
         background-color: #232323;
         color: #fefeeb;
@@ -581,119 +583,12 @@
             element.classList.add('selected');
             selectedAddressIndex = index;
         }
-
         function selectPaymentMethod(element, method) {
-            if (selectedAddressIndex === null) {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Please select a shipping address first.",
-                    text: "Select one"
-                });
-                return;
-            }
-
             const methods = document.querySelectorAll('.payment-method');
             methods.forEach(methodElement => methodElement.classList.remove('selected'));
             element.classList.add('selected');
             selectedPaymentMethod = method;
-
-            if (method === 2) {  // Razorpay payment
-                const URL = `/payment-render/${totalAmount}`;
-                fetch(URL, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
-                    .then(res => {
-                        if (!res.ok) {
-                            throw new Error("Cannot render the payment page");
-                        }
-                        return res.json();
-                    })
-                    .then(data => {
-                        if (data.orderID) {
-                            const options = {
-                                key: "rzp_test_jyh8u3FB51sm3I",
-                                amount: totalAmount * 100,
-                                currency: "INR",
-                                name: "Wuzzy's Toys",
-                                order_id: data.orderID,
-                                handler: function (response) {
-                                    const URL = `/place-order/${selectedAddressIndex}/${selectedPaymentMethod}`;
-                                    fetch(URL, {
-                                        method: "POST",
-                                        headers: {
-                                            'Content-Type': "application/json"
-                                        },
-                                        body: JSON.stringify({
-                                            razorpay_payment_id: response.razorpay_payment_id,
-                                            razorpay_order_id: response.razorpay_order_id,
-                                            razorpay_signature: response.razorpay_signature
-                                        })
-                                    })
-                                    .then((res) => {
-                                    if(res.redirected)
-                                    window.location.href=res.url
-                                    if (!res.ok) {
-                                        throw new Error("Order placement failed");
-                                    }
-                                    return res.json();
-                                    }).then(data => {
-                                            if (data.success) {
-                                                Swal.fire({
-                                                    icon: "success",
-                                                    title: "Order placed successfully!",
-                                                    text: "Your order has been placed successfully."
-                                                }).then(() => {
-                                                    window.location.href = "/conform-order";
-                                                });
-                                            } else {
-                                                Swal.fire({
-                                                    icon: "error",
-                                                    title: "Order Placement Failed",
-                                                    text: data.message
-                                                });
-                                            }
-                                        })
-                                        .catch(err => {
-                                            console.error("Error on Razorpay payment callback:", err);
-                                            Swal.fire({
-                                                icon: "error",
-                                                title: "Error",
-                                                text: "An error occurred while processing the order."
-                                            });
-                                        });
-                                },
-                                prefill: {
-                                    name: username,
-                                    email: email,
-                                    contact: phone
-                                },
-                                notes: {
-                                    address: "Razorpay Corporate Office"
-                                },
-                                theme: {
-                                    color: "#6351CE"
-                                }
-                            };
-                            const rzp1 = new Razorpay(options);
-                            rzp1.open();
-                        } else {
-                            throw new Error("Order ID not received");
-                        }
-                    })
-                    .catch(error => {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error on loading payment method",
-                            text: error.message
-                        });
-                        console.error("Error during payment initiation:", error);
-                    });
-            }
         }
-
         orderPlacementBtn.addEventListener('click', (e) => {
             e.preventDefault();
             if (selectedAddressIndex === null) {
@@ -712,28 +607,131 @@
                 });
                 return;
             }
+            if (selectedPaymentMethod === 2) {
+                openRazorpayPayment();
+            } else {
+                placeOrder(selectedAddressIndex, selectedPaymentMethod);
+            }
+        });
 
-            const URL = `/place-order/${selectedAddressIndex}/${selectedPaymentMethod}`;
+        function openRazorpayPayment() {
+            const URL = `/payment-render/${totalAmount}`;
+            fetch(URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error("Cannot render the payment page");
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.orderID) {
+                        const options = {
+                            key: "rzp_test_jyh8u3FB51sm3I",
+                            amount: totalAmount * 100,
+                            currency: "INR",
+                            name: "Wuzzy's Toys",
+                            order_id: data.orderID,
+                            handler: function (response) {
+                                const URL = `/place-order/${selectedAddressIndex}/${selectedPaymentMethod}`;
+                                fetch(URL, {
+                                    method: "POST",
+                                    headers: {
+                                        'Content-Type': "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_signature: response.razorpay_signature
+                                    })
+                                })
+                                    .then((res) => {
+                                        if (res.redirected)
+                                            window.location.href = res.url
+                                        if (!res.ok) {
+                                            throw new Error("Order placement failed");
+                                        }
+                                        return res.json();
+                                    }).then(data => {
+                                        if (data.success) {
+                                            // Swal.fire({
+                                            //     icon: "success",
+                                            //     title: "Order placed successfully!",
+                                            //     text: "Your order has been placed successfully."
+                                            // }).then(() => {
+                                                window.location.href = "/conform-order";
+                                            // });
+                                        } else {
+                                            Swal.fire({
+                                                icon: "error",
+                                                title: "Order Placement Failed",
+                                                text: data.message
+                                            });
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.error("Error on Razorpay payment callback:", err);
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Error",
+                                            text: "An error occurred while processing the order."
+                                        });
+                                    });
+                            },
+                            prefill: {
+                                name: username,
+                                email: email,
+                                contact: phone
+                            },
+                            notes: {
+                                address: "Razorpay Corporate Office"
+                            },
+                            theme: {
+                                color: "#6351CE"
+                            }
+                        };
+                        const rzp1 = new Razorpay(options);
+                        rzp1.open();
+                    } else {
+                        throw new Error("Order ID not received");
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error on loading payment method",
+                        text: error.message
+                    });
+                    console.error("Error during payment initiation:", error);
+                });
+        }
+        function placeOrder(addressIndex, paymentMethod) {
+            const URL = `/place-order/${addressIndex}/${paymentMethod}`;
             fetch(URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    addressIndex: selectedAddressIndex,
-                    paymentMode: selectedPaymentMethod
+                    addressIndex: addressIndex,
+                    paymentMode: paymentMethod
                 })
             })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        Swal.fire({
-                            icon: "success",
-                            title: "Order placed successfully!",
-                            text: "Your order has been placed successfully."
-                        }).then(() => {
-                            window.location.href = "/conform-order";
-                        });
+                        // Swal.fire({
+                        //     icon: "success",
+                        //     title: "Order placed successfully!",
+                        //     text: "Your order has been placed successfully."
+                        // })
+                            // .then(() => {
+                                window.location.href = "/conform-order";
+                            // });
                     } else {
                         Swal.fire({
                             icon: "error",
@@ -750,9 +748,7 @@
                         text: error.message,
                     });
                 });
-        });
-
-
+        }
 
         //------------------ Validation for the add address modal --------------------
 

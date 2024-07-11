@@ -104,7 +104,6 @@ const placeOrder = async (req, res) => {
         await wallet.save();
         }
 
-
         const newOrder = new orderSchema({
             customer_id: req.session.user,
             order_id: Math.floor(Math.random() * 1000000),
@@ -112,7 +111,7 @@ const placeOrder = async (req, res) => {
             totalQuantity: totalQuantity,
             totalPrice: cartItems.payableAmount,
             address: {
-                customer_name: req.body.customer_name,
+                customer_name: userDetails.name,
                 customer_email: userDetails.email,
                 building: userDetails.address[addressIndex].building,
                 street: userDetails.address[addressIndex].street,
@@ -127,7 +126,6 @@ const placeOrder = async (req, res) => {
             paymentId: paymentId,
             isCancelled: false
         });
-
         await newOrder.save();
 
         for (const element of cartItems.items) {

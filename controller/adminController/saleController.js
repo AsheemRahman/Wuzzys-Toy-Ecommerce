@@ -1,6 +1,9 @@
 const orderSchema = require('../../model/orderSchema');
 const PDFDocument = require('pdfkit');
 const ExcelJS = require('exceljs');
+const PDFdocs = require('pdfkit-table')
+const fs = require('fs')
+const path = require('path')
 
 const salePage =async (req,res)=>{
     try{
@@ -151,77 +154,9 @@ const downloadPDF = async (req, res) => {
         }
     } catch (error) {
         console.log(`error while download pdf ${error}`);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: error.message });
     }
 }
-
-const generateExcel = async (orders, res) => {
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Sheet 1');
-
-    worksheet.columns = [
-        { header: "ORDER ID", key: "orderId", width: 15 },
-        { header: "CUSTOMER", key: "customer", width: 25 },
-        { header: "ADDRESS", key: "address", width: 30 },
-        { header: "QUANTITY", key: "quantity", width: 10 },
-        { header: "AMOUNT", key: "amount", width: 15 },
-        { header: "PAYMENT", key: "payment", width: 15 },
-        { header: "COUPON", key: "coupon", width: 18 },
-        { header: "TIME", key: "time", width: 20 },
-        { header: "STATUS", key: "status", width: 15 }
-    ];
-
-    let totalSale = 0;
-    let totalOrders = 0;
-
-    for (const order of orders) {
-        const orderId = order.order_id;
-        const customer = order.address.customer_name;
-        const address = `${order.address.building}, ${order.address.street}, ${order.address.city}, ${order.address.country} - ${order.address.pincode}`;
-        const quantity = order.totalQuantity;
-        const amount = order.totalPrice;
-        const payment = order.paymentMethod;
-        const coupon = order.coupen_data.length > 0 ? order.coupen_data[0].coupen_name : 'No Coupon';
-        const time = order.createdAt.toLocaleDateString();
-        const status = order.orderStatus;
-
-        worksheet.addRow({
-            orderId,
-            customer,
-            address,
-            quantity,
-            amount,
-            payment,
-            coupon,
-            time,
-            status
-        });
-
-        totalSale += order.totalPrice;
-        totalOrders++;
-    }
-    worksheet.addRow({});
-    const totalRow = worksheet.addRow({
-        orderId: "Total",
-        customer: "",
-        address: "",
-        quantity: "",
-        amount: totalSale.toFixed(2),
-        payment: "",
-        coupon: "",
-        time: "",
-        status: `Total Orders: ${totalOrders}`
-    });
-    totalRow.eachCell((cell) => {
-        cell.font = { bold: true };
-    });
-    const buffer = await workbook.xlsx.writeBuffer();
-    const excelBuffer = Buffer.from(buffer);
-
-    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    res.setHeader("Content-Disposition", "attachment; filename=sales-report.xlsx");
-    res.send(excelBuffer);
-};
 
 async function generatePdf(orders, res) {
     const totalOrders = orders.length;
@@ -229,8 +164,7 @@ async function generatePdf(orders, res) {
         .filter(order => order.status !== 'pending' && order.status !== 'cancelled' && order.status !== 'returned')
         .reduce((acc, curr) => acc + curr.totalPrice, 0);
 
-    const doc = new PDFDocument();
-
+    const doc = new PDFdocs();
     const filename = 'sales-report.pdf';
 
     res.setHeader("Content-Disposition", `attachment; filename=${filename}`);
@@ -238,50 +172,126 @@ async function generatePdf(orders, res) {
 
     doc.pipe(res);
 
-    doc.font("Helvetica-Bold").fontSize(26).text("WUZZYS TOYS", { align: "center", margin: 5 });
+    // Header
+    doc.fontSize(24).text('Wuzzys Toys', 50, 50)
+       .fontSize(10)
+       .text('Your Company Address', 50, 80)
+       .text('City, State ZIP', 50, 95)
+       .fontSize(20)
+       .text('Sales Report', 250, 50, { align: 'center' })
+       .fontSize(10)
+       .text('Generated on:', 400, 50, { align: 'right' })
+       .text(new Date().toLocaleDateString(), 400, 65, { align: 'right' });
 
-    doc.moveDown();
+    // Summary
+    doc.roundedRect(50, 120, 500, 60, 10).stroke();
+    doc.fontSize(12).text('Summary', 60, 130);
+    doc.fontSize(10)
+       .text(`Total Orders: ${totalOrders}`, 60, 150)
+       .text(`Total Revenue: Rs ${totalRevenue.toFixed(2)}`, 300, 150);
 
-    doc.fontSize(10).fillColor("red").text(`Total Revenue : Rs ${totalRevenue.toFixed(2)}`);
-    doc.fontSize(10).fillColor("black").text(`Total Orders : ${totalOrders}`);
+    // Table
+    doc.moveDown(2);
+    const tableTop = 200;
+    doc.font("Helvetica-Bold").fontSize(10);
+    
+    // Table headers
+    ['Order Id', 'Address', 'Payment Method', 'Order Status', 'Total'].forEach((header, i) => {
+        doc.text(header, 50 + i * 100, tableTop);
+    });
 
-    doc.moveDown();
+    doc.moveTo(50, tableTop + 20).lineTo(550, tableTop + 20).stroke();
 
-    doc.font("Helvetica-Bold").fillColor("black").fontSize(14).text(`Sales Report`, { align: "center", margin: 5 });
+    // Table rows
+    let y = tableTop + 30;
+    orders.forEach((order, index) => {
+        doc.font("Helvetica").fontSize(8);
+        doc.text(order.order_id, 50, y);
+        doc.text(order.address.addressLine + '\n' + order.address.city + ' ' + order.address.state + "\n" + "Pincode: " + order.address.pincode, 150, y, { width: 100 });
+        doc.text(order.paymentMethod, 250, y);
+        doc.text(order.orderStatus, 350, y);
+        doc.text('Rs ' + order.totalPrice.toFixed(2), 450, y);
 
-    doc.moveDown();
+        y += 40;
+        if (y > 700) {
+            doc.addPage();
+            y = 50;
+        }
+    });
 
-    const tableData = {
-        headers: [
-            'ORDER ID',
-            'CUSTOMER',
-            'QUANTITY',
-            'AMOUNT',
-            'PAYMENT',
-            'COUPON',
-            'TIME',
-            'STATUS'
-        ],
-        rows: orders.map((order) => {
-            return [
-                order.order_id,
-                order.address.customer_name,
-                order.totalQuantity,
-                order.totalPrice,
-                order.paymentMethod,
-                order.coupen_data.length > 0 ? order.coupen_data[0].coupen_name : 'No Coupon',
-                order.createdAt.toLocaleDateString(),
-                order.orderStatus
-            ];
-        })
-    };
-    try {
-        await generateTable(doc, tableData);
-    } catch (error) {
-        console.error('Error generating table:', error);
-    }
     doc.end();
 }
+
+async function generateExcel(orders, res) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet 1');
+
+    worksheet.columns = [
+        { header: "Order ID", key: "orderId", width: 15 },
+        { header: "Address", key: "address", width: 30 },
+        { header: "Pincode", key: "pin", width: 15 },
+        { header: "Status", key: "status", width: 15 },
+        { header: "Order Date", key: "orderDate", width: 18 },
+        { header: "Total", key: "total", width: 15 },
+    ];
+
+    let totalSale = orders
+    .filter(order => order.status !== 'pending' && order.status !== 'cancelled' && order.status !== 'returned')
+    .reduce((acc, curr) => acc + curr.totalPrice, 0);
+    let totalOrders = 0;
+
+    for (const order of orders) {
+        const orderId = order.order_id;
+        const orderDate = order.createdAt;
+        const address = order.address.building + '\n' + order.address.street + ' ' + order.address.city;
+        const pin = order.address.pincode;
+        const status = order.orderStatus;
+        const total = order.totalPrice;
+
+        worksheet.addRow({
+            orderId,
+            orderDate,
+            address,
+            pin,
+            status,
+            total
+        });
+
+
+        // totalSale += order.totalPrice;
+        totalOrders++;
+    }
+
+    worksheet.addRow({
+        orderId: "Total",
+        productName: "",
+        price: "",
+        quantity: "",
+        status: "",
+        address: "",
+        pin: "",
+        orderDate: ""
+    });
+
+    worksheet.mergeCells(`A${worksheet.rowCount}:D${worksheet.rowCount}`);
+    worksheet.getCell(`A${worksheet.rowCount}`).alignment = { vertical: 'middle', horizontal: 'center' };
+    worksheet.getCell(`A${worksheet.rowCount}`).font = { bold: true };
+    worksheet.getCell(`A${worksheet.rowCount}`).value = `Total Orders: ${totalOrders}`;
+
+    worksheet.getCell(`E${worksheet.rowCount}`).alignment = { vertical: 'middle', horizontal: 'center' };
+    worksheet.getCell(`E${worksheet.rowCount}`).font = { bold: true };
+    worksheet.getCell(`E${worksheet.rowCount}`).value = `Total Revenue: ${totalSale.toFixed(2)}`;
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const excelBuffer = Buffer.from(buffer);
+
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    res.setHeader("Content-Disposition", "attachment; filename=sales-report.xlsx");
+    res.send(excelBuffer);
+}
+
+
+
 function generateTable(doc, tableData) {
     const { headers, rows } = tableData;
     
