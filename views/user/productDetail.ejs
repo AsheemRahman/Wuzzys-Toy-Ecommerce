@@ -156,6 +156,10 @@
             margin-bottom: 10px;
         }
     }
+    .detail-price{
+        display: flex;
+        gap: 2rem;
+    }
 </style>
 
 <%- include('navbar') %>
@@ -183,9 +187,25 @@
                 <h1>
                     <%= product.productName %>
                 </h1>
-                <h3><i class="bi bi-currency-rupee"></i>
-                    <%= product.productPrice %>
+                <% if (product.productDiscount){ %>
+                    <div class="detail-price">
+                        <h4>
+                            <del>
+                                &#x20B9;<%= product.productPrice - product.productPrice * (product.productDiscount/100) %>
+                            </del>
+                        </h4>
+                        <h4 class="text-warning">
+                            <%= product.productDiscount %>% Off
+                        </h4>
+                    </div>
+                    <h3><i class="bi bi-currency-rupee"></i>
+                            <%= product.productPrice %>
+                    </h3>
+                <% } else {  %>
+                    <h3><i class="bi bi-currency-rupee"></i>
+                        <%= product.productPrice %>
                 </h3>
+                <% } %>
             </div>
             <div class="product-description">
                 <h4>

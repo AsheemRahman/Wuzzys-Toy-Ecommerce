@@ -175,9 +175,9 @@ const loginPost = async (req, res) => {
 
 const logout = (req, res) => {
   try {
-    req.session.destroy(err => {
-      if (err) {
-        console.log(err)
+    req.session.destroy(error => {
+      if (error) {
+        console.log(`error while logout ${error}`)
       }
     })
     res.redirect('/home')
