@@ -175,8 +175,8 @@ async function generatePdf(orders, res) {
     // Header
     doc.fontSize(24).text('Wuzzys Toys', 50, 50)
        .fontSize(10)
-       .text('Your Company Address', 50, 80)
-       .text('City, State ZIP', 50, 95)
+       .text('Sulthan Bathery', 50, 80)
+       .text(' Wayanad, 673592', 50, 95)
        .fontSize(20)
        .text('Sales Report', 250, 50, { align: 'center' })
        .fontSize(10)
