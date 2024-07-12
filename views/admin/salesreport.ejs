@@ -10,6 +10,7 @@
 
     .sale-table {
         width: 80%;
+        margin-bottom: 2rem;
     }
 
     .main-content {
@@ -180,6 +181,11 @@
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800" id="salesContent">
                         </tbody>
                     </table>
+                    <div class="pagination-controls d-flex mt-3">
+                        <ul class="pagination">
+                            <!-- Pagination will be dynamically inserted here-->
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -293,17 +299,19 @@
                 }
             });
 
-            async function getOrderData() {
+            async function getOrderData(page = 1) {
                 const startDate = document.getElementById('startDate').value;
                 const endDate = document.getElementById('endDate').value;
                 const salesreportType = document.getElementById('salesreportType').value;
+                const limit = 5;
+
                 try {
                     const response = await fetch('/admin/fetch-sales-data', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ salesreportType, startDate, endDate })
+                        body: JSON.stringify({ salesreportType, startDate, endDate, page, limit })
                     });
 
                     if (response.redirected) {
@@ -316,7 +324,7 @@
                         throw new Error('Failed to fetch order data');
                     }
 
-                    const orderDetails = await response.json();
+                    const { orderDetails, totalPages, currentPage } = await response.json();
                     let content = '';
 
                     if (orderDetails.length === 0) {
@@ -325,8 +333,7 @@
                     <td colspan="8">
                         <h1 class="text-center">No data found</h1>
                     </td>
-                </tr>
-            `;
+                </tr>`;
                     } else {
                         orderDetails.forEach(data => {
                             const formattedDate = new Date(data.createdAt).toLocaleDateString();
@@ -348,12 +355,23 @@
                         </td>
                         <td class="px-4 py-3 text-sm">${formattedDate}</td>
                         <td class="px-4 py-3 text-sm">${getStatusBadge(data.orderStatus)}</td>
-                    </tr>
-                `;
+                    </tr>`;
                         });
                     }
 
                     document.getElementById('salesContent').innerHTML = content;
+
+                    let paginationContent = '';
+                    if (currentPage > 1) {
+                        paginationContent += `<li class="page-item"><a class="page-link" href="javascript:getOrderData(${currentPage - 1})">Previous</a></li>`;
+                    }
+                    for (let i = 1; i <= totalPages; i++) {
+                        paginationContent += `<li class="page-item ${currentPage == i ? 'active' : ''}"><a class="page-link" href="javascript:getOrderData(${i})">${i}</a></li>`;
+                    }
+                    if (currentPage < totalPages) {
+                        paginationContent += `<li class="page-item"><a class="page-link" href="javascript:getOrderData(${currentPage + 1})">Next</a></li>`;
+                    }
+                    document.querySelector('.pagination').innerHTML = paginationContent;
                 } catch (error) {
                     console.error('Error fetching order data:', error);
                     document.getElementById('salesContent').innerHTML = `<tr>
@@ -363,6 +381,42 @@
         </tr>`;
                 }
             }
+
+            function getStatusBadge(status) {
+                switch (status) {
+                    case 'Pending':
+                        return `<h2 class="text-warning">${status}</h2>`;
+                    case 'Confirmed':
+                    case 'Delivered':
+                        return `<h6 class="text-success">${status}</h6>`;
+                    case 'Returned':
+                        return `<h6 class="text-danger">${status}</h6>`;
+                    case 'Cancelled':
+                        return `<h6 class="text-wanning">${status}</h6>`;
+                    case 'Shipped':
+                        return `<h6 class="text-info">${status}</h6>`;
+                    default:
+                        return status;
+                }
+            }
+            function getStatusBadge(status) {
+                switch (status) {
+                    case 'Pending':
+                        return `<h2 class="text-warning">${status}</h2>`;
+                    case 'Confirmed':
+                    case 'Delivered':
+                        return `<h6 class="text-success">${status}</h6>`;
+                    case 'Returned':
+                        return `<h6 class="text-danger">${status}</h6>`;
+                    case 'Cancelled':
+                        return `<h6 class="text-wanning">${status}</h6>`;
+                    case 'Shipped':
+                        return `<h6 class="text-info">${status}</h6>`;
+                    default:
+                        return status;
+                }
+            }
+
 
             function getStatusBadge(status) {
                 switch (status) {

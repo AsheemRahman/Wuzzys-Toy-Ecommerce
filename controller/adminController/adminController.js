@@ -61,7 +61,7 @@ const home = async (req,res)=>{
         const revenueResult = await orderSchema.aggregate([
             {
                 $match: {
-                    orderStatus: { $in: ['Shipped', 'Confirmed', 'Delivered'] }
+                    orderStatus: { $in: ['Shipped', 'Delivered'] }
                 }
             },
             {

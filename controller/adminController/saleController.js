@@ -9,7 +9,7 @@ const salePage =async (req,res)=>{
     try{
         const orderCount = await orderSchema.countDocuments()
         const revenueResult = await orderSchema.aggregate([
-            {$match: {orderStatus: { $in: ['Shipped', 'Confirmed', 'Delivered'] }}},
+            {$match: {orderStatus: { $in: ['Shipped', 'Delivered'] }}},
             {$group: {_id: null,total: { $sum: "$totalPrice" }}}]);
 
         const Revenue = revenueResult.length > 0 ? revenueResult[0].total : 0;
@@ -22,6 +22,7 @@ const salePage =async (req,res)=>{
         console.log(`error while render sale report ${error}`)
     }
 }
+
 
 
 
@@ -48,69 +49,67 @@ const getSalesByMonth = async (req, res) => {
 };
 
 const getOrderDetails = async (req, res) => {
-    let { startDate, endDate, salesreportType } = req.body;
+    let { startDate, endDate, salesreportType, page = 1, limit = 5 } = req.body;
+    page = parseInt(page);
+    limit = parseInt(limit);
+    let skip = (page - 1) * limit;
+
     let orderDetails;
     let match = {};
     
     try {
-        if (!salesreportType) {
-            orderDetails = await orderSchema.aggregate([
-                {
-                    $lookup: {
-                        from: 'coupons',
-                        localField: 'coupen_id',
-                        foreignField: '_id',
-                        as: 'coupen_data'
-                    }
-                },
-                {
-                    $sort: { createdAt: -1 }
-                }
-            ])
-        } else {
-            const now = new Date();
-            if (salesreportType === 'custom') {
-                const start = new Date(startDate);
-                start.setHours(0, 0, 0, 0);
-            
-                const end = new Date(endDate);
-                end.setHours(23, 59, 59, 999);
-            
-                match = {
-                    createdAt: { $gte: start, $lte: end }
-                };
-            } else if (salesreportType === 'monthly') {
-                endDate = new Date();
-                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                match = { createdAt: { $gte: startDate, $lte: endDate} };
-            } else if (salesreportType === 'yearly') {
-                endDate = new Date();
-                startDate = new Date(now.getFullYear(), 0, 1);
-                match = { createdAt: { $gte: startDate, $lte: endDate } };
-            } else if (salesreportType === 'weekly') {
-                endDate = new Date();
-                const currentDate = new Date();
-                const diff = currentDate.getDate() - currentDate.getDay();
-                startDate = new Date(currentDate.setDate(diff));
-                match = { createdAt: { $gte: startDate, $lte: endDate } };
-            }
-
-            orderDetails = await orderSchema.aggregate([
-                { $match: match },
-                {
-                    $lookup: {
-                        from: 'coupons',
-                        localField: 'coupen_id',
-                        foreignField: '_id',
-                        as: 'coupen_data'
-                    }
-                },
-                {
-                    $sort: { createdAt: -1 }
-                }
-            ])
+        const now = new Date();
+        if (salesreportType === 'custom') {
+            const start = new Date(startDate);
+            start.setHours(0, 0, 0, 0);
+        
+            const end = new Date(endDate);
+            end.setHours(23, 59, 59, 999);
+        
+            match = {
+                createdAt: { $gte: start, $lte: end }
+            };
+        } else if (salesreportType === 'monthly') {
+            endDate = new Date();
+            startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+            match = { createdAt: { $gte: startDate, $lte: endDate} };
+        } else if (salesreportType === 'yearly') {
+            endDate = new Date();
+            startDate = new Date(now.getFullYear(), 0, 1);
+            match = { createdAt: { $gte: startDate, $lte: endDate } };
+        } else if (salesreportType === 'weekly') {
+            endDate = new Date();
+            const currentDate = new Date();
+            const diff = currentDate.getDate() - currentDate.getDay();
+            startDate = new Date(currentDate.setDate(diff));
+            match = { createdAt: { $gte: startDate, $lte: endDate } };
         }
-        res.json(orderDetails);
+
+        orderDetails = await orderSchema.aggregate([
+            { $match: match },
+            {
+                $lookup: {
+                    from: 'coupons',
+                    localField: 'coupen_id',
+                    foreignField: '_id',
+                    as: 'coupen_data'
+                }
+            },
+            {
+                $sort: { createdAt: -1 }
+            },
+            {
+                $skip: skip
+            },
+            {
+                $limit: limit
+            }
+        ]);
+
+        const totalRecords = await orderSchema.countDocuments(match);
+        const totalPages = Math.ceil(totalRecords / limit);
+
+        res.json({ orderDetails, totalPages, currentPage: page });
     } catch (error) {
         console.log(`error while render the order details ${error}`);
         res.status(400).json(err);
@@ -161,7 +160,7 @@ const downloadPDF = async (req, res) => {
 async function generatePdf(orders, res) {
     const totalOrders = orders.length;
     const totalRevenue = orders
-        .filter(order => order.status !== 'pending' && order.status !== 'cancelled' && order.status !== 'returned')
+        .filter(order => order.status !== 'Confirmed' && order.status !== 'Cancelled' && order.status !== 'Returned')
         .reduce((acc, curr) => acc + curr.totalPrice, 0);
 
     const doc = new PDFdocs();
@@ -207,7 +206,7 @@ async function generatePdf(orders, res) {
     orders.forEach((order, index) => {
         doc.font("Helvetica").fontSize(8);
         doc.text(order.order_id, 50, y);
-        doc.text(order.address.addressLine + '\n' + order.address.city + ' ' + order.address.state + "\n" + "Pincode: " + order.address.pincode, 150, y, { width: 100 });
+        doc.text(order.address.building + '\n' + order.address.city + ' ' + order.address.state + "\n" + "Pincode: " + order.address.pincode, 150, y, { width: 100 });
         doc.text(order.paymentMethod, 250, y);
         doc.text(order.orderStatus, 350, y);
         doc.text('Rs ' + order.totalPrice.toFixed(2), 450, y);
