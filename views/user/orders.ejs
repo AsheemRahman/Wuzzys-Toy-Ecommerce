@@ -293,7 +293,10 @@
                                                     data-bs-target="#cancelOrderModal" data-id="<%= item._id %>">Cancel
                                                     Order</a>
                                                 <% } %>
+                                                    <a href="#" class="btn btn-dark"
+                                                        onclick="downloadInvoice('<%= item._id %>')">Invoice</a>
                                     </div>
+
                         </div>
                     </div>
                     <% }) %>
@@ -363,6 +366,42 @@
         </div>
 
         <script>
+            async function downloadInvoice(orderId) {
+                const downloadUrl = `/download-invoice/${orderId}`;
+                try {
+                    const response = await fetch(downloadUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ orderId: orderId })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    // Instead of parsing JSON, handle file download
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = `invoice-${orderId}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Failed to download invoice",
+                        text: "Try Again"
+                    });
+                }
+            }
+
+
             function filterOrders(status) {
                 const orders = document.querySelectorAll('.order-container');
                 orders.forEach(order => {

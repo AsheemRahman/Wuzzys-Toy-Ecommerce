@@ -2,8 +2,9 @@ const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
 
-    discountPercent:{
-        type: Number,
+    offerType:{
+        type: String,
+        enum: ['product','category'],
         required: true,
     },
     referenceId: {
@@ -11,9 +12,8 @@ const schema = new mongoose.Schema({
         refPath: 'offerType',
         required: true,
     },
-    offerType:{
-        type: String,
-        enum: ['product','category'],
+    discountPercent:{
+        type: Number,
         required: true,
     },
     isActive:{

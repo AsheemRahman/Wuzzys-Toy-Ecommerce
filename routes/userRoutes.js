@@ -118,6 +118,7 @@ user.get('/orders', activeUser , orderController.orderPage)
 user.post('/cancelOrder/:id', activeUser , orderController.cancelOrder)
 user.get("/orderDetail/:id", activeUser , orderController.orderDetail)
 user.post('/returnOrder', activeUser, orderController.returnOrder)
+user.post('/download-invoice/:orderId',activeUser , orderController.Invoice)
 
 
 //------------------------- forgot password ---------------------------
