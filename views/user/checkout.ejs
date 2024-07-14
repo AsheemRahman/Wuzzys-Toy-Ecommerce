@@ -519,15 +519,14 @@
                                     <th>Coupon</th>
                                     <th></th>
                                     <th></th>
-                                    <th>
-                                        0
+                                    <th class="coupon-discount">
                                     </th>
                                 </tr>
                                 <tr>
                                     <th>Total</th>
                                     <th></th>
                                     <th></th>
-                                    <th>
+                                    <th class="total-payable-amount">
                                         <%= cartDetails.payableAmount %>
                                     </th>
                                 </tr>
@@ -821,12 +820,23 @@
                 }
 
                 const couponData = await res.json();
+                updateOrderSummary(couponData.total, couponData.couponDiscount);
                 showCouponBadge(couponCode);
             } catch (error) {
                 document.getElementById('couponCode').value = '';
                 showError("An error occurred while applying the coupon.");
                 console.log(`apply coupon error ${error}`);
             }
+        }
+
+        function updateOrderSummary(newPayableAmount, couponDiscount) {
+            // Update the payable amount in the order summary
+            const payableAmountElement = document.querySelector('th.total-payable-amount');
+            payableAmountElement.innerText = newPayableAmount.toFixed(2);
+
+            // Update the coupon discount if necessary
+            const couponElement = document.querySelector('th.coupon-discount');
+            couponElement.innerText = couponDiscount.toFixed(2);
         }
 
         function showCouponBadge(couponCode) {
@@ -849,6 +859,7 @@
                 text: message
             });
         }
+
         //------------------ Validation for the add address modal --------------------
 
         document.addEventListener('DOMContentLoaded', (event) => {
