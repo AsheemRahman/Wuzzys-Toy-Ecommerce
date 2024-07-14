@@ -249,7 +249,7 @@
     }
 
     /*------------------------- order summary ------------------------------*/
-    
+
     .card {
         background: #232323;
     }
@@ -266,7 +266,7 @@
     }
 
     /*------------------------- add address modal ------------------------*/
-    
+
     .modal-content {
         background-color: #232323;
         color: #fefeeb;
@@ -297,6 +297,38 @@
 
     .checkout-icons {
         margin-top: 1.5rem;
+    }
+
+    /*-------------------------------- coupon style --------------------*/
+    .coupon {
+        text-align: center;
+        background: #232323;
+        margin-bottom: 1.5rem;
+        border-radius: 5px;
+    }
+
+    .coupon form {
+        padding: 1rem;
+    }
+
+    .input-coupon {
+        color: #fefeeb;
+        height: 3rem;
+    }
+
+    .coupon-btn {
+        margin: 1rem;
+    }
+
+    .coupon-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .bi-gift {
+        font-size: 3rem;
     }
 </style>
 
@@ -406,9 +438,29 @@
                 </div>
             </div>
         </div>
-
         <!----------------------------- Order Summary ------------------------------>
         <div class="order-summary" style="width: 45%;">
+
+            <!-------------- coupon management ---------------->
+            <div class="coupon">
+                <form class="cart-form">
+                    <div class="coupon-icon">
+                        <i class="bi bi-gift"></i>
+                        <h3>Apply Coupon</h3>
+                    </div>
+                    <div class="d-flex gap-2 m-2 align-items-center">
+                        <input type="text" id="couponCode" class="input-coupon" name="couponCode"
+                            placeholder="Enter coupon code">
+                        <button type="button" id="applyCouponBtn" onclick="applyCoupon()"
+                            class="btn submit-btn">Apply</button>
+                    </div>
+                </form>
+                <div id="couponBadge" class="pb-3" style="display: none;">
+                    <span class="text-success">Coupon Applied: <span id="appliedCouponCode"></span></span>
+                    <button type="button" class="btn btn-danger btn-sm ms-2" onclick="removeCoupon()">Remove</button>
+                </div>
+            </div>
+
             <div class="card">
                 <div class="card-header">
                     <h5 class="font-size-16 mb-0" style="color: #fefeeb;">Order Summary</h5>
@@ -461,6 +513,14 @@
                                     <th>12%</th>
                                     <th>
                                         <%= Math.round(cartDetails.payableAmount * (12 / 100)) %>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>Coupon</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>
+                                        0
                                     </th>
                                 </tr>
                                 <tr>
@@ -658,13 +718,7 @@
                                         return res.json();
                                     }).then(data => {
                                         if (data.success) {
-                                            // Swal.fire({
-                                            //     icon: "success",
-                                            //     title: "Order placed successfully!",
-                                            //     text: "Your order has been placed successfully."
-                                            // }).then(() => {
-                                                window.location.href = "/conform-order";
-                                            // });
+                                            window.location.href = "/conform-order";
                                         } else {
                                             Swal.fire({
                                                 icon: "error",
@@ -724,14 +778,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Swal.fire({
-                        //     icon: "success",
-                        //     title: "Order placed successfully!",
-                        //     text: "Your order has been placed successfully."
-                        // })
-                            // .then(() => {
-                                window.location.href = "/conform-order";
-                            // });
+                        window.location.href = "/conform-order";
                     } else {
                         Swal.fire({
                             icon: "error",
@@ -749,7 +796,59 @@
                     });
                 });
         }
+        //-------------------------- coupon managemnet --------------------------------
+        async function applyCoupon() {
+            const couponCode = document.getElementById('couponCode').value.trim();
 
+            if (!couponCode) {
+                showError("Please enter a coupon code.");
+                return;
+            }
+
+            try {
+                const res = await fetch('/applycoupon', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ couponCode })
+                });
+
+                if (!res.ok) {
+                    const error = await res.json();
+                    showError(error.error || "An error occurred while applying the coupon.");
+                    return;
+                }
+
+                const couponData = await res.json();
+                showCouponBadge(couponCode);
+            } catch (error) {
+                document.getElementById('couponCode').value = '';
+                showError("An error occurred while applying the coupon.");
+                console.log(`apply coupon error ${error}`);
+            }
+        }
+
+        function showCouponBadge(couponCode) {
+            const couponBadge = document.getElementById('couponBadge');
+            const appliedCouponCode = document.getElementById('appliedCouponCode');
+            couponBadge.style.display = 'block';
+            appliedCouponCode.innerText = couponCode;
+        }
+
+        function removeCoupon() {
+            document.getElementById('couponCode').value = '';
+            document.getElementById('couponBadge').style.display = 'none';
+            location.reload();
+        }
+
+        function showError(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message
+            });
+        }
         //------------------ Validation for the add address modal --------------------
 
         document.addEventListener('DOMContentLoaded', (event) => {

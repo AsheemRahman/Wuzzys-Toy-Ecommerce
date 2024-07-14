@@ -156,23 +156,6 @@
         justify-content: space-between;
     }
 
-    #code {
-        border: 1px solid rgba(0, 0, 0, 0.137);
-        padding: 1vh;
-        margin-bottom: 4vh;
-        outline: none;
-        width: 100%;
-        background-color: rgb(247, 247, 247);
-        background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253), rgba(255, 255, 255, 0.185)), url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
-        background-repeat: no-repeat;
-        background-position-x: 95%;
-        background-position-y: center;
-    }
-
-    #code:focus::-webkit-input-placeholder {
-        color: transparent;
-    }
-
     .cart-empty {
         display: flex;
         justify-content: center;
@@ -329,17 +312,19 @@
                                         </div>
                                         <div>
                                             <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                                            <%= item.productPrice - item.productPrice * (item.productId.productDiscount/100) %>
+                                            <%= item.productPrice - item.productPrice *
+                                                (item.productId.productDiscount/100) %>
                                         </div>
                                     </div>
                                     <% }) %>
                             </div>
                         </div>
-                        <form class="cart-form">
+                        <!-- <form class="cart-form">
                             <hr class="cart-line">
                             <h6 class="mb-3">Apply Coupon</h6>
                             <input id="code" placeholder="Enter your code">
-                        </form>
+                            <button class="coupon-btn">Apply</button>
+                        </form> -->
                         <div>
                             <hr class="cart-line mt-0">
                             <h6>Delivery</h6>

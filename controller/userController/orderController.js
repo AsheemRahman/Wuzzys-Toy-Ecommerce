@@ -173,9 +173,7 @@ const Invoice = async (req, res) => {
 
         doc
             .fillColor("black")
-            .text(`
-                Shipping Charge: ${orderDetails.totalPrice < 1500 ? "RS 50" : "Free"}
-            `);
+            .text(`Shipping Charge: ${orderDetails.totalPrice < 1500 ? "RS 50" : "Free"}`);
         doc
             .fontSize(10)
             .fillColor("red")
@@ -188,6 +186,12 @@ const Invoice = async (req, res) => {
             .text(`Payment method: ${orderDetails.paymentMethod}`);
         doc.text(`Order Date: ${orderDetails.createdAt.toDateString()}`);
         doc.moveDown();
+        doc.moveDown();
+
+        doc
+            .fontSize(10)
+            .fillColor("black")
+            .text(`Order Status: ${orderDetails.orderStatus}`);
         doc.moveDown();
 
         doc

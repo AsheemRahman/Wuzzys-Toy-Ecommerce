@@ -32,10 +32,19 @@
 
     .form-input {
         background-color: #fefeeb;
+        padding: 3px;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        width: 100%;
+    }
+    .form-input::placeholder{
+        color: #1a1a1a;
     }
 
     .form-input:focus {
         background-color: #fefeeb;
+        outline: none;
     }
 
     .user-profile-icon svg {
@@ -172,7 +181,7 @@
     <div class="user-navbar">
         <h3 class="text-white">Wuzzy’s Toys</h3>
         <form action="" class="search-nav">
-            <input type="text" name="search" class="form-input form-control" placeholder="search">
+            <input type="text" name="search" class="form-input l" placeholder="search">
             <button type="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
         <ul class="user-nav-icon">
@@ -191,8 +200,8 @@
             <li><a href="#footer">About</a></li>
             <li><a href="#">Contact</a></li>
             <% if (user) { %>
-                <li><a href="/wishlist"><i class="fa fa-heart"></i><span id="wishlist-count"
-                            class="badge"></span></a></li>
+                <li><a href="/wishlist"><i class="fa fa-heart"></i><span id="wishlist-count" class="badge"></span></a>
+                </li>
                 <% } else { %>
                     <li><a href="#" onclick="wishlistClick(event)"><i class="fa fa-heart"></i></a></li>
                     <% } %>

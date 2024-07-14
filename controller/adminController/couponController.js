@@ -37,14 +37,34 @@ const getCoupons = async (req, res) => {
 
 const addCoupon = async (req, res) => {
     const { code, discountType, discountValue, startDate, endDate, minimumOrderAmount } = req.body;
+
+    if (!code || !discountType || !discountValue || !startDate || !endDate || !minimumOrderAmount) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+
     try {
-        const newCoupon = new Coupon({ code, discountType, discountValue, startDate, endDate, minimumOrderAmount });
+        const existingCoupon = await Coupon.findOne({ code });
+        if (existingCoupon) {
+            return res.status(400).json({ message: 'Coupon code already exists' });
+        }
+
+        const newCoupon = new Coupon({
+            code,
+            discountType,
+            discountValue,
+            startDate,
+            endDate,
+            minimumOrderAmount
+        });
+
         await newCoupon.save();
         res.json({ message: 'Coupon added successfully' });
     } catch (error) {
+        console.error('Error adding coupon:', error);
         res.status(500).json({ message: 'Error adding coupon' });
     }
 };
+
 
 //------------------------------------- Edit a coupon ----------------------------
 
