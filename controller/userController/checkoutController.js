@@ -80,6 +80,7 @@ const placeOrder = async (req, res) => {
                 product_category: item.productId.productCategory,
                 product_quantity: item.productCount,
                 product_price: item.productId.productPrice,
+                product_discount:item.productId.productDiscount,
                 product_image: item.productId.productImage[0],
                 product_status: 'Confirmed'
             });
@@ -255,7 +256,7 @@ const coupon = async (req, res) => {
         }
 
         const total = cart.payableAmount;
-        let discountedTotal = total; // Declare discountedTotal here
+        let discountedTotal = total;
 
         if (total < coupon.minimumOrderAmount) {
             return res.status(400).json({ error: "Minimum purchase limit not reached. Please add more items to your cart." });

@@ -25,7 +25,9 @@ const schema = new mongoose.Schema({
         product_price: {
             type: Number
         },
-        
+        product_discount: {
+            type: Number
+        },
         product_image: {
             type: String
         },
