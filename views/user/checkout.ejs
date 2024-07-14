@@ -515,7 +515,7 @@
                                         <%= Math.round(cartDetails.payableAmount * (12 / 100)) %>
                                     </th>
                                 </tr>
-                                <tr>
+                                <tr class="coupon-row" style="display: none;">
                                     <th>Coupon</th>
                                     <th></th>
                                     <th></th>
@@ -798,12 +798,10 @@
         //-------------------------- coupon managemnet --------------------------------
         async function applyCoupon() {
             const couponCode = document.getElementById('couponCode').value.trim();
-
             if (!couponCode) {
                 showError("Please enter a coupon code.");
                 return;
             }
-
             try {
                 const res = await fetch('/applycoupon', {
                     method: 'POST',
@@ -834,9 +832,16 @@
             const payableAmountElement = document.querySelector('th.total-payable-amount');
             payableAmountElement.innerText = newPayableAmount.toFixed(2);
 
-            // Update the coupon discount if necessary
-            const couponElement = document.querySelector('th.coupon-discount');
-            couponElement.innerText = couponDiscount.toFixed(2);
+            const couponRow = document.querySelector('.coupon-row');
+            if (couponDiscount > 0) {
+                couponRow.style.display = 'table-row';
+                const couponElement = document.querySelector('.coupon-discount');
+                if (couponElement) {
+                    couponElement.innerText = couponDiscount.toFixed(2);
+                }
+            } else {
+                couponRow.style.display = 'none';
+            }
         }
 
         function showCouponBadge(couponCode) {
