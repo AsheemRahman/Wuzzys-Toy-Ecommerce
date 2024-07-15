@@ -112,7 +112,7 @@ const getOrderDetails = async (req, res) => {
         res.json({ orderDetails, totalPages, currentPage: page });
     } catch (error) {
         console.log(`error while render the order details ${error}`);
-        res.status(400).json(err);
+        res.status(400).json(error);
     }
 };
 

@@ -287,16 +287,15 @@
                                             <a class="btn btn-danger" id="returnOrder" data-bs-toggle="modal"
                                                 data-bs-target="#modalreturnOrder" data-id="<%= item._id %>">Return
                                                 Order</a>
+                                                <a href="#" class="btn btn-secondary"
+                                                        onclick="downloadInvoice('<%= item._id %>')"><i class="bi bi-cloud-arrow-down mx-1"></i>Invoice</a>
                                             <% } else if(item.orderStatus==='Confirmed' || item.orderStatus==='Shipped'
                                                 ) { %>
                                                 <a class="btn btn-danger" id="cancelOrder" data-bs-toggle="modal"
                                                     data-bs-target="#cancelOrderModal" data-id="<%= item._id %>">Cancel
                                                     Order</a>
                                                 <% } %>
-                                                    <a href="#" class="btn btn-dark"
-                                                        onclick="downloadInvoice('<%= item._id %>')">Invoice</a>
                                     </div>
-
                         </div>
                     </div>
                     <% }) %>

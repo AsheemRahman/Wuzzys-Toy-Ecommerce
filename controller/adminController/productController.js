@@ -87,7 +87,7 @@ const addproductPost = async (req,res) => {
         console.log(`error while adding product ${error}`)
         req.flash('error','Failed to added product')
         res.redirect('/admin/addproduct')
-        
+        res.status(500).send('Server Error');
     }
 }
 
@@ -108,6 +108,7 @@ const editProduct = async (req,res) => {
 
     } catch (error) {
         console.log(`error while loading edit product page ${error}`)
+        res.status(500).send('Server Error');
     }
 }
 
