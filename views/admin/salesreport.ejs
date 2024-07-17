@@ -385,7 +385,7 @@
             function getStatusBadge(status) {
                 switch (status) {
                     case 'Pending':
-                        return `<h2 class="text-warning">${status}</h2>`;
+                        return `<h6 class="text-warning">${status}</h6>`;
                     case 'Confirmed':
                     case 'Delivered':
                         return `<h6 class="text-success">${status}</h6>`;
@@ -399,43 +399,6 @@
                         return status;
                 }
             }
-            function getStatusBadge(status) {
-                switch (status) {
-                    case 'Pending':
-                        return `<h2 class="text-warning">${status}</h2>`;
-                    case 'Confirmed':
-                    case 'Delivered':
-                        return `<h6 class="text-success">${status}</h6>`;
-                    case 'Returned':
-                        return `<h6 class="text-danger">${status}</h6>`;
-                    case 'Cancelled':
-                        return `<h6 class="text-wanning">${status}</h6>`;
-                    case 'Shipped':
-                        return `<h6 class="text-info">${status}</h6>`;
-                    default:
-                        return status;
-                }
-            }
-
-
-            function getStatusBadge(status) {
-                switch (status) {
-                    case 'Pending':
-                        return `<h2 class="text-warning">${status}</h2>`;
-                    case 'Confirmed':
-                    case 'Delivered':
-                        return `<h6 class="text-success">${status}</h6>`;
-                    case 'Returned':
-                        return `<h6 class="text-danger">${status}</h6>`;
-                    case 'Cancelled':
-                        return `<h6 class="text-wanning">${status}</h6>`;
-                    case 'Shipped':
-                        return `<h6 class="text-info">${status}</h6>`;
-                    default:
-                        return status;
-                }
-            }
-
             async function downloadReport() {
                 let startDate, endDate;
                 const salesreportType = document.getElementById('salesreportType').value;

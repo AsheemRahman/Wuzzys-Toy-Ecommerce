@@ -93,16 +93,19 @@ const placeOrder = async (req, res) => {
         }
         if(paymentDetails[paymentMode] === 'Wallet'){
             const wallet = await walletSchema.findOne({ userID: userId });
-        if (!wallet || wallet.balance < cartItems.payableAmount) {
-            return res.status(400).json({ success: false, message: 'Insufficient wallet balance.' });
-        }
+            if(cartItems.payableAmount > 1000){
+                return res.status(400).json({ success: false, message: 'COD below 1000 only.' });
+            }
+            if (!wallet || wallet.balance < cartItems.payableAmount) {
+                return res.status(400).json({ success: false, message: 'Insufficient wallet balance.' });
+            }
             wallet.balance -= cartItems.payableAmount;
             wallet.transaction.push({
                 wallet_amount: cartItems.payableAmount,
                 transactionType: 'Debited',
                 transaction_date: new Date(),
                 order_id: new mongoose.Types.ObjectId(),
-        });
+            });
         await wallet.save();
         }
 

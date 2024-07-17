@@ -155,6 +155,7 @@
 <%- include('navbar') %>
     <div class="container mt-5">
         <h1 class="my-order">My Orders</h1>
+        <% if(orderDetails.length !=0) { %>
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
                 <a class="nav-link active" id="all-orders-tab" data-bs-toggle="pill" href="#all-orders" role="tab"
@@ -187,7 +188,6 @@
         </ul>
 
         <div class="row order-div" id="orderContainer">
-            <% if(orderDetails.length !=0) { %>
                 <% orderDetails.forEach((item, index)=> { %>
                     <div class="card border shadow-none order-container" data-status="<%= item.orderStatus %>">
                         <div class="card-body">
@@ -283,14 +283,15 @@
                                         </div>
                                     </div>
                                     <div class="order-actions-top">
-                                        <% if(item.orderStatus==='Delivered' ) { %>
+                                        <%if(item.paymentStatus === "Pending") {%>
+                                            <a class="btn btn-danger"> Retry Payment</a>
+                                        <% } else if(item.orderStatus==='Delivered' ) { %>
                                             <a class="btn btn-danger" id="returnOrder" data-bs-toggle="modal"
                                                 data-bs-target="#modalreturnOrder" data-id="<%= item._id %>">Return
                                                 Order</a>
                                                 <a href="#" class="btn btn-secondary"
                                                         onclick="downloadInvoice('<%= item._id %>')"><i class="bi bi-cloud-arrow-down mx-1"></i>Invoice</a>
-                                            <% } else if(item.orderStatus==='Confirmed' || item.orderStatus==='Shipped'
-                                                ) { %>
+                                            <% } else if(item.orderStatus==='Confirmed' || item.orderStatus==='Shipped') { %>
                                                 <a class="btn btn-danger" id="cancelOrder" data-bs-toggle="modal"
                                                     data-bs-target="#cancelOrderModal" data-id="<%= item._id %>">Cancel
                                                     Order</a>
@@ -299,15 +300,15 @@
                         </div>
                     </div>
                     <% }) %>
-                        <% } else { %>
-                            <div class="row d-flex justify-content-center">
-                                <div class="no-orders">
-                                    <h2 class="nothing">You have no orders</h2>
-                                    <a href="/home" class="btn btn-danger d-flex">Shop Now</a>
-                                </div>
-                            </div>
-                            <% } %>
-        </div>
+                </div>
+                <% } else { %>
+                    <div class="row d-flex justify-content-center mb-3">
+                        <div class="no-orders">
+                            <h2 class="nothing">You have no orders</h2>
+                            <a href="/home" class="btn btn-danger d-flex">Shop Now</a>
+                        </div>
+                    </div>
+                    <% } %>
     </div>
 
     <%- include('footer') %>
