@@ -59,9 +59,9 @@ const placeOrder = async (req, res) => {
         const addressIndex = parseInt(req.params.address);
         const paymentMode = parseInt(req.params.payment);
         let paymentId = "";
+        const { razorpay_payment_id, razorpay_order_id, razorpay_signature, payment_status } = req.body;
 
         if (paymentMode === 2) {
-            const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
             paymentId = razorpay_payment_id;
         }
 
@@ -124,8 +124,9 @@ const placeOrder = async (req, res) => {
                 landMark: userDetails.address[addressIndex].landmark
             },
             paymentMethod: paymentDetails[paymentMode],
-            orderStatus: "Confirmed",
+            orderStatus: payment_status === "Pending" ? "Pending" : "Confirmed",
             paymentId: paymentId,
+            paymentStatus: payment_status,
             isCancelled: false
         });
         await newOrder.save();
@@ -154,7 +155,6 @@ const paymentRender = (req, res) => {
     try {
         const totalAmount = req.params.amount;
         if (!totalAmount) {
-            console.error("Amount parameter is missing");
             return res.status(404).json({ error: "Amount parameter is missing" });
         }
 
@@ -169,10 +169,10 @@ const paymentRender = (req, res) => {
             receipt: "receipt#1"
         };
 
-        instance.orders.create(options, (err, order) => {
-            if (err) {
-                console.error(`Failed to create order: ${err}`);
-                return res.status(500).json({ error: `Failed to create order: ${err.message}` });
+        instance.orders.create(options, (error, order) => {
+            if (error) {
+                console.error(`Failed to create order: ${error}`);
+                return res.status(500).json({ error: `Failed to create order: ${error.message}` });
             }
             return res.status(200).json({ orderID: order.id });
         });
@@ -223,10 +223,24 @@ const orderPage = async (req, res) => {
         res.render('user/conform-order', { title: "Order conformed", orders: orders });
     } catch (err) {
         console.log(`Error on render in conform order ${err}`);
-        req.flash('success',"user is not found , please Login again")
-        res.redirect("/login")
     }
 }
+
+//------------------------------ failed order page ---------------------------
+
+const failedOrder = async (req, res) => {
+    try {
+        const userId = req.session.user;
+        if (!userId) {
+            req.flash('error', 'USER is not found. Login again.');
+            return res.redirect('/login');
+        }
+        res.render('user/Failed-order', { title: "Order Failed" });
+    } catch (error) {
+        console.log(`Error while rendering the failed order page`, error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
 
 
 //---------------------------------- coupon -----------------------------------
@@ -283,5 +297,5 @@ const coupon = async (req, res) => {
 
 
 
-module.exports = { checkout , placeOrder ,addAddress , orderPage ,  paymentRender , coupon};
+module.exports = { checkout , placeOrder ,addAddress , orderPage , failedOrder ,  paymentRender , coupon};
 

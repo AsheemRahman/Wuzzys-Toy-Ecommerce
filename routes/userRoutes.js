@@ -108,6 +108,7 @@ user.get('/getCounts', activeUser, wishlistController.getCounts);
 user.get('/checkout', activeUser , checkoutController.checkout)
 user.post('/checkout-address', activeUser ,checkoutController.addAddress)
 user.get('/conform-order', activeUser , checkoutController.orderPage)
+user.get('/failed-order', activeUser , checkoutController.failedOrder)
 user.post('/place-order/:address/:payment', activeUser , checkoutController.placeOrder)
 user.post('/payment-render/:amount', activeUser , checkoutController.paymentRender)
 user.post('/applycoupon', activeUser , checkoutController.coupon)
