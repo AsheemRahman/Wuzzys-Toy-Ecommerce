@@ -5,7 +5,7 @@ const productSchema = require("../../model/productSchema");
 const walletSchema = require('../../model/walletSchema');
 
 const PDFDocument = require('pdfkit-table')
-
+const Razorpay = require('razorpay')
 const path = require('path');
 
 //--------------------------------- user order page -----------------------------
@@ -251,5 +251,69 @@ const Invoice = async (req, res) => {
     }
 };
 
+const razorpay = new Razorpay({
+    key_id: 'rzp_test_jyh8u3FB51sm3I',
+    key_secret: '5Cz0sGy9qDgUqCLLieURAfkD'
+});
 
-module.exports = { orderPage , cancelOrder , orderDetail , returnOrder , Invoice }
+// Payment retry with Razorpay
+const retryRazorPay = async (req, res) => {
+    try {
+        const { orderId } = req.body;
+        const order = await orderSchema.findById(orderId);
+
+        if (!order) {
+            return res.status(404).send('Order not found');
+        }
+
+        const razorpayOrder = await razorpay.orders.create({
+            amount: Math.round(order.totalPrice * 100),
+            currency: "INR",
+            receipt: `receipt#${orderId}`
+        });
+
+        if (razorpayOrder) {
+            return res.status(200).json({
+                ...order.toObject(),
+                razorpayOrderId: razorpayOrder
+            });
+        } else {
+            return res.status(500).send('Razorpay order creation failed');
+        }
+    } catch (error) {
+        console.error(`Error from Razorpay retry: ${error}`);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+// Retry payment from order page
+const retryPayment = async (req, res) => {
+    try {
+        const { orderId, paymentId, razorpayOrderId } = req.body;
+
+        const update = {
+            paymentId: paymentId,
+            paymentStatus: 'Success',
+            orderStatus: 'Confirmed'
+        };
+
+        const order = await orderSchema.findByIdAndUpdate(orderId, update, { new: true });
+
+        if (!order) {
+            return res.status(404).send('Order not found');
+        }
+
+        for (let product of order.products) {
+            await productSchema.findByIdAndUpdate(product.product_id, {
+                $inc: { product_quantity: -product.product_quantity }
+            });
+        }
+        res.status(200).json(order);
+    } catch (error) {
+        console.error(`Error from retry payment backend: ${error}`);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+
+module.exports = { orderPage , cancelOrder , orderDetail , returnOrder , Invoice , retryPayment , retryRazorPay }

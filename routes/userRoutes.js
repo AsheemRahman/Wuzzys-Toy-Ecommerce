@@ -121,7 +121,8 @@ user.post('/cancelOrder/:id', activeUser , orderController.cancelOrder)
 user.get("/orderDetail/:id", activeUser , orderController.orderDetail)
 user.post('/returnOrder', activeUser, orderController.returnOrder)
 user.post('/download-invoice/:orderId',activeUser , orderController.Invoice)
-
+user.post('/retryRazorPay',activeUser,orderController.retryRazorPay)
+user.post('/retryPayment',activeUser ,orderController.retryPayment)
 
 //------------------------- forgot password ---------------------------
 
