@@ -56,7 +56,6 @@ const multer = upload.array('images',3);
 
 const addproductPost = async (req,res) => {
     try {
-        
         const imgArray = []
 
         req.files.forEach((img) =>{
@@ -72,7 +71,7 @@ const addproductPost = async (req,res) => {
             productDescription: req.body.productDescription,
             productImage: imgArray
         }
-        
+
         const check = await productSchema.findOne({productName: product.productName, productCollection: product.productCollection, })
 
         if(!check){
@@ -96,9 +95,9 @@ const addproductPost = async (req,res) => {
 const editProduct = async (req,res) => {
     
     try {
-    
         const id = req.params.id;
         const product = await productSchema.findById(id)
+
         if(product){
             res.render('admin/editproduct',{title:'Edit Product',product})
         }else{
@@ -115,28 +114,51 @@ const editProduct = async (req,res) => {
 
 //----------------------------------- Edit Product  -----------------------------------
 
-const editProductPost = async (req,res)=> {
+const editProductPost = async (req, res) => {
     try {
-        
         const id = req.params.id;
-        productSchema.findByIdAndUpdate(id,{
+        const imageToDelete = JSON.parse(req.body.deletedImages || '[]');
+        const croppedImages = JSON.parse(req.body.croppedImages || '[]');
+
+        // Delete images from filesystem
+        imageToDelete.forEach(imagePath => {
+            try {
+                fs.unlinkSync(imagePath);
+            } catch (error) {
+                console.error(`Error deleting image: ${imagePath}`, error);
+            }
+        });
+
+        // Remove images from database
+        if (imageToDelete.length > 0) {
+            await productSchema.findByIdAndUpdate(id, {
+                $pull: { productImage: { $in: imageToDelete } }
+            });
+        }
+
+        req.files.forEach((img) =>{
+            croppedImages.push(img.path)
+        })
+
+        // Update product with new images
+        const newImages = [...product.productImage, ...croppedImages];
+
+        await productSchema.findByIdAndUpdate(id, {
             productPrice: req.body.productPrice,
             productQuantity: req.body.productQuantity,
-            productDiscount:req.body.productDiscount,
-            productDescription: req.body.productDescription})
-        .then(()=>{
-            req.flash('success','Product successfully updated')
-            res.redirect('/admin/products')
-        }).catch((err)=>{
-            req.flash('error','Error occured while editing the product')
-            res.redirect('/admin/products')
-        })
+            productDiscount: req.body.productDiscount,
+            productDescription: req.body.productDescription,
+            productImage: newImages,
+        });
+
+        req.flash('success', 'Product successfully updated');
+        res.redirect('/admin/products');
     } catch (error) {
-        console.log(`error while editing product post ${error} `)
-        req.flash('error',"Could not edit the product")
-        res.redirect('/admin/products')
+        console.log(`Error while editing product post: ${error}`);
+        req.flash('error', "Could not edit the product");
+        res.redirect('/admin/products');
     }
-}
+};
 
 //------------------------------------ Product Status ----------------------------------
 

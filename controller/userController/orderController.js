@@ -256,7 +256,7 @@ const razorpay = new Razorpay({
     key_secret: '5Cz0sGy9qDgUqCLLieURAfkD'
 });
 
-// Payment retry with Razorpay
+
 const retryRazorPay = async (req, res) => {
     try {
         const { orderId } = req.body;
@@ -286,23 +286,19 @@ const retryRazorPay = async (req, res) => {
     }
 };
 
-// Retry payment from order page
+
 const retryPayment = async (req, res) => {
     try {
         const { orderId, paymentId, razorpayOrderId } = req.body;
-
         const update = {
             paymentId: paymentId,
             paymentStatus: 'Success',
             orderStatus: 'Confirmed'
         };
-
         const order = await orderSchema.findByIdAndUpdate(orderId, update, { new: true });
-
         if (!order) {
             return res.status(404).send('Order not found');
         }
-
         for (let product of order.products) {
             await productSchema.findByIdAndUpdate(product.product_id, {
                 $inc: { product_quantity: -product.product_quantity }

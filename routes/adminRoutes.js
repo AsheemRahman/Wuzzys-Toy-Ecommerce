@@ -37,9 +37,9 @@ admin.get('/products', isAdmin, productController.product)
 admin.get('/products/:id', isAdmin, productController.deleteProduct)
 admin.get('/productstatus', isAdmin, productController.status)
 admin.get('/addproduct', isAdmin, productController.addProduct)
-admin.post('/addproduct',productController.multer,productController.addproductPost)
+admin.post('/addproduct', productController.multer , productController.addproductPost)
 admin.get('/editproduct/:id', isAdmin, productController.editProduct)
-admin.post('/editproduct/:id',isAdmin,productController.multer,productController.editProductPost)
+admin.post('/editproduct/:id',isAdmin, productController.multer , productController.editProductPost)
 
 //--------------------------- Customer Details ----------------------------
 

@@ -25,6 +25,14 @@
         display: flex;
         align-items: center;
     }
+
+    .table-container {
+        width: 93%;
+        background: #232323;
+        padding: 10px;
+        box-shadow: 0 0 10px rgba(100, 98, 98, 0.5);
+        border-radius: 10px;
+    }
 </style>
 
 <%- include('navbar') %>
@@ -189,9 +197,9 @@
                 <form id="addPopupForm" action="/admin/create-popup" method="POST">
                     <div class="modal-header">
                         <h5 class="modal-title">Add Popup</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </button> -->
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
@@ -229,9 +237,9 @@
                 <form id="updatePopupForm" action="" method="POST">
                     <div class="modal-header">
                         <h5 class="modal-title">Update Popup</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </button> -->
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
