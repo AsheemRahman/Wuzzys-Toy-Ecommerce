@@ -146,16 +146,17 @@ const login = (req, res) => {
 
 const loginPost = async (req, res) => {
   try {
-    const check = await userSchema.findOne({ email: req.body.email })
-    if (check) {
-      if (!check.isActive) {
+    const test = await userSchema.findOne({ email: req.body.email })
+
+    if (test) {
+      if (!test.isActive) {
         req.flash('error', 'User access is blocked by admin')
         res.redirect('/login')
       } else {
-        const password = await bcrypt.compare(req.body.password, check.password)
+        const password = await bcrypt.compare(req.body.password, test.password)
 
-        if (check && password) {
-          req.session.user = check.id
+        if (test && password) {
+          req.session.user = test.id
           res.redirect('/home')
         } else {
           req.flash('error', 'Invalid credentails')
@@ -163,7 +164,7 @@ const loginPost = async (req, res) => {
         }
       }
     } else {
-      req.flash('error', 'Couldnt find user')
+      req.flash('error', 'Couldnt find user , please login again')
       res.redirect('/login')
     }
   } catch (error) {
@@ -186,7 +187,9 @@ const logout = (req, res) => {
   }
 }
 
+
 //-------------------------------------- google auth -----------------------------------
+
 const googleAuth = (req, res) => {
   try {
     passport.authenticate('google', {
@@ -196,6 +199,7 @@ const googleAuth = (req, res) => {
     console.log(`Error on google authentication ${err}`)
   }
 }
+
 
 //----------------------------------- google auth callback  ----------------------------
 
@@ -235,6 +239,7 @@ const facebookAuth = (req, res, next) => {
   })(req, res, next)
 }
 
+
 //----------------------------------- facebook auth callback  ----------------------------
 
 const facebookAuthCallback = (req, res, next) => {
@@ -248,7 +253,7 @@ const facebookAuthCallback = (req, res, next) => {
     }
     req.logIn(user, err => {
       if (err) {
-        console.log(`Error logging in user: ${err}`)
+        console.log(`Error logging facbook: ${err}`)
         return res.status(500).send('Login failed')
       }
       req.session.user = user.id

@@ -21,12 +21,10 @@
                 <% if(bestProducts){ %>
                     <% bestProducts.forEach((product,index)=>{ %>
                         <div class="col-lg-3 mb-4">
-                            <div>
-                            </div>
+                            <!-- <h5>
+                                <%= index+1 %>
+                            </h5> -->
                             <div class="card h-100 justify-content-center align-items-center">
-                                <!-- <h5>
-                                    <%= index+1 %>
-                                </h5> -->
                                 <div class="mt-3">
                                     <img src="../../../../<%= product.productImage[0] %>"
                                         class="product-image">
@@ -34,6 +32,9 @@
                                 <div class="card-body">
                                     <h5 class="card-title">
                                         <%= product.productName %>
+                                    </h5>
+                                    <h5 class="card-title">
+                                        &#8377; <%= product.productPrice %>
                                     </h5>
                                 </div>
                             </div>
