@@ -196,8 +196,10 @@
                     <input class="user-login-input" type="text" name="email" placeholder="Email or Phone Number"
                         required>
                         <div class="form-group position-relative d-flex align-items-center">
-                            <input class="user-login-input" type="password" name="password" placeholder="Password" required>
-                            <!-- <span id="toggle-password" onclick="togglePassword('password',this)" class="me-1 password-toggle align-content-center position-absolute end-0"><i class="bi bi-eye"></i></span> -->
+                            <input class="user-login-input" type="password" name="password" placeholder="Password" id="password" required>
+                            <span id="toggle-password" class="me-1 password-toggle align-content-center position-absolute end-0">
+                                <i class="bi bi-eye"></i>
+                            </span>
                         </div>
                     <div class="forgot-password">
                         <a href="/forgotPassword">Forget Password?</a>
@@ -226,11 +228,15 @@
 
 
 
-    <!-- <script>
-        function togglePassword(id,toggle){
-        const pass = document.getElementById(id)
+    <script>
+        document.getElementById('toggle-password').addEventListener('click', function() {
+        togglePassword('password', this);
+    });
+
+    function togglePassword(id, toggle) {
+        const pass = document.getElementById(id);
         const type = pass.getAttribute('type') === 'password' ? 'text' : 'password';
-        pass.setAttribute('type',type)
+        pass.setAttribute('type', type);
         toggle.innerHTML = type === 'password' ? '<i class="bi bi-eye"></i>' : '<i class="bi bi-eye-slash"></i>';
     }
-    </script> -->
+    </script>

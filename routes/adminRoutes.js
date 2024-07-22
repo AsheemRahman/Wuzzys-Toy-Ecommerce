@@ -21,7 +21,8 @@ admin.post('/login', adminController.loginPost)
 
 //------------------------ admin home page --------------------------
 
-admin.get('/home', isAdmin, adminController.home)
+admin.get('/home', isAdmin , adminController.home)
+admin.get('/charts', isAdmin , adminController.salesChart)
 
 //-------------------------- collection -----------------------------
 

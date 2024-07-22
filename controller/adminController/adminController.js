@@ -82,6 +82,10 @@ const home = async (req, res) => {
             }
         ]);
         const productCount = product.length > 0 ? product[0].total : 0;
+        // const productCount = await orderSchema.find({
+        //     orderStatus: { $in: ['Pending', 'Shipped', 'Delivered'] }
+        // }).count();
+        
 
         // Find the best seller
         const productSale = await orderSchema.aggregate([
@@ -121,7 +125,41 @@ const home = async (req, res) => {
     }
 };
 
+const salesChart = async (req,res)=>{
+    try {
+        const orders = await orderSchema.find({
+            orderStatus: { $in: ['Pending','Shipped','Delivered'] }
+        });
 
+        let salesData = Array.from({ length: 12 }, () => 0);
+        let revenueData = Array.from({ length: 12 }, () => 0);
+        let productsData = Array.from({ length: 12 }, () => 0);
+
+        orders.forEach(order => {
+            const month = order.createdAt.getMonth();
+            revenueData[month] += order.totalPrice;
+            for(product of order.products){
+                productsData[month] += order.totalQuantity;
+            }
+        });
+
+        const Orders = await orderSchema.find({})
+
+        Orders.forEach(order => {
+            const month = order.createdAt.getMonth();
+            salesData[month]++
+        })
+
+        res.json({
+            salesData,
+            revenueData,
+            productsData
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
 
 //-------------------------- admin logout request ---------------------
 
@@ -135,4 +173,4 @@ const logout = (req,res)=>{
     })
 }
 
-module.exports={ admin , login , loginPost , home , logout }
+module.exports={ admin , login , loginPost , home ,salesChart , logout }
