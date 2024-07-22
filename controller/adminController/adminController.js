@@ -53,10 +53,10 @@ const loginPost = (req,res)=>{
 
 //------------------------- admin home get request --------------------
 
-const home = async (req,res)=>{
+const home = async (req, res) => {
     try {
-        const orderCount = await orderSchema.countDocuments()
-        const userCount = await userSchema.countDocuments()
+        const orderCount = await orderSchema.countDocuments();
+        const userCount = await userSchema.countDocuments();
 
         const revenueResult = await orderSchema.aggregate([
             {
@@ -83,11 +83,44 @@ const home = async (req,res)=>{
         ]);
         const productCount = product.length > 0 ? product[0].total : 0;
 
-        res.render('admin/home',{title: "Home" , orderCount , userCount , Revenue , productCount })
+        // Find the best seller
+        const productSale = await orderSchema.aggregate([
+            { $unwind: "$products" },
+            { $group: { _id: '$products.product_id', totalQuantity: { $sum: "$products.product_quantity" } } },
+            { $sort: { totalQuantity: -1 } }
+        ]);
+
+        const productId = productSale.map(sale => sale._id);
+
+        const products = await productSchema.find({ _id: { $in: productId } });
+
+        const bestProducts = productId.map(id => products.find(product => product._id.toString() === id.toString()));
+
+        const bestCategory = new Map();
+        bestProducts.forEach(element => {
+            if (element && element.productCollection) {
+                if (bestCategory.has(element.productCollection)) {
+                    bestCategory.set(element.productCollection, bestCategory.get(element.productCollection) + 1);
+                } else {
+                    bestCategory.set(element.productCollection, 1);
+                }
+            }
+        });
+
+        res.render('admin/home', {
+            title: "Home",
+            orderCount,
+            userCount,
+            Revenue,
+            productCount,
+            bestProducts,
+            bestCategory
+        });
     } catch (error) {
-        console.log(`error from home ${error}`)
+        console.log(`error from home ${error}`);
     }
-}
+};
+
 
 
 //-------------------------- admin logout request ---------------------

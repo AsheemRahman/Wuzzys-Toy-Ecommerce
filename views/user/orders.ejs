@@ -374,6 +374,7 @@
 
         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
         <script>
+            //----------------------- invoice ------------------------------
             async function downloadInvoice(orderId) {
                 const downloadUrl = `/download-invoice/${orderId}`;
                 try {
@@ -389,7 +390,6 @@
                         throw new Error('Network response was not ok');
                     }
 
-                    // Instead of parsing JSON, handle file download
                     const blob = await response.blob();
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
@@ -409,7 +409,7 @@
                 }
             }
 
-
+            //----------------------- filter order ------------------------------
             function filterOrders(status) {
                 const orders = document.querySelectorAll('.order-container');
                 orders.forEach(order => {
@@ -421,6 +421,7 @@
                 });
             }
 
+            //----------------------- cancel order ------------------------------
             document.querySelectorAll('#cancelOrder').forEach((btn) => {
                 btn.addEventListener('click', function () {
                     const orderId = this.getAttribute('data-id');
@@ -492,6 +493,7 @@
                 });
             });
 
+            //----------------------- retry payment ------------------------------
             async function retryPayment(orderId) {
                 try {
                     const res = await fetch('/retryRazorPay', {

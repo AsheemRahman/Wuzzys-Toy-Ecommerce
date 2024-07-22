@@ -71,6 +71,12 @@ const placeOrder = async (req, res) => {
         }
 
         const paymentDetails = ["Cash on delivery", "Wallet", "razorpay"];
+        if(paymentDetails[paymentMode] === 'Cash on delivery'){
+            if(cartItems.payableAmount > 1000){
+                return res.status(400).json({ success: false, message: 'COD below 1000 only.' });
+            }
+        }
+
         const products = [];
         let totalQuantity = 0;
         cartItems.items.forEach((item) => {
@@ -93,9 +99,6 @@ const placeOrder = async (req, res) => {
         }
         if(paymentDetails[paymentMode] === 'Wallet'){
             const wallet = await walletSchema.findOne({ userID: userId });
-            if(cartItems.payableAmount > 1000){
-                return res.status(400).json({ success: false, message: 'COD below 1000 only.' });
-            }
             if (!wallet || wallet.balance < cartItems.payableAmount) {
                 return res.status(400).json({ success: false, message: 'Insufficient wallet balance.' });
             }
