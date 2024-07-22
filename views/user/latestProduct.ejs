@@ -23,13 +23,11 @@
         </a>
     </div>
     <div class="product-list-box container">
-        <% let count = 0; %>
         <% product.forEach((product) => {
             const productAge = (Date.now() - new Date(product.createdAt).getTime()) / (24 * 60 * 60 * 1000);
-            if (productAge <= 10 && count < 8) {
-                count++; %>
+            if (productAge <= 30) { %>
             <div class="product-box">
-                <% if (productAge <= 10) { %>
+                <% if (productAge <= 30) { %>
                     <div class="product-newarrival-box">
                         <h6>New Arrival</h6>
                     </div>

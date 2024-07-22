@@ -45,7 +45,7 @@
     <div class="product-list-box container">
         <% product.forEach((product) => { %>
             <div class="product-box">
-                <% if(new Date(product.createdAt).getTime() > (Date.now() - (10 * 24 * 60 * 60 * 1000))) { %>
+                <% if(new Date(product.createdAt).getTime() > (Date.now() - (30 * 24 * 60 * 60 * 1000))) { %>
                     <div class="product-discount-box">
                         <h6>New Arrival</h6>
                     </div>

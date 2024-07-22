@@ -11,7 +11,7 @@ const home = async (req, res) => {
       startDate: { $lte: new Date() },
       endDate: { $gte: new Date() }
     });
-    const product = await productSchema.find({ isActive : true })
+    const product = await productSchema.find({ isActive : true }).sort({createdAt: -1}).limit(8)
     res.render('user/home', { title: 'Home', product, user: req.session.user , popup })
   } catch (error) {
     console.log(`error while rendering home ${error}`)
