@@ -7,19 +7,23 @@
         margin: 3rem;
     }
 
-    .cart-empty {
+    .wishlist-empty {
         display: flex;
         justify-content: center;
         width: 100%;
     }
 
-    .empty-cart {
+    .empty-wishlist {
         margin: 2rem 0rem;
         max-width: 1400px;
         width: 90%;
         border-radius: 1rem;
         border: transparent;
         background: #232323;
+        /* background: url('/public/assets/empty-cart-image.webp');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat; */
         height: 500px;
     }
 
@@ -35,18 +39,52 @@
     .empty-items img {
         max-width: 200px;
         border-radius: 10px;
+        animation: bounce 2s infinite;
     }
 
     .empty-items h2 {
         color: #fefeeb;
     }
 
-    .empty-cart p {
+    .empty-wishlist p {
         display: flex;
         justify-content: center;
         align-items: center;
         color: #fefeeb;
         margin: 0;
+    }
+
+    @keyframes bounce {
+
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+            transform: translateY(0);
+        }
+
+        40% {
+            transform: translateY(-30px);
+        }
+
+        60% {
+            transform: translateY(-15px);
+        }
+    }
+
+    .animated-image {
+        animation: spin 10s linear infinite;
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
     }
 </style>
 <%-include('navbar') %>
@@ -78,8 +116,7 @@
                                         </a>
                                     </div>
                                     <div class="product-image-box">
-                                        <a href="/productDetail/<%= product.productID.id %>"
-                                            class="product-name-link">
+                                        <a href="/productDetail/<%= product.productID.id %>" class="product-name-link">
                                             <img src="/<%= product.productID.productImage[0] %>" alt=""
                                                 class="img-fluid">
                                         </a>
@@ -103,10 +140,10 @@
                     </div>
                     <% }) %>
                         <% }else{ %>
-                            <div class="cart-empty">
-                                <div class="empty-cart">
+                            <div class="wishlist-empty">
+                                <div class="empty-wishlist">
                                     <div class="empty-items">
-                                        <img src="/public/assets/empty-cart-image.webp">
+                                        <img src="/public/assets/empty-cart-image.webp" class="animated-image">
                                         <h2 class="fw-bold">
                                             Your wishlist is empty!
                                         </h2>

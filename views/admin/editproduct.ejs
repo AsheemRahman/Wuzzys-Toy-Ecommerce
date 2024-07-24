@@ -208,7 +208,8 @@
                                 <img src="../../<%= img %>" alt="" class="preview-img">
                                 <a class="btn btn-danger delete-btn"
                                     onclick="deleteImage('<%= img.replace(/\\/g, '\\\\') %>')">
-                                    <i class="bi bi-trash3-fill"></i></a>
+                                    <i class="bi bi-trash3-fill"></i>
+                                </a>
                             </div>
                             <% }) %>
                     </div>
@@ -246,14 +247,13 @@
             function deleteImage(imagePath) {
                 deletedImages.push(imagePath);
                 document.getElementById('deletedImages').value = JSON.stringify(deletedImages);
-                console.log('Deleted Images:', deletedImages); // Debugging: log deleted images
 
                 const normalizedPath = imagePath.replace(/\\/g, '/');
                 const imageBox = document.querySelector(`div[data-image-path="${normalizedPath}"]`);
                 if (imageBox) {
                     imageBox.remove();
                 } else {
-                    console.log(`Image box not found for path: ${normalizedPath}`); // Debugging: log if imageBox is not found
+                    console.log(`Image box not found for path: ${normalizedPath}`);
                 }
             }
 
@@ -261,7 +261,7 @@
                 const inputDiv = document.getElementById('add-input');
                 const newInput = document.createElement('input');
                 newInput.type = 'file';
-                newInput.name = 'productImage';
+                newInput.name = 'images'; // Updated name to match Multer configuration
                 newInput.style.display = 'none';
                 newInput.addEventListener('change', (event) => {
                     if (event.target.files && event.target.files[0]) {
@@ -286,23 +286,28 @@
                     viewMode: 1,
                     autoCropArea: 1
                 });
+
                 document.getElementById('crop-cancel').addEventListener('click', () => {
                     cropper.destroy();
                     cropperModal.style.display = 'none';
                     inputElement.value = '';
                 });
+
                 document.getElementById('crop-confirm').addEventListener('click', () => {
                     const canvas = cropper.getCroppedCanvas();
                     imageElement.src = canvas.toDataURL('image/jpeg');
                     cropper.destroy();
                     cropperModal.style.display = 'none';
+
                     const previewDiv = document.getElementById('image-upload-preview');
                     const imageBox = document.createElement('div');
                     imageBox.className = 'product-image-box mt-5';
                     imageBox.style.width = '25%';
+
                     const img = document.createElement('img');
                     img.classList.add('preview-img');
                     img.src = imageElement.src;
+
                     let deleteImageBtn = document.createElement('a');
                     deleteImageBtn.innerHTML = '<i class="bi bi-trash3-fill"></i>';
                     deleteImageBtn.classList.add('btn', 'btn-danger', 'delete-btn');
@@ -310,9 +315,11 @@
                         imageBox.remove();
                         inputElement.remove();
                     };
+
                     imageBox.appendChild(img);
                     imageBox.appendChild(deleteImageBtn);
                     previewDiv.appendChild(imageBox);
+
                     const croppedImages = JSON.parse(document.getElementById('croppedImages').value || '[]');
                     croppedImages.push(canvas.toDataURL('image/jpeg'));
                     document.getElementById('croppedImages').value = JSON.stringify(croppedImages);

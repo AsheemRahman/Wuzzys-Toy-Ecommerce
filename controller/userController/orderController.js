@@ -46,6 +46,32 @@ const cancelOrder = async (req, res) => {
             req.flash('error', 'Order not found');
             return res.redirect('/orders');
         }
+
+        if (order.paymentMethod === 'razorpay' || order.paymentMethod === 'Wallet' ) {
+            const userWallet = await walletSchema.findOne({ userID: order.customer_id });
+            if (userWallet) {
+                userWallet.balance = (userWallet.balance || 0) + order.totalPrice;
+                userWallet.transaction.push({
+                    wallet_amount: order.totalPrice,
+                    order_id: orderId,
+                    transactionType: 'Credited',
+                    transaction_date: new Date()
+                });
+                await userWallet.save();
+            } else {
+                await walletSchema.create({
+                    userID: order.customer_id,
+                    balance: order.totalPrice,
+                    transaction: [{
+                        wallet_amount: order.totalPrice,
+                        order_id: orderId,
+                        transactionType: 'Credited',
+                        transaction_date: new Date()
+                    }]
+                });
+            }
+        }
+
         for (let product of order.products) {
             if (product.product_id && product.product_quantity !== undefined) {
                 await productSchema.findByIdAndUpdate(product.product_id, { $inc: { productQuantity: product.product_quantity } });
@@ -55,6 +81,7 @@ const cancelOrder = async (req, res) => {
                 return res.redirect('/orders');
             }
         }
+
         req.flash('success', 'Order cancelled successfully');
         res.redirect('/orders');
     } catch (error) {
@@ -100,7 +127,7 @@ const returnOrder = async (req, res) => {
         order.returnReason = returnReason;
         await order.save();
 
-        if (order.paymentMethod === 'razorpay') {
+        if (order.paymentMethod === 'razorpay' || order.paymentMethod === 'Wallet' ) {
             const userWallet = await walletSchema.findOne({ userID: order.customer_id });
             if (userWallet) {
                 userWallet.balance = (userWallet.balance || 0) + order.totalPrice;
@@ -124,6 +151,17 @@ const returnOrder = async (req, res) => {
                 });
             }
         }
+
+        for (let product of order.products) {
+            if (product.product_id && product.product_quantity !== undefined) {
+                await productSchema.findByIdAndUpdate(product.product_id, { $inc: { productQuantity: product.product_quantity } });
+            } else {
+                console.error(`Invalid product data: ${JSON.stringify(product)}`);
+                req.flash('error', 'Error updating product quantity');
+                return res.redirect('/orders');
+            }
+        }
+
         return res.status(200).json({ status: 'success', message: 'Order return request submitted successfully' });
     } catch (error) {
         console.error('Error processing return request:', error);

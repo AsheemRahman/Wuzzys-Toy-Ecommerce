@@ -140,6 +140,7 @@ const editProductPost = async (req, res) => {
             croppedImages.push(img.path)
         })
 
+        const product = await productSchema.findById(id)
         // Update product with new images
         const newImages = [...product.productImage, ...croppedImages];
 
