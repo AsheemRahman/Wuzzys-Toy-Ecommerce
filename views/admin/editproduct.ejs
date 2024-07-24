@@ -207,7 +207,7 @@
                                 data-image-path="<%= img.replace(/\\/g, '/') %>">
                                 <img src="../../<%= img %>" alt="" class="preview-img">
                                 <a class="btn btn-danger delete-btn"
-                                    onclick="deleteImage('<%= img.replace(/\\/g, '\\\\') %>')">
+                                    onclick="deleteImage(`<%= img.replace(/\\/g, '\\\\') %>`)">
                                     <i class="bi bi-trash3-fill"></i>
                                 </a>
                             </div>
