@@ -631,7 +631,7 @@
         let selectedPaymentMethod = null;
 
         const orderPlacementBtn = document.getElementById('place-order-btn');
-        const totalAmount = orderPlacementBtn.getAttribute('data-amount');
+        let totalAmount = orderPlacementBtn.getAttribute('data-amount');
         const username = orderPlacementBtn.getAttribute('data-username');
         const email = orderPlacementBtn.getAttribute('data-email');
         const phone = orderPlacementBtn.getAttribute('data-phone');
@@ -748,9 +748,6 @@
                             }
                         };
                         const rzp1 = new Razorpay(options);
-                        // rzp1.on('payment.failed', function (response) {
-                        //     window.location.href = `/failed-order`
-                        // });
                         rzp1.on('payment.failed', function (response) {
                             const URL = `/place-order/${selectedAddressIndex}/${selectedPaymentMethod}`;
                             fetch(URL, {
@@ -794,7 +791,6 @@
                                     });
                                 });
                         });
-
                         rzp1.open();
                     } else {
                         throw new Error("Order ID not received");
@@ -889,6 +885,7 @@
             } else {
                 couponRow.style.display = 'none';
             }
+            totalAmount = newPayableAmount;
         }
 
         function showCouponBadge(couponCode) {

@@ -48,15 +48,12 @@
 
     .payment-status-alert {
         color: #e74c3c;
-        display: flex;
-        align-items: center;
     }
 
     .payment-status-alert i {
         font-size: 1em;
     }
 
-    /* Order Grid */
     .order-grid {
         display: flex;
         flex-direction: column;
@@ -195,7 +192,9 @@
                                             <strong>State:</strong>
                                             <%= orderDetails.address.city %><br>
                                                 <strong>Pincode:</strong>
-                                                <%= orderDetails.address.pincode %>
+                                                <%= orderDetails.address.pincode %><br>
+                                                <strong>Phone number:</strong>
+                                                <%= orderDetails.address.phonenumber %>
                             </p>
                             <% } else { %>
                                 <p class="card-text">Address Not Available</p>
@@ -211,6 +210,9 @@
                         <p class="card-text">
                             <strong>Method:</strong> <span class="text-success">
                                 <%= orderDetails.paymentMethod %>
+                            </span><br>
+                            <strong>Total Amount:</strong> <span class="text-info">
+                                <%= orderDetails.totalPrice %>
                             </span><br>
                             <strong>Status:</strong> <span class="payment-status-alert">
                                 <%= orderDetails.orderStatus %>
