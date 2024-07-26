@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-
     offerType:{
         type: String,
         enum: ['product','category'],
@@ -20,7 +19,6 @@ const schema = new mongoose.Schema({
         type: Boolean,
         default: true,
     }
-
 },{timestamps: true})
 
 module.exports = mongoose.model('offer',schema)

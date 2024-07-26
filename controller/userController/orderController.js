@@ -90,6 +90,8 @@ const cancelOrder = async (req, res) => {
 };
 
 
+//-------------------------- Order Detail page ----------------------------
+
 const orderDetail = async (req,res) =>{
     const user =req.session.user
     const order_id = req.params.id;
@@ -102,6 +104,9 @@ const orderDetail = async (req,res) =>{
         res.redirect('/order')
     }
 }
+
+
+//-------------------------- Return order ----------------------------
 
 const returnOrder = async (req, res) => {
     try {
@@ -166,6 +171,9 @@ const returnOrder = async (req, res) => {
         return res.status(500).json({ status: 'error', message: 'An error occurred while processing the return request' });
     }
 };
+
+
+//-------------------------- Download invoice ----------------------------
 
 const Invoice = async (req, res) => {
     try {
@@ -293,6 +301,8 @@ const razorpay = new Razorpay({
 });
 
 
+//-------------------------- retry RazorPay ----------------------------
+
 const retryRazorPay = async (req, res) => {
     try {
         const { orderId } = req.body;
@@ -322,6 +332,8 @@ const retryRazorPay = async (req, res) => {
     }
 };
 
+
+//-------------------------- retry Payment ----------------------------
 
 const retryPayment = async (req, res) => {
     try {

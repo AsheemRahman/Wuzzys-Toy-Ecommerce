@@ -199,8 +199,10 @@
                     <h2 class="text-center mb-4 mt-2">Collection</h2>
                     <form class="form d-flex flex-column gap-3 pt-4" action="/admin/editcollection" method="post">
                         <input type="hidden" name="collectionId" id="editCollectionId">
-                        <input type="text" name="collectionName" id="editCollectionName" class="form-control form-input"
+                        <div class="d-flex justify-content-center">
+                            <input type="text" name="collectionName" id="editCollectionName" class="form-control form-input"
                             placeholder="Collection Name" required>
+                        </div>
                         <button type="submit" class="btn submit-btn edit-alert">Save Changes</button>
                     </form>
                 </div>

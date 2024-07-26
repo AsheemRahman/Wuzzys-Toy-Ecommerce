@@ -157,6 +157,8 @@ const placeOrder = async (req, res) => {
 };
 
 
+//-------------------------- Razorpay payment ----------------------------
+
 const paymentRender = (req, res) => {
     try {
         const totalAmount = req.params.amount;
@@ -188,6 +190,8 @@ const paymentRender = (req, res) => {
     }
 };
 
+
+//-------------------------- Add address  ----------------------------
 
 const addAddress = async (req, res) => {
     try {

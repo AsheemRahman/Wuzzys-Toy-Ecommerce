@@ -1,6 +1,7 @@
 const productSchema = require('../../model/productSchema')
-const mongoose = require('mongoose');
 const wishlistSchema = require('../../model/wishlistSchema');
+
+const mongoose = require('mongoose');
 
 //---------------------------------- Product View -----------------------------------
 

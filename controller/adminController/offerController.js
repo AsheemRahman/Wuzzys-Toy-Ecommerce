@@ -37,6 +37,9 @@ const getOffer = async (req,res)=>{
     }
 }
 
+
+//-------------------------- add offer ----------------------------
+
 const addOffer = async (req, res) => {
     try {
         const { offerType, referenceId, discountPercent } = req.body;
@@ -129,6 +132,7 @@ const addOffer = async (req, res) => {
 };
 
 
+//-------------------------- edit offer ----------------------------
 
 const editOffer = async (req, res) => {
     try {
@@ -152,6 +156,8 @@ const editOffer = async (req, res) => {
 }
 
 
+//-------------------------- offer status ----------------------------
+
 const offerStatus = async (req,res)=>{
     try {
         const offerId = req.query.id
@@ -165,6 +171,9 @@ const offerStatus = async (req,res)=>{
         console.log(`error from orderStatus ${error}`)
     }
 }
+
+
+//-------------------------- delete offer ----------------------------
 
 const deleteOffer = async (req,res)=>{
     try {

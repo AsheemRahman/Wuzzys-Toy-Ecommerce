@@ -18,6 +18,7 @@ const user = (req, res) => {
   }
 }
 
+
 //------------------------------------ Render Signup page --------------------------------
 
 const signup = (req, res) => {
@@ -31,6 +32,7 @@ const signup = (req, res) => {
     console.log(`error while rendering signup page ${error} `)
   }
 }
+
 
 //---------------------------------- Getting Details of User ------------------------------
 
@@ -66,6 +68,7 @@ const signupPost = async (req, res) => {
   }
 }
 
+
 //-------------------------------- Login otp Page Render -----------------------------
 
 const verify = (req, res) => {
@@ -80,6 +83,7 @@ const verify = (req, res) => {
     console.log(`error while rendering verify page ${error}`)
   }
 }
+
 
 //------------------------------------ verify the otp -------------------------------
 
@@ -114,6 +118,7 @@ const verifyPost = async (req, res) => {
   }
 }
 
+
 //-------------------------------------- Otp Resent ---------------------------------
 
 const otpResend = (req, res) => {
@@ -132,6 +137,7 @@ const otpResend = (req, res) => {
   }
 }
 
+
 //------------------------------------ Login Page Render ----------------------------
 
 const login = (req, res) => {
@@ -141,6 +147,7 @@ const login = (req, res) => {
     res.render('user/login', { title: 'Login', user: req.session.user })
   }
 }
+
 
 //---------------------------------- Verify Login Details -----------------------------
 
@@ -171,6 +178,7 @@ const loginPost = async (req, res) => {
     console.log(`error while login post ${error}`)
   }
 }
+
 
 //--------------------------------------- User logout -----------------------------------
 
@@ -261,6 +269,7 @@ const facebookAuthCallback = (req, res, next) => {
     })
   })(req, res, next)
 }
+
 
 module.exports = {
   user,

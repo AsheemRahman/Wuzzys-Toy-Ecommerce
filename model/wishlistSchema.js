@@ -12,7 +12,6 @@ const schema = new mongoose.Schema({
         type: String
     },
     products: [product]
-
 }, { timestamps: true });
 
 module.exports = mongoose.model('wishlist', schema);

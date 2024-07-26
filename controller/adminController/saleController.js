@@ -156,6 +156,8 @@ const downloadPDF = async (req, res) => {
     }
 }
 
+//-------------------------- PDF ----------------------------
+
 async function generatePdf(orders, res) {
     const totalOrders = orders.length;
     const totalRevenue = orders
@@ -219,6 +221,9 @@ async function generatePdf(orders, res) {
 
     doc.end();
 }
+
+
+//-------------------------- Excel ----------------------------
 
 async function generateExcel(orders, res) {
     const workbook = new ExcelJS.Workbook();

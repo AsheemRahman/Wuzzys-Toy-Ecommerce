@@ -19,6 +19,7 @@ const home = async (req, res) => {
   }
 }
 
+
 //--------------------------------------- All Produccts Page ---------------------------------
 
 const allproduct = async (req, res) => {
@@ -112,7 +113,6 @@ const latestProduct = async (req, res) => {
 
       const wishlist = await wishlistSchema.findOne({ userID: userId });
 
-
     res.render('user/view-more', {
       title: 'Latest Products',
       product,
@@ -182,5 +182,6 @@ const category = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 }
+
 
 module.exports = { home, allproduct, category , latestProduct }

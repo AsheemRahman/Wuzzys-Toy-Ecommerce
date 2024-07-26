@@ -13,6 +13,7 @@ const checkoutController = require('../controller/userController/checkoutControl
 const orderController = require('../controller/userController/orderController')
 const forgotPassword = require('../controller/userController/forgotPassword')
 const wishlistController = require('../controller/userController/wishlistcontroller')
+const walletController = require('../controller/userController/walletController');
 
 //------------------------------- main -------------------------------
 
@@ -54,7 +55,7 @@ user.get('/verify',userController.verify)
 
 user.post('/verify',userController.verifyPost)
 
-user.post('/resend/:email',userController.otpResend)
+user.get('/resend/:email',userController.otpResend)
 
 
 //-------------------------------- home -------------------------------
@@ -87,7 +88,10 @@ user.get('/edit-address/:index', activeUser , profileController.editAddress)
 
 user.post('/update-address/:index', activeUser , profileController.updateAddress)
 
-user.get('/wallet', activeUser , profileController.walletPage)
+
+//----------------------------- wallet route --------------------------
+
+user.get('/wallet', activeUser , walletController.walletPage)
 
 //----------------------------- cart route --------------------------
 

@@ -1,6 +1,8 @@
 const userSchema = require('../../model/userSchema')
+
 const generateOTP = require('../../services/generateOTP')
 const sendOTP = require('../../services/emailSender')
+
 const bcrypt = require('bcrypt')
 
 //------------------------------ Forget Page render ---------------------------------
@@ -13,6 +15,7 @@ const forgotPassword = (req, res) => {
         console.log(`error while rendering forgot Password page ${error}`)
     }
 }
+
 
 //------------------------------------- Forget ---------------------------------------
 
@@ -48,8 +51,6 @@ const forgotPasswordPost = async (req, res) => {
 };
 
 
-
-
 //--------------------------------- Otp page is render --------------------------------
 
 const forgotPasswordOtp = (req, res) => {
@@ -60,6 +61,7 @@ const forgotPasswordOtp = (req, res) => {
     }
 }
 
+
 //------------------------------------- Otp Getting ----------------------------------
 
 const forgotPasswordOtpPost = async (req, res) => {
@@ -69,7 +71,7 @@ const forgotPasswordOtpPost = async (req, res) => {
                 res.render('user/resetpassword', { title: 'Reset Password' ,user:req.session.user})
             } else {
             req.flash('error', 'Invaild OTP')
-            res.redirect('/login')
+            res.redirect('/forgotPasswordOtp')
             }
         } else {
             req.flash('error', 'Error occured retry')
@@ -79,6 +81,7 @@ const forgotPasswordOtpPost = async (req, res) => {
         console.log(`error while forgot otp verification ${error}`)
     }
 }
+
 
 //----------------------------------- New Password -----------------------------------
 
@@ -98,20 +101,23 @@ const resetPasswordPost = async (req, res) => {
     }
 }
 
+
 //----------------------------------- OTP Resend -----------------------------------
 
 const forgotResend = (req, res) => {
     try {
         const email = req.params.email
         const otp = generateOTP()
-        sendOTP(email, otp)
-        ;(req.session.otp = otp), (req.session.otpTime = Date.now())
+        sendOTP(email, otp);
+        req.session.otp = otp;
+        req.session.otpTime = Date.now();
         req.flash('success', 'New OTP sent to mail')
         res.redirect('/forgotpasswordotp')
     } catch (error) {
         console.log(`error in resend otp forgot password  ${error}`)
     }
 }
+
 
 module.exports = {
     forgotPassword,

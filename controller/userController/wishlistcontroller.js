@@ -5,6 +5,9 @@ const cartSchema = require('../../model/cartSchema')
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
+
+// --------------------------------- wishlist page -------------------------------
+
 const wishlistpage = async(req,res)=>{
     try{
         if (!req.session.user) {
@@ -23,6 +26,8 @@ const wishlistpage = async(req,res)=>{
     }
 }
 
+
+// ---------------------------------Add wishlist-------------------------------
 
 const addWishlist = async (req, res) => {
     try {
@@ -59,6 +64,9 @@ const addWishlist = async (req, res) => {
     }
 };
 
+
+// --------------------------------- Delete wishlist-------------------------------
+
 const deleteWishlist = async (req, res) => {
     const userId = req.session.user;
     const itemId = req.params.id;
@@ -83,6 +91,8 @@ const deleteWishlist = async (req, res) => {
     }
 };
 
+// ------------------------------ count of cart and wishlist -----------------------------
+
 const getCounts = async (req, res) => {
     try {
         if (req.session.user) {
@@ -103,5 +113,6 @@ const getCounts = async (req, res) => {
         return res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 };
+
 
 module.exports = { wishlistpage , addWishlist , deleteWishlist , getCounts }

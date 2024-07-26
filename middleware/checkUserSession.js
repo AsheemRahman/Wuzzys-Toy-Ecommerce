@@ -1,5 +1,8 @@
 const userSchema = require('../model/userSchema')
 
+
+// -------------------- check user is login or not  ------------------------
+
 async function checkUser (req, res, next) {
   try {
     if (req.session.user) {

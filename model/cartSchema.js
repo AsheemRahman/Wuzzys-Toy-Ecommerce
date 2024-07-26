@@ -6,12 +6,10 @@ const itemSchema = new mongoose.Schema({
         ref:'product',
         required: true
     },
-
     productCount:{
         type :Number,
         default: 1,
     },
-
     productPrice:{
         type:Number,
         required: true

@@ -50,7 +50,7 @@ async function addToCart(productId, price, user) {
 
 
 
-//--------------------- wishlist --------------------------
+//------------------------------ wishlist -----------------------------
 
 async function addwishlist(productId, price, user) {
 
