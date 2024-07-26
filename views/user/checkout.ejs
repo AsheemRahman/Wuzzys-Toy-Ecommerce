@@ -8,7 +8,14 @@
 
     .checkout-icons {
         display: flex;
-        justify-content: space-around;
+        position: absolute;
+        justify-content: end;
+        gap: .5rem;
+        width: 10%;
+        margin-left: 1rem;
+    }
+    .checkout-icons a{
+        color: red;
     }
 
     /* ----------------------------- Shipping Address ------------------------------ */
@@ -295,10 +302,6 @@
         color: #fefeeb;
     }
 
-    .checkout-icons {
-        margin-top: 1.5rem;
-    }
-
     /*-------------------------------- coupon style --------------------*/
     .coupon {
         text-align: center;
@@ -349,14 +352,14 @@
                             <% } else { %>
                                 <span class="">Maximum 3 address</span>
                                 <% } %>
-                                    <div class="checkout-icons">
+                                    <!-- <div class="checkout-icons">
                                         <a href="/profile" title="Edit Address">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         <a href="/profile" title="Delete Address">
                                             <i class="bi bi-trash"></i>
                                         </a>
-                                    </div>
+                                    </div> -->
                     </div>
                 </div>
                 <div class="address-cards">
@@ -366,6 +369,15 @@
                             <% userDetails.address.forEach((address, index)=> { %>
                                 <div class="address-card" onclick="selectAddress(this, '<%= index %>')">
                                     <div class="address-info">
+                                        <div class="checkout-icons">
+                                            <a href="/editAddress/<%= index %>" title="Edit Address">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </a>
+                                            <a href="#" class="delete-address" data-address-index="<%= index %>"
+                                                title="Delete Address">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </a>
+                                        </div>
                                         <h3>
                                             <%= address.building %>,
                                         </h3>
@@ -908,6 +920,40 @@
                 text: message
             });
         }
+
+        //----------------------- delete address ------------------------------
+
+        document.addEventListener('DOMContentLoaded', function () {
+                const deleteButtons = document.querySelectorAll('.delete-address');
+
+                deleteButtons.forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const addressIndex = parseInt(this.getAttribute('data-address-index'));
+                        if (!isNaN(addressIndex) && addressIndex >= 0) {
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You won't be able to revert this!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, delete it!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "/removeAddress/" + addressIndex;
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Invalid Address Index',
+                                text: 'The address index is invalid. Please try again.'
+                            });
+                        }
+                    });
+                });
+            });
 
         //------------------ Validation for the add address modal --------------------
 

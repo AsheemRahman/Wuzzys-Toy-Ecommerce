@@ -32,6 +32,9 @@ const cart = async (req, res) => {
                 cart.payableAmount = Math.round(totalPrice);
                 cart.totalPrice = Math.round(totalPriceWithOutDiscount);
             }
+            if(cart.payableAmount < 1000){
+                cart.payableAmount = cart.payableAmount + 50
+            }
             await cart.save();
         }
         res.render('user/cart', { title: "cart", cart, totalPrice, cartItemCount, totalPriceWithOutDiscount, alertMessage: req.flash('error'), user: req.session.user })

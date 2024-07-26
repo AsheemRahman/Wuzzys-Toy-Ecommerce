@@ -136,6 +136,13 @@ user.post('/payment-render/:amount', activeUser , checkoutController.paymentRend
 
 user.post('/applycoupon', activeUser , checkoutController.coupon)
 
+//--------- address ----------
+
+user.get('/removeAddress/:index', activeUser , checkoutController.removeAddress);
+
+user.get('/editAddress/:index', activeUser , checkoutController.editAddress)
+
+user.post('/updateAddress/:index', activeUser , checkoutController.updateAddress)
 
 //---------------------------------- Order  ------------------------
 
