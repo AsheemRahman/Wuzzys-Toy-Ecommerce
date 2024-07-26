@@ -8,6 +8,7 @@ const expressLayouts=require('express-ejs-layouts')
 const {v4: uuidv4} = require('uuid')
 const flash = require('connect-flash')
 require("dotenv").config()
+const axios = require('axios');
 
 const app = express()
 const connectDB = require("./config/connection")
@@ -68,6 +69,25 @@ app.use((req,res,next)=>{
     res.locals.error = req.flash('error')
     next();
 })
+
+//----------------- API endpoint to get place by pincode -------------
+
+app.get('/api/place/:pincode', async (req, res) => {
+    const pincode = req.params.pincode;
+    try {
+        const response = await axios.get(`https://api.postalpincode.in/pincode/${pincode}`);
+        const placeData = response.data[0];
+
+        if (placeData.Status === 'Success') {
+            const place = placeData.PostOffice[0];
+            res.json({ place: `${place.Name}, ${place.District}, ${place.State}` });
+        } else {
+            res.status(404).json({ error: 'Please enter a valid 6-digit postal code.' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching data' });
+    }
+});
 
 
 //---------------------------- routes --------------------------

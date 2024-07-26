@@ -441,11 +441,6 @@
                     .then(response => {
                         if (response.ok) {
                             window.location.href = '/orders';
-                            Swal.fire({
-                                icon: "success",
-                                title: "Order Cancelled Successfully",
-                                text: "Shop more"
-                            });
                         } else {
                             Swal.fire({
                                 icon: "warning",
