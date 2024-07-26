@@ -27,11 +27,21 @@
                     </h5>
                 </div>
                 <div>
-                    <a onclick="addwishlist('<%= product.id %>', '<%= product.productPrice %>', '<%= user %>')" class="wishlist-icon">
-                        <i class="fas fa-heart"></i></a>
-                    <a onclick="addToCart('<%= product.id %>','<%= product.productPrice %>','<%=user %>')"
-                        class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
+                    <% if (user && wishlist && Array.isArray(wishlist.products) && wishlist.products.some(wishlistProduct => 
+                        wishlistProduct.productID.toString() === product._id.toString())) { %>
+                        <a onclick="addwishlist('<%= product._id %>', '<%= product.productPrice %>', '<%= user %>')"
+                            class="wishlist-icon" style="color: red;">
+                            <i class="fas fa-heart"></i></a>
+                    <% } else { %>
+                        <a onclick="addwishlist('<%= product._id %>', '<%= product.productPrice %>', '<%= user %>')"
+                            class="wishlist-icon">
+                            <i class="fas fa-heart"></i></a>
+                    <% } %>
+                    <a onclick="addToCart('<%= product._id %>', '<%= product.productPrice %>', '<%= user %>')"
+                        class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i></a>
                 </div>
+                
             </div>
             <% } %>
     </div>

@@ -1,17 +1,19 @@
 <style>
-    .product-sort{
+    .product-sort {
         display: flex;
         justify-content: end;
         margin-right: 10rem;
         height: 2.5rem;
     }
-    .product-sort select{
+
+    .product-sort select {
         width: 20%;
         background: #232323;
         color: #fefeeb;
         border-radius: 5px;
     }
-    .pagination-controls{
+
+    .pagination-controls {
         display: flex;
         justify-content: center;
     }
@@ -19,104 +21,112 @@
 
 <%- include('navbar') %>
 
-<!---------------------- Breadcrumbs ----------------------->
-<nav class="breadcrumbs">
-    <ul>
-        <li><a href="/">Home</a></li>
-        <span>/</span>
-        <li><a href="/allproduct">All Product</a></li>
-    </ul>
-</nav>
+    <!---------------------- Breadcrumbs ----------------------->
+    <nav class="breadcrumbs">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <span>/</span>
+            <li><a href="/allproduct">All Product</a></li>
+        </ul>
+    </nav>
 
-<!-------------------------------------------- All Products ------------------------------------------------->
+    <!-------------------------------------------- All Products ------------------------------------------------->
 
-<div class="product-container">
-    <div class="product-sort mb-3">
-        <select name="sort-box" class="sort-box" onchange="sortbyCategory('<%= title %>')">
-            <option selected>Sort By</option>
-            <option value="1">Product Name Aa - Zz</option>
-            <option value="2">Product Name Zz - Aa</option>
-            <option value="3">Price low - high</option>
-            <option value="4">Price high - low</option>
-            <option value="5">New arrival</option>
-        </select>
-    </div>
-    <h2>Our Products</h2>
-    <div class="product-list-box container">
-        <% product.forEach((product) => { %>
-            <div class="product-box">
-                <% if(new Date(product.createdAt).getTime() > (Date.now() - (30 * 24 * 60 * 60 * 1000))) { %>
-                    <div class="product-discount-box">
-                        <h6>New Arrival</h6>
-                    </div>
-                <% } else if (product.productDiscount != 0) { %>
-                    <div class="product-newarrival-box">
-                        <h6>
-                            <%= product.productDiscount %> &percnt; OFF
-                        </h6>
-                    </div>
-                <% } %>
-                <div class="product-image-box">
-                    <a href="/productDetail/<%= product.id %>" class="product-name-link">
-                        <img src="/<%= product.productImage[0] %>" alt="">
-                    </a>
-                </div>
-                <div class="product-name-box">
-                    <h6 class="product-text-row">
-                        <%= product.productName %>
-                    </h6>
-                    <h5 class="product-price">
-                        <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
-                        <%= product.productPrice.toLocaleString() %>
-                    </h5>
-                </div>
-                <div>
-                    <a onclick="addwishlist('<%= product.id %>', '<%= product.productPrice %>', '<%= user %>')" class="wishlist-icon">
-                        <i class="fas fa-heart"></i></a>
-                    <a onclick="addToCart('<%= product.id %>', '<%= product.productPrice %>', '<%= user %>')" class="cart-icon">
-                        <i class="fas fa-shopping-cart"></i></a>
-                </div>
-            </div>
-        <% }) %>
-    </div>
-</div>
-
-<!------------------------------------ Pagination Controls -------------------------------->
-
-<div class="pagination-controls d-flex  mt-3">
-    <ul class="pagination">
-        <% if (currentPage> 1) { %>
-            <li class="page-item"><a class="page-link"
-                    href="/allproduct/?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
-            </li>
-            <% } %>
-                <% for (let i=1; i <=totalPages; i++) { %>
-                    <li class="page-item <%= currentPage == i ? 'active' : '' %>">
-                        <a class="page-link"
-                            href="/allproduct/?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
-                            <%= i %>
-                        </a>
-                    </li>
-                    <% } %>
-                        <% if (currentPage < totalPages) { %>
-                            <li class="page-item"><a class="page-link pagination-next-btn"
-                                    href="/allproduct/?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
-                            </li>
+    <div class="product-container">
+        <div class="product-sort mb-3">
+            <select name="sort-box" class="sort-box" onchange="sortbyCategory('<%= title %>')">
+                <option selected>Sort By</option>
+                <option value="1">Product Name Aa - Zz</option>
+                <option value="2">Product Name Zz - Aa</option>
+                <option value="3">Price low - high</option>
+                <option value="4">Price high - low</option>
+                <option value="5">New arrival</option>
+            </select>
+        </div>
+        <h2>Our Products</h2>
+        <div class="product-list-box container">
+            <% product.forEach((product)=> { %>
+                <div class="product-box">
+                    <% if(new Date(product.createdAt).getTime()> (Date.now() - (30 * 24 * 60 * 60 * 1000))) { %>
+                        <div class="product-discount-box">
+                            <h6>New Arrival</h6>
+                        </div>
+                        <% } else if (product.productDiscount !=0) { %>
+                            <div class="product-newarrival-box">
+                                <h6>
+                                    <%= product.productDiscount %> &percnt; OFF
+                                </h6>
+                            </div>
                             <% } %>
-    </ul>
-</div>
+                                <div class="product-image-box">
+                                    <a href="/productDetail/<%= product.id %>" class="product-name-link">
+                                        <img src="/<%= product.productImage[0] %>" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-name-box">
+                                    <h6 class="product-text-row">
+                                        <%= product.productName %>
+                                    </h6>
+                                    <h5 class="product-price">
+                                        <i class="fa-solid fa-indian-rupee-sign product-text-row"></i>
+                                        <%= product.productPrice.toLocaleString() %>
+                                    </h5>
+                                </div>
+                                <div>
+                                    <% if (user && wishlist && Array.isArray(wishlist.products) && wishlist.products.some(wishlistProduct => 
+                                        wishlistProduct.productID.toString() === product._id.toString())) { %>
+                                        <a onclick="addwishlist('<%= product._id %>', '<%= product.productPrice %>', '<%= user %>')"
+                                            class="wishlist-icon" style="color: red;">
+                                            <i class="fas fa-heart"></i></a>
+                                    <% } else { %>
+                                        <a onclick="addwishlist('<%= product._id %>', '<%= product.productPrice %>', '<%= user %>')"
+                                            class="wishlist-icon">
+                                            <i class="fas fa-heart"></i></a>
+                                    <% } %>
+                                    <a onclick="addToCart('<%= product._id %>', '<%= product.productPrice %>', '<%= user %>')"
+                                        class="cart-icon">
+                                        <i class="fas fa-shopping-cart"></i></a>
+                                </div>
+                </div>
+                <% }) %>
+        </div>
+    </div>
 
-<%- include('footer') %>
+    <!------------------------------------ Pagination Controls -------------------------------->
+
+    <div class="pagination-controls d-flex  mt-3">
+        <ul class="pagination">
+            <% if (currentPage> 1) { %>
+                <li class="page-item"><a class="page-link"
+                        href="/allproduct/?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Previous</a>
+                </li>
+                <% } %>
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                        <li class="page-item <%= currentPage == i ? 'active' : '' %>">
+                            <a class="page-link"
+                                href="/allproduct/?page=<%= i %>&limit=<%= limit %>&search=<%= search %>">
+                                <%= i %>
+                            </a>
+                        </li>
+                        <% } %>
+                            <% if (currentPage < totalPages) { %>
+                                <li class="page-item"><a class="page-link pagination-next-btn"
+                                        href="/allproduct/?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Next</a>
+                                </li>
+                                <% } %>
+        </ul>
+    </div>
+
+    <%- include('footer') %>
 
 
-<script>
-    function sortbyCategory(params){
-        const sortBoxValue = document.getElementsByName('sort-box')[0].value
-        let location;
-        if(params)
-        {
-            location =`?sortby=${sortBoxValue}`
-        }
-        window.location.href=`/allproduct/${location}`
-    }
-</script>
+        <script>
+            function sortbyCategory(params) {
+                const sortBoxValue = document.getElementsByName('sort-box')[0].value
+                let location;
+                if (params) {
+                    location = `?sortby=${sortBoxValue}`
+                }
+                window.location.href = `/allproduct/${location}`
+            }
+        </script>

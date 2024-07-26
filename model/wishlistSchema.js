@@ -8,8 +8,9 @@ const product=new mongoose.Schema({
 },{_id:false,timestamps:true})
 
 const schema = new mongoose.Schema({
-
-    userID: { type: String },
+    userID: {
+        type: String
+    },
     products: [product]
 
 }, { timestamps: true });

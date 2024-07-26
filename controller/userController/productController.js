@@ -1,11 +1,13 @@
 const productSchema = require('../../model/productSchema')
 const mongoose = require('mongoose');
+const wishlistSchema = require('../../model/wishlistSchema');
 
 //---------------------------------- Product View -----------------------------------
 
 const productDetail = async (req, res) => {
    try {
       const id = req.params.id;
+      const userId = req.session.user;
 
       // Validate the ObjectId
       if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -25,11 +27,15 @@ const productDetail = async (req, res) => {
             productCollection: product.productCollection,
             isActive: true
          });
+
+         const wishlist = await wishlistSchema.findOne({ userID: userId });
+
          return res.render('user/productDetail', {
             title: product.productName,
             product,
             similarProduct,
-            user: req.session.user
+            user: req.session.user,
+            wishlist
          });
       } else {
          req.flash('error', 'Product is not available');
@@ -37,10 +43,11 @@ const productDetail = async (req, res) => {
       }
    } catch (error) {
       console.error(`Error while rendering product page: ${error}`);
-      req.flash('error', 'An error occurred while product details. Please try again later.');
+      req.flash('error', 'An error occurred while retrieving product details. Please try again later.');
       res.redirect('/home');
    }
-}
+};
+
 
 
 module.exports = { productDetail };

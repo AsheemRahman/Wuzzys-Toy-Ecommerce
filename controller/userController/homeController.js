@@ -1,18 +1,20 @@
 const productSchema = require('../../model/productSchema')
 const categorySchema = require('../../model/categorySchema')
-
+const wishlistSchema =require('../../model/wishlistSchema')
 const checkPopup = require('../../model/PopupSchema')
 
 //----------------------------------- Home page render --------------------------------
 
 const home = async (req, res) => {
+  const userId = req.session.user
   try {
     const popup = await checkPopup.findOne({
       startDate: { $lte: new Date() },
       endDate: { $gte: new Date() }
     });
+    const wishlist = await wishlistSchema.findOne({userID : userId})
     const product = await productSchema.find({ isActive : true }).sort({createdAt: -1}).limit(8)
-    res.render('user/home', { title: 'Home', product, user: req.session.user , popup })
+    res.render('user/home', { title: 'Home', product, user: req.session.user ,wishlist , popup })
   } catch (error) {
     console.log(`error while rendering home ${error}`)
   }
@@ -26,6 +28,7 @@ const allproduct = async (req, res) => {
     const search = req.query.search || "";
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 12;
+    const userId = req.session.user
 
     let sort="";
     if(sortby){
@@ -52,6 +55,8 @@ const allproduct = async (req, res) => {
 
         const count = await productSchema.countDocuments({ productName: { $regex: search, $options: 'i' } });
 
+        const wishlist = await wishlistSchema.findOne({ userID: userId });
+
     res.render('user/allproduct', {
       title: 'All Product',
       product,
@@ -59,12 +64,15 @@ const allproduct = async (req, res) => {
       totalPages: Math.ceil(count / limit),
       currentPage: page,
       search,
-      limit,page
+      limit,page,
+      wishlist
     })
   } catch (error) {
     console.log(`error from All Products page rendering ${error}`)
   }
 }
+
+
 //--------------------------------------- Latest product Page ---------------------------------
 
 const latestProduct = async (req, res) => {
@@ -73,6 +81,7 @@ const latestProduct = async (req, res) => {
     const search = req.query.search || "";
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 12;
+    const userId = req.session.user
     
     let sort="";
     if(sortby){
@@ -102,6 +111,9 @@ const latestProduct = async (req, res) => {
 
       const count = await productSchema.countDocuments({ productName: { $regex: search, $options: 'i' },isActive: true , createdAt :{$gte : productAge} });
 
+      const wishlist = await wishlistSchema.findOne({ userID: userId });
+
+
     res.render('user/view-more', {
       title: 'Latest Products',
       product,
@@ -110,7 +122,8 @@ const latestProduct = async (req, res) => {
       currentPage: page,
       search,
       limit,page,
-      productAge
+      productAge,
+      wishlist
     })
   } catch (error) {
     console.log(`error in Latest products page rendering ${error}`)
@@ -125,8 +138,8 @@ const category = async (req, res) => {
   const sortby = req.query.sortby || "";
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 12;
+  const userId = req.session.user
   try {
-
     let sort="";
 
     if(sortby){
@@ -152,6 +165,8 @@ const category = async (req, res) => {
 
       const count = await productSchema.countDocuments({productCollection: categoryName , productName: { $regex: search, $options: 'i' },isActive: true});
 
+      const wishlist = await wishlistSchema.findOne({ userID: userId });
+
     res.render('user/category-product', {
       title: categoryName,
       product: categoryProduct,
@@ -160,7 +175,8 @@ const category = async (req, res) => {
       totalPages: Math.ceil(count / limit),
       currentPage: page,
       search,
-      limit,page
+      limit,page,
+      wishlist
     })
   } catch (error) {
     console.log(`Error in Category-wise product rendering: ${error.message}`)
