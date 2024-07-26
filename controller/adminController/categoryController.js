@@ -1,7 +1,8 @@
-const mongoose = require('mongoose')
 const categorySchema = require('../../model/categorySchema')
 
-//--------------------------- finding collection by search ------------------------------
+const mongoose = require('mongoose')
+
+//--------------------------- catgeory page render ------------------------------
 
 const category = async (req, res) => {
     try {
@@ -29,7 +30,7 @@ const category = async (req, res) => {
     }
 }
 
-//---------------------------- new category creating ----------------------------------
+//---------------------------- new category  ----------------------------------
 
 const addCategoryPost = async (req, res) => {
     try {

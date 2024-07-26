@@ -1,4 +1,3 @@
-const categorySchema = require('../../model/categorySchema')
 const orderSchema = require('../../model/orderSchema')
 const productSchema = require('../../model/productSchema')
 const userSchema = require('../../model/userSchema')

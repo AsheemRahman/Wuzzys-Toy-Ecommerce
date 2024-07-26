@@ -1,12 +1,10 @@
 const orderSchema = require("../../model/orderSchema");
-const userSchema = require("../../model/userSchema");
-const mongoose = require("mongoose");
 const productSchema = require("../../model/productSchema");
 const walletSchema = require('../../model/walletSchema');
 
+
 const PDFDocument = require('pdfkit-table')
 const Razorpay = require('razorpay')
-const path = require('path');
 
 //--------------------------------- user order page -----------------------------
 

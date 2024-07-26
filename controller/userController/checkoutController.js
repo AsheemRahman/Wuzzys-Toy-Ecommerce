@@ -1,11 +1,10 @@
 const productSchema = require('../../model/productSchema')
 const cartSchema = require('../../model/cartSchema')
 const userSchema = require('../../model/userSchema')
-const addressSchema = require('../../model/addressSchema')
 const orderSchema = require('../../model/orderSchema')
 const walletSchema = require('../../model/walletSchema');
 const couponSchema = require('../../model/couponSchema');
-const mongoose = require('mongoose')
+
 const Razorpay = require('razorpay')
 
 
@@ -97,20 +96,6 @@ const placeOrder = async (req, res) => {
         if (!userDetails || !userDetails.address || !userDetails.address[addressIndex]) {
             return res.status(400).json({ success: false, message: 'Selected address is not valid.' });
         }
-        if(paymentDetails[paymentMode] === 'Wallet'){
-            const wallet = await walletSchema.findOne({ userID: userId });
-            if (!wallet || wallet.balance < cartItems.payableAmount) {
-                return res.status(400).json({ success: false, message: 'Insufficient wallet balance.' });
-            }
-            wallet.balance -= cartItems.payableAmount;
-            wallet.transaction.push({
-                wallet_amount: cartItems.payableAmount,
-                transactionType: 'Debited',
-                transaction_date: new Date(),
-                order_id: new mongoose.Types.ObjectId(),
-            });
-        await wallet.save();
-        }
 
         const newOrder = new orderSchema({
             customer_id: req.session.user,
@@ -136,6 +121,21 @@ const placeOrder = async (req, res) => {
             isCancelled: false
         });
         await newOrder.save();
+
+        if(paymentDetails[paymentMode] === 'Wallet'){
+            const wallet = await walletSchema.findOne({ userID: userId });
+            if (!wallet || wallet.balance < cartItems.payableAmount) {
+                return res.status(400).json({ success: false, message: 'Insufficient wallet balance.' });
+            }
+            wallet.balance -= cartItems.payableAmount;
+            wallet.transaction.push({
+                wallet_amount: cartItems.payableAmount,
+                transactionType: 'Debited',
+                transaction_date: new Date(),
+                order_id: newOrder.order_id,
+            });
+        await wallet.save();
+        }
 
         for (const element of cartItems.items) {
             const product = await productSchema.findById(element.productId._id);

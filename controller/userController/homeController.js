@@ -1,5 +1,4 @@
 const productSchema = require('../../model/productSchema')
-const categorySchema = require('../../model/categorySchema')
 const wishlistSchema =require('../../model/wishlistSchema')
 const checkPopup = require('../../model/PopupSchema')
 

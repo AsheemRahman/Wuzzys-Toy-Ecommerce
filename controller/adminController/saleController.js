@@ -1,9 +1,8 @@
 const orderSchema = require('../../model/orderSchema');
-const PDFDocument = require('pdfkit');
+
 const ExcelJS = require('exceljs');
 const PDFdocs = require('pdfkit-table')
-const fs = require('fs')
-const path = require('path')
+
 
 const salePage =async (req,res)=>{
     try{
@@ -206,7 +205,7 @@ async function generatePdf(orders, res) {
     orders.forEach((order, index) => {
         doc.font("Helvetica").fontSize(8);
         doc.text(order.order_id, 50, y);
-        doc.text(order.address.building + '\n' + order.address.city + ' ' + order.address.state + "\n" + "Pincode: " + order.address.pincode, 150, y, { width: 100 });
+        doc.text(order.address.building + '\n' + order.address.street + ' ' + order.address.city + "\n" + "Pincode: " + order.address.pincode, 150, y, { width: 100 });
         doc.text(order.paymentMethod, 250, y);
         doc.text(order.orderStatus, 350, y);
         doc.text('Rs ' + order.totalPrice.toFixed(2), 450, y);
