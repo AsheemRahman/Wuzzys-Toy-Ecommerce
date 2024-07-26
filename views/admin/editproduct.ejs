@@ -240,7 +240,6 @@
         </div>
 
         <!-------------------------------------------- Input Validation ------------------------------------------------->
-
         <script>
             let deletedImages = []; // Declare deletedImages array at the beginning
 
@@ -261,7 +260,7 @@
                 const inputDiv = document.getElementById('add-input');
                 const newInput = document.createElement('input');
                 newInput.type = 'file';
-                newInput.name = 'images'; // Updated name to match Multer configuration
+                newInput.name = 'images';
                 newInput.style.display = 'none';
                 newInput.addEventListener('change', (event) => {
                     if (event.target.files && event.target.files[0]) {
@@ -295,7 +294,8 @@
 
                 document.getElementById('crop-confirm').addEventListener('click', () => {
                     const canvas = cropper.getCroppedCanvas();
-                    imageElement.src = canvas.toDataURL('image/jpeg');
+                    const croppedImageUrl = canvas.toDataURL('image/jpeg');
+                    imageElement.src = croppedImageUrl;
                     cropper.destroy();
                     cropperModal.style.display = 'none';
 
@@ -306,7 +306,7 @@
 
                     const img = document.createElement('img');
                     img.classList.add('preview-img');
-                    img.src = imageElement.src;
+                    img.src = croppedImageUrl;
 
                     let deleteImageBtn = document.createElement('a');
                     deleteImageBtn.innerHTML = '<i class="bi bi-trash3-fill"></i>';
@@ -321,7 +321,7 @@
                     previewDiv.appendChild(imageBox);
 
                     const croppedImages = JSON.parse(document.getElementById('croppedImages').value || '[]');
-                    croppedImages.push(canvas.toDataURL('image/jpeg'));
+                    croppedImages.push(croppedImageUrl);
                     document.getElementById('croppedImages').value = JSON.stringify(croppedImages);
                 });
             }
@@ -361,4 +361,5 @@
                     addProductForm.submit()
                 }
             });
+
         </script>

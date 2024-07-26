@@ -136,13 +136,18 @@ const editProductPost = async (req, res) => {
             });
         }
 
-        req.files.forEach((img) =>{
-            croppedImages.push(img.path)
-        })
+        // Save cropped images to filesystem and update paths
+        const savedCroppedImages = [];
+        croppedImages.forEach((imageData, index) => {
+            const base64Data = imageData.replace(/^data:image\/jpeg;base64,/, "");
+            const imagePath = `uploads/cropped_image_${id}_${Date.now()}_${index}.jpg`;
+            fs.writeFileSync(imagePath, base64Data, 'base64');
+            savedCroppedImages.push(imagePath);
+        });
 
-        const product = await productSchema.findById(id)
+        const product = await productSchema.findById(id);
         // Update product with new images
-        const newImages = [...product.productImage, ...croppedImages];
+        const newImages = [...product.productImage, ...savedCroppedImages];
 
         await productSchema.findByIdAndUpdate(id, {
             productPrice: req.body.productPrice,
@@ -160,6 +165,7 @@ const editProductPost = async (req, res) => {
         res.redirect('/admin/products');
     }
 };
+
 
 //------------------------------------ Product Status ----------------------------------
 
