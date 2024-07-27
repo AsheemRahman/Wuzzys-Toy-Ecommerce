@@ -291,10 +291,13 @@
                     class="product-detail-cart btn btn-warning">Add to Cart
                     <i class="fas fa-shopping-cart" style="margin-left: 1rem;"></i>
                 </a>
-                <a href="" class="product-detail-buy btn btn-danger">Buy Now
+                <!-- <a href="" class="product-detail-buy btn btn-danger">Buy Now
                     <i class="bi bi-bag-fill" style="margin-left: 1rem;">
                     </i>
-                </a>
+                </a> -->
+                <a onclick="addwishlist('<%= product.id %>', '<%= product.productPrice %>', '<%= user %>')"
+                    class="product-detail-buy btn btn-danger">
+                    <i class="fas fa-heart"></i></a>
             </div>
             <div class="product-delivery">
                 <div class="product-detail-delivery">

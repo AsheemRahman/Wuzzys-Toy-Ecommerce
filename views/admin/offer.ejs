@@ -127,7 +127,8 @@
                                     <%= offer.offerType %>
                                 </td>
                                 <td>
-                                    <%= offer.offerType==='product' ? offer.referenceId.productName :offer.referenceId.collectionName %>
+                                    <%= offer.offerType==='product' ? offer.referenceId.productName
+                                        :offer.referenceId.collectionName %>
                                 </td>
                                 <td>
                                     <%= offer.discountPercent %>
@@ -142,10 +143,11 @@
                                 <td>
                                     <a class="atag" href="" id="edit-coupon-modal" data-bs-toggle="modal"
                                         data-bs-target="#editCoupon" data-type="<%= offer.offerType %>"
-                                        data-reference="<%= offer.offerType === 'product' ? offer.referenceId.productName : offer.referenceId.collectionName %>"
+                                        data-reference="<%= offer.offerType === 'product' ? offer.referenceId._id : offer.referenceId.collectionName %>"
                                         data-discount="<%= offer.discountPercent %>" data-id="<%= offer._id %>"><i
                                             class="bi bi-pencil-square"></i></a>
-                                    <a class="atag mx-2" href="/admin/offerStatus?id=<%= offer._id %>&status=<%= offer.isActive %>"><i
+                                    <a class="atag mx-2"
+                                        href="/admin/offerStatus?id=<%= offer._id %>&status=<%= offer.isActive %>"><i
                                             class="bi bi-x-circle"></i></a>
                                     <a href="/admin/deleteOffer/<%= offer._id %>" class="sweet-alert-delete"><i
                                             class="bi bi-trash3"></i></a>
@@ -229,13 +231,15 @@
                             <input type="hidden" name="offerId" id="editCouponId">
                             <div class="form-group">
                                 <label for="editOfferType">Offer Type</label>
-                                <input name="offerType" id="editOfferType"  class="form-control form-input text-white" readonly>
+                                <input name="offerType" id="editOfferType" class="form-control form-input text-white"
+                                    readonly>
                             </div>
                             <div class="form-group">
                                 <label for="editOfferFor">Offer For</label>
-                                <select name="referenceId" id="editOfferFor" class="form-control form-input" required>
+                                <input name="referenceId" id="editOfferFor" class="form-control form-input" readonly>
+                                <!-- <select name="referenceId" id="editOfferFor" class="form-control form-input" required>
                                     <option value="">Select Offer For</option>
-                                </select>
+                                </select> -->
                             </div>
                             <div class="form-group">
                                 <label for="editDiscount">Discount (%)</label>
@@ -248,8 +252,6 @@
                 </div>
             </div>
         </div>
-
-
 
 
         <script>
@@ -282,7 +284,7 @@
             });
 
             // Event listener to populate the Edit Offer modal with the current offer details
-            document.querySelectorAll('.edit-coupon-modal-button').forEach((button) => {
+            document.querySelectorAll('.atag').forEach((button) => {
                 button.addEventListener('click', function () {
                     const type = this.getAttribute('data-type');
                     const reference = this.getAttribute('data-reference');
@@ -291,10 +293,9 @@
 
                     document.getElementById('editOfferType').value = type;
                     document.getElementById('editCouponId').value = id;
+                    document.getElementById('editOfferFor').value = reference
                     document.getElementById('editDiscount').value = discount;
 
-                    // Populate the dropdown and set the selected value
-                    populateOfferForDropdown(type, document.getElementById('editOfferFor'), reference);
                 });
             });
         </script>

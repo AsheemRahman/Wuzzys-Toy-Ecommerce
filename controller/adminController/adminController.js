@@ -172,4 +172,6 @@ const logout = (req,res)=>{
     })
 }
 
+
+
 module.exports={ admin , login , loginPost , home ,salesChart , logout }

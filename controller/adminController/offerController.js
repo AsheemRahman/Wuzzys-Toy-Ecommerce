@@ -2,6 +2,8 @@ const offerSchema = require('../../model/offerSchema')
 const categorySchema= require('../../model/categorySchema')
 const productSchema = require('../../model/productSchema')
 
+const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Types;
 
 //-------------------------- offer page ----------------------------
 
@@ -82,13 +84,12 @@ const addOffer = async (req, res) => {
             await newOffer.save();
 
             // Update all products under this category
-            const productsUnderCategory = await productSchema.find({ productCollection: category.collectionName });
-            const bulkOperations = productsUnderCategory.map(product => ({
+            const allProducts = await productSchema.find({ productCollection: category.collectionName });
+            const bulkOperations = allProducts.map(product => ({
                 updateOne: {
                     filter: { _id: product._id },
                     update: {
-                        productDiscount: discountPercent,
-                        productDiscountPrice: product.productPrice * (1 - (discountPercent / 100)),
+                        productDiscount: discountPercent
                     },
                 },
             }));
@@ -118,7 +119,6 @@ const addOffer = async (req, res) => {
 
             // Update product discount and discount price
             product.productDiscount = discountPercent;
-            product.productDiscountPrice = product.productPrice * (1 - (discountPercent / 100));
             await product.save();
 
             req.flash('success', `Offer added for the product ${product.productName}`);
@@ -136,21 +136,78 @@ const addOffer = async (req, res) => {
 
 const editOffer = async (req, res) => {
     try {
-        const { offerId, discountPercent } = req.body;
-        if (!offerId || !discountPercent) {
-            req.flash('error', 'All fields are required');
+        const { offerId, offerType, referenceId, discountPercent } = req.body;
+
+        if (!offerId || !referenceId || !discountPercent) {
+            req.flash('success', 'All fields are required');
             return res.redirect('/admin/offer');
         }
-        const offer = await offerSchema.findByIdAndUpdate(offerId, { discountPercent });
-        if (offer) {
-            req.flash('success', "Offer successfully edited");
-        } else {
-            req.flash('error', 'Offer not found');
+
+        if (discountPercent > 98) {
+            req.flash('success', 'Discount amount cannot exceed 98%');
+            return res.redirect('/admin/offer');
         }
+
+        let alertMessage = '';
+
+        if (offerType === 'category') {
+            const category = await categorySchema.findOne({ collectionName: referenceId });
+
+            if (!category) {
+                req.flash('success', 'Category not found');
+                return res.redirect('/admin/offer');
+            }
+
+            const offer = await offerSchema.findByIdAndUpdate(offerId, { referenceId: category._id, discountPercent });
+            if (offer) {
+                alertMessage = "Offer successfully edited";
+            } else {
+                alertMessage = 'Offer not found';
+            }
+
+            // Update all products under this category
+            const allProducts = await productSchema.find({ productCollection: category.collectionName });
+            const bulkOperations = allProducts.map(product => ({
+                updateOne: {
+                    filter: { _id: product._id },
+                    update: {
+                        productDiscount: discountPercent,
+                    },
+                },
+            }));
+
+            if (bulkOperations.length > 0) {
+                await productSchema.bulkWrite(bulkOperations);
+            }
+
+            alertMessage = `Offer added for the products under ${category.collectionName}`;
+
+        } else if (offerType === 'product') {
+            const product = await productSchema.findById(referenceId);
+            if (!product) {
+                req.flash('success', 'Product not found');
+                return res.redirect('/admin/offer');
+            }
+
+            const offer = await offerSchema.findByIdAndUpdate(offerId, { referenceId, discountPercent });
+            if (offer) {
+                alertMessage = "Offer successfully edited";
+            } else {
+                alertMessage = 'Offer not found';
+            }
+
+            // Update product discount and discount price
+            product.productDiscount = discountPercent;
+            await product.save();
+
+            alertMessage = `Offer added for the product ${product.productName}`;
+        }
+
+        req.flash('success', alertMessage);
         res.redirect('/admin/offer');
     } catch (error) {
         console.log(`Error from editOffer: ${error}`);
-        req.flash('error', 'An error occurred while editing the offer');
+        req.flash('success', 'An error occurred while editing the offer');
         res.redirect('/admin/offer');
     }
 }

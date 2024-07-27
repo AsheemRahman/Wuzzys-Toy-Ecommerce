@@ -2,17 +2,20 @@
     .user-nav {
         display: flex;
         justify-content: center;
+        padding: 1rem;
     }
 
     .user-navbar {
         display: flex;
         align-items: center;
-        width: 95vw;
+        width: 100%;
+        max-width: 1320px;
         background: #232323;
         margin-top: 2vw;
-        height: 5vw;
+        padding: .5rem;
         border-radius: 20px;
         justify-content: space-between;
+        flex-wrap: wrap;
     }
 
     .user-navbar h3 {
@@ -28,17 +31,21 @@
         align-items: center;
         background-color: #fefeeb;
         border-radius: 8px;
+        margin: 0 1rem;
+        flex-grow: 1;
+        max-width: 260px;
     }
 
     .form-input {
         background-color: #fefeeb;
-        padding: 3px;
+        padding: 0.5rem;
         border: none;
         border-radius: 5px;
         font-size: 14px;
         width: 100%;
     }
-    .form-input::placeholder{
+
+    .form-input::placeholder {
         color: #1a1a1a;
     }
 
@@ -57,15 +64,16 @@
     .user-nav-icon {
         display: flex;
         list-style: none;
-        gap: 4rem;
+        gap: 2rem;
         margin-top: 1rem;
         align-items: center;
+        flex-wrap: wrap;
     }
 
     .user-nav-icon li a {
         color: #fefeeb;
         text-decoration: none;
-        font-size: 1.2em;
+        font-size: 1em;
     }
 
     .user-nav-icon li a:hover {
@@ -82,8 +90,6 @@
         background: #f55;
         color: #fefeeb;
     }
-
-    /*------------- when user is login then prodile icon ---------------------*/
 
     .user-login-icon {
         color: #fefeeb;
@@ -113,7 +119,6 @@
         padding: 0;
         gap: 1rem;
         color: #fefeeb;
-
     }
 
     .sidebar ul li {
@@ -172,6 +177,61 @@
         top: -10px;
         right: 10px;
     }
+
+    /* Responsive design */
+
+    @media (max-width: 768px) {
+        .user-navbar {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 1rem;
+            align-items: center
+        }
+        .search-nav{
+            max-width: 760px;
+        }
+
+        .user-navbar h3 {
+            margin: 2rem 0;
+            font-size: 1.2rem;
+            margin-left: 0;
+        }
+
+        .search-nav {
+            margin: 0 0 1rem 0;
+            width: 100%;
+            flex-grow: 0;
+        }
+
+        .user-nav-icon {
+            justify-content: center;
+            width: 100%;
+            gap: 1rem;
+        }
+
+        .user-login-btn {
+            margin-right: 0;
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .user-navbar h3 {
+            font-size: 1rem;
+        }
+
+        .form-input {
+            font-size: 12px;
+        }
+
+        .user-nav-icon li a {
+            font-size: 0.9em;
+        }
+        .search-nav{
+            max-width: 400px;
+        }
+    }
 </style>
 
 
@@ -179,9 +239,9 @@
 
 <div class="user-nav">
     <div class="user-navbar">
-        <h3 class="text-white">Wuzzy’s Toys</h3>
+        <h3 class="text-white header">Wuzzy’s Toys</h3>
         <form action="" class="search-nav">
-            <input type="text" name="search" class="form-input l" placeholder="search">
+            <input type="text" name="search" class="form-input" placeholder="search">
             <button type="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
         <ul class="user-nav-icon">
@@ -198,7 +258,7 @@
                 </div>
             </div>
             <li><a href="#footer">About</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="#contact">Contact</a></li>
             <% if (user) { %>
                 <li><a href="/wishlist"><i class="fa fa-heart"></i><span id="wishlist-count" class="badge"></span></a>
                 </li>
@@ -212,9 +272,6 @@
                                 <li><a href="#" onclick="CartClick(event)"><i class="fa fa-shopping-cart"></i></a></li>
                                 <% } %>
         </ul>
-
-        <!--------------------------- Check the user is login or not , Based on that the icon will change ----------------------------------->
-
         <% if (user) { %>
             <a class="nav-link-items user-login-icon" href="/profile">
                 <i class="fa-solid fa-user"></i>
@@ -224,6 +281,7 @@
                 <% } %>
     </div>
 </div>
+
 
 <%- include('alert') %>
 
