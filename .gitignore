@@ -8,8 +8,5 @@
 node_modules/
 
 
-#--------- files that is uploads by admin --------
-
-uploads/*
 
 
