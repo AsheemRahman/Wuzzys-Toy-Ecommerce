@@ -179,7 +179,8 @@
             <div class="modal-content collection-modal">
                 <div class="collection-container">
                     <h2 class="text-center mb-4 mt-2">Add Collection</h2>
-                    <form class="form d-flex flex-column align-items-center gap-3 pt-4" action="/admin/addcollection" method="post">
+                    <form class="form d-flex flex-column align-items-center gap-3 pt-4" action="/admin/addcollection"
+                        method="post">
                         <input type="text" name="collectionName" class="form-control form-input"
                             placeholder="Collection Name" required>
                         <button type="submit" class="btn submit-btn"> Add Collection</button>
@@ -200,8 +201,8 @@
                     <form class="form d-flex flex-column gap-3 pt-4" action="/admin/editcollection" method="post">
                         <input type="hidden" name="collectionId" id="editCollectionId">
                         <div class="d-flex justify-content-center">
-                            <input type="text" name="collectionName" id="editCollectionName" class="form-control form-input"
-                            placeholder="Collection Name" required>
+                            <input type="text" name="collectionName" id="editCollectionName"
+                                class="form-control form-input" placeholder="Collection Name" required>
                         </div>
                         <button type="submit" class="btn submit-btn edit-alert">Save Changes</button>
                     </form>
@@ -237,6 +238,7 @@
             })
 
             // ----------------------------- edit collection modal view foreach --------------------------------------
+
             const editCollection = document.querySelectorAll('#edit-collection-modal')
             editCollection.forEach(ele => {
                 ele.addEventListener('click', function () {
@@ -246,4 +248,57 @@
                     document.getElementById('editCollectionId').value = id
                 })
             })
+
+            // ------------------------------- Validation --------------------------------------
+
+            document.addEventListener("DOMContentLoaded", () => {
+                const addCollectionForm = document.querySelector("#addCollection form");
+                const editCollectionForm = document.querySelector("#editCollection form");
+                const addCollectionNameInput = addCollectionForm.querySelector("input[name='collectionName']");
+                const editCollectionNameInput = editCollectionForm.querySelector("input[name='collectionName']");
+
+                const validateCollectionName = (name) => {
+                    const trimmedName = name.trim();
+
+                    if (trimmedName === "") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Collection Name is required.',
+                        });
+                        return false;
+                    }
+
+                    if (!/^[a-zA-Z]+$/.test(trimmedName)) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Collection Name can only contain letters.',
+                        });
+                        return false;
+                    }
+
+                    if (trimmedName.length < 6) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Collection Name must be at least 6 letters long.',
+                        });
+                        return false;
+                    }
+                    return true;
+                };
+
+                addCollectionForm.addEventListener("submit", (event) => {
+                    if (!validateCollectionName(addCollectionNameInput.value)) {
+                        event.preventDefault();
+                    }
+                });
+
+                editCollectionForm.addEventListener("submit", (event) => {
+                    if (!validateCollectionName(editCollectionNameInput.value)) {
+                        event.preventDefault();
+                    }
+                });
+            });
         </script>

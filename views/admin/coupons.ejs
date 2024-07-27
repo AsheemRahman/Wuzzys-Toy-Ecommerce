@@ -305,6 +305,8 @@
     <%- include('footer') %>
 
         <script>
+            //--------------------------- Add Coupon ---------------------------
+
             document.getElementById('addCouponForm').addEventListener('submit', async function (e) {
                 e.preventDefault();
                 const formData = new FormData(this);
@@ -343,6 +345,8 @@
                     });
                 }
             });
+
+            //--------------------------- Edit coupon ---------------------------
 
             document.addEventListener('DOMContentLoaded', function () {
                 var editCouponModal = new bootstrap.Modal(document.getElementById('editCollection'));
@@ -407,6 +411,8 @@
                 };
             });
 
+            //--------------------------- Sweet delete ---------------------------
+
             async function confirmDelete(id) {
                 const confirmResult = await Swal.fire({
                     title: 'Are you sure?',
@@ -421,6 +427,8 @@
                     deleteCoupon(id);
                 }
             }
+
+            //--------------------------- Delete Coupon ---------------------------
 
             async function deleteCoupon(id) {
                 try {
