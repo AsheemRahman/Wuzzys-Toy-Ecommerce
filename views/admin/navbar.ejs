@@ -19,6 +19,7 @@
         font-size: 1.5rem;
         font-weight: 700;
         margin-left: 3vw;
+        color: #fefeeb;
     }
 
     .admin-profile-icon {
@@ -32,6 +33,49 @@
     .bi-person-circle {
         font-size: 2rem;
     }
+
+    /* Media Queries */
+    
+    @media (max-width: 768px) {
+        .logo-container {
+            flex-direction: column;
+            height: auto;
+            padding: 1vw 0;
+        }
+
+        .logo-container h3 {
+            font-size: 1.2rem;
+            margin-left: 0;
+        }
+
+        .admin-profile-icon {
+            margin-right: 0;
+            margin-top: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .logo-container {
+            width: 100vw;
+            margin-top: 1vw;
+            padding: 2vw 0;
+        }
+
+        .logo-container h3 {
+            font-size: 1rem;
+            text-align: center;
+            margin-left: 0;
+        }
+
+        .admin-profile-icon {
+            margin-right: 0;
+            margin-top: 1rem;
+        }
+
+        .bi-person-circle {
+            font-size: 1.5rem;
+        }
+    }
 </style>
 
 <!-------------------------------------------- Admin Navbar ------------------------------------------------->
@@ -39,12 +83,12 @@
 <div class="admin-nav">
     <div class="logo-container">
         <h3 class="text-white">Wuzzy’s Toys</h3>
-        
         <a href="" class="admin-profile-icon">
             <i class="bi bi-person-circle"></i>
         </a>
     </div>
 </div>
+
 
 
 <%- include('alert') %>

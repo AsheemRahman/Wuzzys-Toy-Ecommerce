@@ -1,17 +1,29 @@
 <style>
-    .search-nav {
-        height: 55%;
-    }
-
     .product-details {
-        width: 50%;
+        width: 100%;
     }
 
     .product-view {
         display: flex;
-        padding: 100px;
-        gap: 40px;
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
         color: #fefeeb;
+    }
+
+    @media (min-width: 600px) {
+        .product-view {
+            flex-direction: row;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 2rem;
+        }
+
+        .product-details {
+            width: 50%;
+        }
     }
 
     .product-image-container {
@@ -21,8 +33,9 @@
     }
 
     .main-image {
-        width: 480px;
-        height: 380px;
+        width: 100%;
+        max-width: 480px;
+        height: auto;
         border-radius: 15px;
         display: flex;
         justify-content: center;
@@ -38,8 +51,8 @@
     }
 
     .product-image-min {
-        width: 150px;
-        height: 150px;
+        width: 70px;
+        height: 70px;
         background-color: #FFFFFF;
         border-radius: 15px;
         display: flex;
@@ -54,8 +67,11 @@
         cursor: pointer;
     }
 
-    .add-coupon {
-        max-width: 200px;
+    @media (min-width: 600px) {
+        .product-image-min {
+            width: 150px;
+            height: 150px;
+        }
     }
 
     .product-description {
@@ -65,11 +81,16 @@
     .productdetail-button {
         display: flex;
         justify-content: space-around;
-        height: 9%;
+        height: auto;
+        flex-wrap: wrap;
     }
 
     .productdetail-button a {
         cursor: pointer;
+        width: 45%;
+        margin-bottom: 10px;
+        padding: 10px;
+        text-align: center;
     }
 
     .productdetail-button a:hover {
@@ -78,18 +99,10 @@
 
     .product-detail-cart {
         background: #FFB155;
-        width: 31%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         color: #fff;
     }
 
     .product-detail-buy {
-        width: 31%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         color: #fff;
     }
 
@@ -102,10 +115,14 @@
         border: 0;
         height: 3px;
         background: #ffffff;
-        margin-top: 4rem;
+        margin-top: 2rem;
     }
 
-    /*-------------------- delivery box -------------------------*/
+    @media (min-width: 600px) {
+        .productdetail-button hr {
+            margin-top: 4rem;
+        }
+    }
 
     .product-delivery {
         display: flex;
@@ -123,7 +140,7 @@
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         border: 1px solid #fefeeb;
-        width: 70%;
+        width: 100%;
     }
 
     .info-box {
@@ -140,12 +157,12 @@
         margin-right: 10px;
     }
 
-    a {
+    #freeDeliveryBtn #returnDeliveryBtn {
         color: rgb(161, 161, 251);
         text-decoration: none;
     }
 
-    a:hover {
+    #freeDeliveryBtn #returnDeliveryBtn :hover {
         text-decoration: underline;
     }
 
@@ -162,10 +179,15 @@
 
     .detail-price {
         display: flex;
-        gap: 2rem;
+        gap: 1rem;
+        flex-wrap: wrap;
     }
 
-    /* free delivery and return modal */
+    @media (min-width: 600px) {
+        .detail-price {
+            gap: 2rem;
+        }
+    }
 
     .modal {
         display: none;
@@ -183,7 +205,8 @@
         margin: 10% auto;
         padding: 20px;
         border: 1px solid #888;
-        width: 50%;
+        width: 90%;
+        max-width: 500px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
 
@@ -201,12 +224,13 @@
         cursor: pointer;
     }
 
-    button {
+    .user-nav {
         margin: 20px;
     }
 
     #pincodeInput {
-        width: 70%;
+        width: 90%;
+        max-width: 500px;
         background: #1a1a1a;
         color: #fefeeb;
         border: 2px solid #1a1a1a;
@@ -296,8 +320,8 @@
                     </i>
                 </a> -->
                 <a onclick="addwishlist('<%= product.id %>', '<%= product.productPrice %>', '<%= user %>')"
-                    class="product-detail-buy btn btn-danger">
-                    <i class="fas fa-heart"></i></a>
+                    class="product-detail-buy btn btn-danger">Add to Wishlist
+                    <i class="fas fa-heart" style="margin-left: 1rem;"></i></a>
             </div>
             <div class="product-delivery">
                 <div class="product-detail-delivery">
@@ -333,7 +357,7 @@
                 <input type="text" id="pincodeInput" placeholder="Enter postal code" maxlength="6" required>
             </div>
             <div class="d-flex justify-content-center">
-                <button onclick="lookupPincode()" class="btn btn-danger">Check Availability</button>
+                <button onclick="lookupPincode()" class="btn btn-danger user-nav">Check Availability</button>
             </div>
             <p id="result"></p>
         </div>

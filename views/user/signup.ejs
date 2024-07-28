@@ -19,17 +19,17 @@
         justify-content: center;
         align-items: center;
         background: #232323;
-        width: 70%;
+        width: 85%;
         padding: 10px 30px 10px 30px;
-        border-radius: 26px;
-        gap: 20px;
+        border-radius: 10px;
+        gap: 2rem;
     }
 
     .register-image-container img {
         width: 100%;
         height: 375px;
         object-fit: cover;
-        border-radius: 26px;
+        border-radius: 10px;
     }
 
     .register-form-container {
@@ -87,6 +87,39 @@
         color: #fff;
         cursor: pointer;
     }
+    @media (max-width: 768px) {
+        .register-user {
+            flex-direction: column;
+        }
+
+        .register-image-container {
+            max-width: 100%;
+            height: 200px;
+        }
+
+        .register-image-container img {
+            height: 100%;
+        }
+
+        .register-form-container {
+            width: 100%;
+            padding: 10px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .register-input {
+            height: 2.5rem;
+        }
+
+        .terms-conditions label {
+            font-size: 10px;
+        }
+
+        #register-btn {
+            padding: 8px;
+        }
+    }
 </style>
 
 <%- include('navbar') %>
@@ -108,14 +141,14 @@
                         <input class="register-input" type="password" name="password" id="password"
                             placeholder="Password" required>
                         <span id="toggle-password-1" class="password-toggle align-content-center position-absolute  end-0">
-                            <i class="bi bi-eye"></i>
+                            <i class="bi bi-eye-slash"></i>
                         </span>
                     </div>
                     <div class="form-group position-relative d-flex align-items-center">
                         <input type="password" class="register-input" name="confirmPassword" id="confirmPassword"
                             placeholder="Confirm Password" required>
                         <span id="toggle-password-2" class="password-toggle align-content-center position-absolute  end-0">
-                            <i class="bi bi-eye"></i>
+                            <i class="bi bi-eye-slash"></i>
                         </span>
                     </div>
 
@@ -147,7 +180,7 @@
                 const pass = document.getElementById(id);
                 const type = pass.getAttribute('type') === 'password' ? 'text' : 'password';
                 pass.setAttribute('type', type);
-                toggle.innerHTML = type === 'password' ? '<i class="bi bi-eye"></i>' : '<i class="bi bi-eye-slash"></i>';
+                toggle.innerHTML = type === 'password' ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
             }
 
 

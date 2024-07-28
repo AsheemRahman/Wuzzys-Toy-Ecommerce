@@ -4,13 +4,12 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy
 const dotenv = require('dotenv').config()
 
 passport.use(
-    new GoogleStrategy(
-        {
-            clientID: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: process.env.GOOGLE_CALLBACK_URL,
-            passReqToCallback: true
-        },
+    new GoogleStrategy({
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: process.env.GOOGLE_CALLBACK_URL,
+        passReqToCallback: true
+    },
     async (request, accessToken, refreshToken, profile, done) => {
         try {
              //----------- Extract email from profile -------------------
@@ -38,16 +37,16 @@ passport.use(
 )
 
 passport.serializeUser((user, done) => {
-  done(null, user.id)
+    done(null, user.id)
 })
 
 passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await userSchema.findById(id)
-    done(null, user)
-  } catch (err) {
-    done(err, null)
-  }
+    try {
+        const user = await userSchema.findById(id)
+        done(null, user)
+    } catch (err) {
+        done(err, null)
+    }
 })
 
 

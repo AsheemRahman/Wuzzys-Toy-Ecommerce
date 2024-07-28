@@ -167,7 +167,6 @@ input.form-control:focus{
     display: flex;
     justify-content: end;
     align-items: end;
-    margin-left: 10rem;
 }
 
 .breadcrumbs ul {

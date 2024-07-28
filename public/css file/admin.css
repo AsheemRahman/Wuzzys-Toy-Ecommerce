@@ -127,7 +127,7 @@ input.form-control:focus{
 /*--------------------- Table in admin page --------------------------*/
 
 .table-container {
-    width: 90%;
+    width: 95%;
     background: #232323;
     padding: 10px;
     box-shadow: 0 0 10px rgba(100, 98, 98, 0.5);
