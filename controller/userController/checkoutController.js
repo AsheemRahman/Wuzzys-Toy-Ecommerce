@@ -36,7 +36,7 @@ const checkout = async (req, res) => {
             wallet = { balance: 0, transaction: [] };
         }
 
-        res.render('user/checkOut', {
+        res.render('user/checkout', {
             title: 'Checkout',
             user,
             cartDetails,
