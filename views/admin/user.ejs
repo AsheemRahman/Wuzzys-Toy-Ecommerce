@@ -126,7 +126,7 @@
                         <% user.forEach((user,index)=> { %>
                             <tr scope="row">
                                 <td>
-                                    <%= index+1 %>
+                                    <%= index + 1 + ((page - 1) * 8) %>
                                 </td>
                                 <td>
                                     <%= user.name %>

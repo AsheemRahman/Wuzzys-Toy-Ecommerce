@@ -747,33 +747,31 @@
                                         razorpay_order_id: response.razorpay_order_id,
                                         razorpay_signature: response.razorpay_signature
                                     })
-                                })
-                                    .then((res) => {
-                                        if (res.redirected)
-                                            window.location.href = res.url
-                                        if (!res.ok) {
-                                            throw new Error("Order placement failed");
-                                        }
-                                        return res.json();
-                                    }).then(data => {
-                                        if (data.success) {
-                                            window.location.href = "/conform-order";
-                                        } else {
-                                            Swal.fire({
-                                                icon: "error",
-                                                title: "Order Placement Failed",
-                                                text: data.message
-                                            });
-                                        }
-                                    })
-                                    .catch(err => {
-                                        console.error("Error on Razorpay payment callback:", err);
+                                }).then((res) => {
+                                    if (res.redirected)
+                                        window.location.href = res.url
+                                    if (!res.ok) {
+                                        throw new Error("Order placement failed");
+                                    }
+                                    return res.json();
+                                }).then(data => {
+                                    if (data.success) {
+                                        window.location.href = "/conform-order";
+                                    } else {
                                         Swal.fire({
                                             icon: "error",
-                                            title: "Error",
-                                            text: "An error occurred while processing the order."
+                                            title: "Order Placement Failed",
+                                            text: data.message
                                         });
+                                    }
+                                }).catch(err => {
+                                    console.error("Error on Razorpay payment callback:", err);
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Error",
+                                        text: "An error occurred while processing the order."
                                     });
+                                });
                             },
                             prefill: {
                                 name: username,

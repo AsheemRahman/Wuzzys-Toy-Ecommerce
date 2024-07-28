@@ -122,7 +122,7 @@ user.get('/getCounts', activeUser, wishlistController.getCounts);
 
 //-------------------------------- checkout --------------------------
 
-user.get('/checkout', activeUser , checkoutController.checkout)
+user.get('/checkOut', activeUser , checkoutController.checkout)
 
 user.post('/checkout-address', activeUser ,checkoutController.addAddress)
 

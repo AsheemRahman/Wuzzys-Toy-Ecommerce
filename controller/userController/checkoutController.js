@@ -36,7 +36,7 @@ const checkout = async (req, res) => {
             wallet = { balance: 0, transaction: [] };
         }
 
-        res.render('user/checkout', {
+        res.render('user/checkOut', {
             title: 'Checkout',
             user,
             cartDetails,
@@ -214,7 +214,7 @@ const addAddress = async (req, res) => {
         await user.save();
 
         req.flash('success', 'New address added')
-        res.redirect('/checkout')
+        res.redirect('/checkOut')
     } catch (err) {
         console.log(`Error on adding new address from checkout ${err}`);
     }
@@ -233,12 +233,12 @@ const editAddress = async (req, res) => {
         if (getAddress) {
             res.render('user/editAddress', { title: "edit address", data: getAddress.address[0], index , user: req.session.user});
         } else {
-            res.redirect('/checkout');
+            res.redirect('/checkOut');
         }
     } catch (err) {
         console.error(`error on rendering the editaddress page`);
         req.flash('error','error while rendering the Edit Address page . Please try again later.');
-        res.redirect('/checkout');
+        res.redirect('/checkOut');
     }
 };
 
@@ -267,7 +267,7 @@ const updateAddress= async (req,res)=>{
             { $set: updateQuery }
         );
         req.flash('success','Address updated Successfully');
-        res.redirect('/checkout');
+        res.redirect('/checkOut');
     } catch (err) {
         console.log(`error while editing the address ${err}`)
         req.flash('error','Cannot update the address right now . Please try again later.');
@@ -291,17 +291,17 @@ const removeAddress = async (req, res) => {
 
         if (isNaN(index) || index < 0 || index >= user.address.length) {
             req.flash('error', 'Invalid address');
-            return res.redirect('/checkout');
+            return res.redirect('/checkOut');
         }
         user.address.splice(index, 1);
         await user.save();
 
         req.flash('success', 'Address deleted successfully');
-        res.redirect('/checkout');
+        res.redirect('/checkOut');
     } catch (err) {
         console.error(`Error during deleting address${err}`);
         req.flash('error','Failed to delete address. Please try again later.');
-        res.redirect('/checkout');
+        res.redirect('/checkOut');
     }
 };
 

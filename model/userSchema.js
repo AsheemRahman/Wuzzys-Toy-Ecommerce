@@ -30,6 +30,6 @@ const schema = new mongoose.Schema({
     facebookID: {
         type: String
     }
-})
+},{timestamps: true})
 
 module.exports = mongoose.model('user',schema)
