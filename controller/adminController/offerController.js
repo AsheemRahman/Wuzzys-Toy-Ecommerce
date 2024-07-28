@@ -10,7 +10,7 @@ const { ObjectId } = mongoose.Types;
 const getOffer = async (req,res)=>{
     const search = req.query.search || '';
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 6;
+    const limit = parseInt(req.query.limit) || 8;
     
     try {
         const offers = await offerSchema.find({ offerType: { $regex: search, $options: 'i' } })

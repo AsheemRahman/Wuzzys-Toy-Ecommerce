@@ -5,7 +5,7 @@ const Coupon = require('../../model/couponSchema');
 const getCoupons = async (req, res) => {
     const search = req.query.search || '';
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 6;
+    const limit = parseInt(req.query.limit) || 8;
     try {
         if (req.params.id) {
             const coupon = await Coupon.findById(req.params.id);

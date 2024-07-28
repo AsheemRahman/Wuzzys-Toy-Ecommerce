@@ -25,7 +25,7 @@ input.form-control:focus{
     margin: 20px;
     background-color: #232323;
     color: white;
-    height: 95vh;
+    height: 122vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -132,6 +132,7 @@ input.form-control:focus{
     padding: 10px;
     box-shadow: 0 0 10px rgba(100, 98, 98, 0.5);
     border-radius: 10px;
+    margin-bottom: 1rem;
 }
 
 .table {
@@ -239,18 +240,14 @@ input.form-control:focus{
     .pagination-controls {
         display: flex;
         justify-content: end;
-        margin-right: 7rem;
         width: 100%;
     }
 
     .pagination {
         display: flex;
         list-style: none;
-        padding: 18px;
-        width: 91%;
+        width: 100%;
         justify-content: center;
-        background: #232323;
-        border-radius: 10px;
     }
 
     .page-item {
