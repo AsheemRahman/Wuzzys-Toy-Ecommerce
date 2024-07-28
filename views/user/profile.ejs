@@ -45,13 +45,15 @@
         display: flex;
         gap: 10px;
     }
+    .address p {
+        margin: 0;
+    }
 
     .single-address-div {
         border: 1px solid #444;
         border-radius: 10px;
         padding: 20px;
-        margin-bottom: 10px;
-        width: 90%;
+        width: 100%;
     }
 
     .address-profile h1 {
@@ -223,7 +225,7 @@
                     <div class="address-profile" style="width: 100%;">
                         <h1>Your Address</h1>
                         <div class="pen-option text-right">
-                            <% if (userDetail.address.length < 4) { %>
+                            <% if (userDetail.address.length < 3 ) { %>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#addressModal"
                                     title="Add New Address" class="btn btn-danger address-add">
                                     Add Address</i>
@@ -261,14 +263,17 @@
                                                 <%= address.city %> ,
                                             </p>
                                             <p>
-                                                <%= address.state %>, <%= address.country %>, <%= address.pincode %>
-                                            </p>
-                                            <p>
-                                                <%=address.phonenumber %>
+                                                <%= address.state %>, <%= address.country %>
                                             </p>
                                             <span>
                                                 <%= address.landmark %>
                                             </span>
+                                            <p>
+                                                Pincode : <%=address.pincode %>
+                                            </p>
+                                            <p>
+                                                Phone : <%=address.phonenumber %>
+                                            </p>
                                         </div>
                                     </div>
                                     <% }) %>

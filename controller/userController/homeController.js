@@ -102,7 +102,7 @@ const latestProduct = async (req, res) => {
     }
 
     const today = new Date();
-    const productAge = new Date(today.setDate(today.getDate() - 10));
+    const productAge = new Date(today.setDate(today.getDate() - 30));
     
     const product = await productSchema.find({ productName: { $regex: search, $options: 'i' }, isActive: true , createdAt :{$gte : productAge}})
     .sort(sort)
