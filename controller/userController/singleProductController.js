@@ -27,7 +27,7 @@ const  Checkout = async (req,res)=>{
         }
         const product = await productSchema.findById(productId)
         
-        res.render('user/singeCheckout', {
+        res.render('user/singleCheckout', {
             title: 'Checkout',
             user,
             product,
