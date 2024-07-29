@@ -82,7 +82,7 @@ const placeOrder = async (req, res) => {
             products.push({
                 product_id: item.productId._id,
                 product_name: item.productId.productName,
-                product_category: item.productId.productCategory,
+                product_category: item.productId.productCollection,
                 product_quantity: item.productCount,
                 product_price: item.productId.productPrice,
                 product_discount:item.productId.productDiscount,

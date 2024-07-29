@@ -1,7 +1,9 @@
 const userSchema = require('../model/userSchema')
+
 const passport = require('passport')
-const FacebookStrategy = require('passport-facebook').Strategy
 const dotenv = require('dotenv')
+
+const FacebookStrategy = require('passport-facebook').Strategy
 
 // Load environment variables from .env file
 dotenv.config()

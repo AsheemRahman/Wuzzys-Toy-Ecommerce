@@ -206,7 +206,7 @@
         padding: 20px;
         border: 1px solid #888;
         width: 90%;
-        max-width: 500px;
+        max-width: 640px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
 
@@ -224,7 +224,7 @@
         cursor: pointer;
     }
 
-    .user-nav {
+    .location-btn {
         margin: 20px;
     }
 
@@ -315,13 +315,13 @@
                     class="product-detail-cart btn btn-warning">Add to Cart
                     <i class="fas fa-shopping-cart" style="margin-left: 1rem;"></i>
                 </a>
-                <!-- <a href="" class="product-detail-buy btn btn-danger">Buy Now
+                <a href="/product-checkout/<%= product.id %>" class="product-detail-buy btn btn-danger">Buy Now
                     <i class="bi bi-bag-fill" style="margin-left: 1rem;">
                     </i>
-                </a> -->
-                <a onclick="addwishlist('<%= product.id %>', '<%= product.productPrice %>', '<%= user %>')"
+                </a>
+                <!-- <a onclick="addwishlist('<%= product.id %>', '<%= product.productPrice %>', '<%= user %>')"
                     class="product-detail-buy btn btn-danger">Add to Wishlist
-                    <i class="fas fa-heart" style="margin-left: 1rem;"></i></a>
+                    <i class="fas fa-heart" style="margin-left: 1rem;"></i></a> -->
             </div>
             <div class="product-delivery">
                 <div class="product-detail-delivery">
@@ -329,7 +329,8 @@
                         <div class="icon"><i class="bi bi-truck"></i></div>
                         <div>
                             <div>Free Delivery</div>
-                            <a href="#" id="freeDeliveryBtn">Enter your postal code for Delivery Availability</a>
+                            <a href="#" id="freeDeliveryBtn" class="d-flex justify-content-center">Enter your postal
+                                code for Delivery Availability</a>
                         </div>
                     </div>
                     <div class="product-delivery-line" style="width: 95%;">
@@ -351,13 +352,13 @@
     <div id="freeDeliveryModal" class="modal">
         <div class="modal-content">
             <span class="close" id="closeFreeDelivery">&times;</span>
-            <h1>Free Delivery</h1>
-            <p>Enter your postal code for Delivery Availability:</p>
+            <h1 class="d-flex justify-content-center" style="margin-bottom: 2rem;">Free Delivery</h1>
+            <p class="d-flex justify-content-center">Enter your postal code for Delivery Availability:</p>
             <div class="d-flex justify-content-center">
                 <input type="text" id="pincodeInput" placeholder="Enter postal code" maxlength="6" required>
             </div>
             <div class="d-flex justify-content-center">
-                <button onclick="lookupPincode()" class="btn btn-danger user-nav">Check Availability</button>
+                <button onclick="lookupPincode()" class="btn btn-danger location-btn ">Check Availability</button>
             </div>
             <p id="result"></p>
         </div>
