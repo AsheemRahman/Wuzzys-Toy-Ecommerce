@@ -16,47 +16,53 @@
         width: 95%;
         border-radius: 10px;
     }
+
+    @media (max-width: 576px) {
+        .carousel-inner {
+            padding: 1rem;
+        }
+    }
 </style>
 
-    <!-------------------------------------------- User Home Banner ------------------------------------------------->
-    <div id="carouselFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="/public/assets/Banner1.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="/public/assets/Banner2.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="/public/assets/Banner3.jpg" class="d-block w-100" alt="...">
-            </div>
+<!-------------------------------------------- User Home Banner ------------------------------------------------->
+<div id="carouselFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="/public/assets/Banner1.jpg" class="d-block w-100" alt="...">
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselFade" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselFade" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-
-    <div class="home-page-image">
-        <div class="home-image">
-            <img src="/public/assets/Mainpage-image.png">
+        <div class="carousel-item">
+            <img src="/public/assets/Banner2.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="/public/assets/Banner3.jpg" class="d-block w-100" alt="...">
         </div>
     </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselFade" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselFade" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
 
-    <!--------------------- line --------------------->
-    <div class="home-line-div mt-5">
-        <hr>
+<div class="home-page-image">
+    <div class="home-image">
+        <img src="/public/assets/Mainpage-image.png">
     </div>
+</div>
 
-    <!--------------------------- Slide image after some time ----------------------------->
-    <script>
-        $(document).ready(function () {
-            $('#carouselFade').carousel({
-                interval: 1000
-            });
+<!--------------------- line --------------------->
+<div class="home-line-div mt-5">
+    <hr>
+</div>
+
+<!--------------------------- Slide image after some time ----------------------------->
+<script>
+    $(document).ready(function () {
+        $('#carouselFade').carousel({
+            interval: 1000
         });
-    </script>
+    });
+</script>

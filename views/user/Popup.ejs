@@ -68,13 +68,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         async function showPopups() {
-            console.log('DOM fully loaded and parsed');
 
-            const popup = <%- JSON.stringify(popup) %>
-            console.log('Popup data:', popup);
+            const popup = <%- JSON.stringify(popup) %>;
 
             if (popup && Object.keys(popup).length > 0) {
-                console.log('Processing popup:', popup);
+
                 if (!sessionStorage.getItem('popupShown')) {
                     try {
                         console.log('Popup not shown before, showing now.');
@@ -89,17 +87,14 @@
                             return;
                         }
                         $('#popupModal').modal('show');
-                        console.log('Popup modal triggered to show.');
 
                         sessionStorage.setItem('popupShown', 'true');
-                        console.log('Popup shown, session storage updated.');
                         setTimeout(() => {
                             $('#popupModal').modal('hide');
                         }, 5000);
                         await new Promise(resolve => {
                             $('#popupModal').on('hidden.bs.modal', resolve);
                         });
-                        console.log('Modal has been closed.');
                     } catch (error) {
                         console.error('Error showing popup:', error);
                     }
