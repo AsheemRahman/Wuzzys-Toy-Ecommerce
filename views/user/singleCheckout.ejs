@@ -573,7 +573,7 @@
                                 <% if(product) { %>
                                     <tr>
                                         <td>
-                                            <%= product.productName %> x <%= product.productCount %>
+                                            <%= product.productName %> x 1
                                         </td>
                                         <td>
                                             <%= product.productPrice %>
@@ -950,17 +950,18 @@
         //-------------------------- coupon managemnet --------------------------------
         async function applyCoupon() {
             const couponCode = document.getElementById('couponCode').value.trim();
+
             if (!couponCode) {
                 showError("Please enter a coupon code.");
                 return;
             }
             try {
-                const res = await fetch('/applycoupon', {
+                const res = await fetch('/singleCoupon', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ couponCode })
+                    body: JSON.stringify({ couponCode , totalAmount })
                 });
 
                 if (!res.ok) {

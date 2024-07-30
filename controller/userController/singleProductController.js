@@ -135,6 +135,50 @@ const singleOrder = async (req, res) => {
     }
 };
 
+const coupon = async (req, res) => {
+    try {
+        const couponName = req.body.couponCode;
+
+        const total = req.body.totalAmount;
+        const userId = req.session.user;
+
+        if (!userId) {
+            req.flash('error', "User is not found, please login again");
+            return res.redirect('/login');
+        };
+
+        const coupon = await couponSchema.findOne({ code: couponName });
+        if (!coupon) {
+            return res.status(404).json({ error: "Coupon not found" });
+        };
+
+        if (!coupon.isActive || coupon.expiryDate < new Date()) {
+            return res.status(400).json({ error: "Coupon expired" });
+        };
+
+        let discountedTotal = total;
+
+        if (total < coupon.minimumOrderAmount) {
+            return res.status(400).json({ error: "Minimum purchase limit not reached." });
+        };
+
+        const couponDiscount = coupon.discountValue;
+
+        if (coupon.discountType === "Fixed") {
+            discountedTotal = total - couponDiscount;
+        } else if (coupon.discountType === "Percentage") {
+            const discountAmount = (couponDiscount / 100) * total;
+            discountedTotal = total - discountAmount;
+        };
+
+        res.status(200).json({ total: discountedTotal, couponDiscount });
+    } catch (err) {
+        console.log(`Error in apply coupon: ${err}`);
+        res.status(500).json({ error: "An error occurred while applying the coupon." });
+    }
+};
 
 
-module.exports = { Checkout , singleOrder }
+
+
+module.exports = { Checkout , singleOrder , coupon  }

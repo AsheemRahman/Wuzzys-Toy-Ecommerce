@@ -154,6 +154,8 @@ user.get('/product-checkout/:id', activeUser , singleproduct.Checkout);
 
 user.post('/singleOrder/:id/:address/:payment', activeUser , singleproduct.singleOrder);
 
+user.post('/singleCoupon', activeUser , singleproduct.coupon);
+
 
 //---------------------------------- Order  ------------------------
 
