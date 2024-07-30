@@ -1,6 +1,8 @@
 const productSchema = require('../../model/productSchema')
 const wishlistSchema =require('../../model/wishlistSchema')
 const checkPopup = require('../../model/PopupSchema')
+const categorySchema = require('../../model/categorySchema');
+const mongoose = require('mongoose')
 
 //----------------------------------- Home page render --------------------------------
 
@@ -22,55 +24,129 @@ const home = async (req, res) => {
 
 //--------------------------------------- All Produccts Page ---------------------------------
 
+// const allproduct = async (req, res) => {
+//   try {
+//     const sortby = req.query.sortby || "";
+//     const search = req.query.search || "";
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = parseInt(req.query.limit) || 12;
+//     const userId = req.session.user
+
+//     let sort="";
+//     if(sortby){
+//         switch(sortby){
+//           case '1': sort = {productName: 1}
+//                   break;
+//           case '2': sort = {productName: -1}
+//                   break;
+//           case '3': sort = {productPrice: 1}
+//                   break;
+//           case '4': sort = {productPrice: -1}
+//                   break;
+//           case '5': sort = {createdAt: -1}
+//                   break;
+//       }
+//     }else{
+//       sort={createdAt:-1}
+//     }
+
+//     const product = await productSchema.find({ productName: { $regex: search, $options: 'i' }, isActive: true})
+//         .sort(sort)
+//         .limit(limit)
+//         .skip((page - 1) * limit)
+
+//         const count = await productSchema.countDocuments({ productName: { $regex: search, $options: 'i' } });
+
+//         const wishlist = await wishlistSchema.findOne({ userID: userId });
+
+//     res.render('user/allproduct', {
+//       title: 'All Product',
+//       product,
+//       user: req.session.user,
+//       totalPages: Math.ceil(count / limit),
+//       currentPage: page,
+//       search,
+//       limit,page,
+//       wishlist
+//     })
+//   } catch (error) {
+//     console.log(`error from All Products page rendering ${error}`)
+//   }
+// }
 const allproduct = async (req, res) => {
   try {
-    const sortby = req.query.sortby || "";
+    const minPrice = parseInt(req.query.minPrice) || 0;
+    const maxPrice = parseInt(req.query.maxPrice) || Number.MAX_SAFE_INTEGER;
+    const sortBy = req.query.sortBy || 'newArrivals';
     const search = req.query.search || "";
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 12;
-    const userId = req.session.user
 
-    let sort="";
-    if(sortby){
-        switch(sortby){
-          case '1': sort = {productName: 1}
-                  break;
-          case '2': sort = {productName: -1}
-                  break;
-          case '3': sort = {productPrice: 1}
-                  break;
-          case '4': sort = {productPrice: -1}
-                  break;
-          case '5': sort = {createdAt: -1}
-                  break;
-      }
-    }else{
-      sort={createdAt:-1}
+    const categories = await categorySchema.find({ isActive: true });
+
+    // Extract category names if provided
+    let selectedCategories = req.query.productCategory
+      ? (Array.isArray(req.query.productCategory) ? req.query.productCategory : [req.query.productCategory])
+      : categories.map(cat => cat.collectionName);
+
+    let categoryIds = [];
+    if (selectedCategories.length > 0) {
+      const categoryDocs = await categorySchema.find({ collectionName: { $in: selectedCategories } });
+      categoryIds = categoryDocs.map(cat => cat.collectionName);
     }
 
-    const product = await productSchema.find({ productName: { $regex: search, $options: 'i' }, isActive: true})
-        .sort(sort)
-        .limit(limit)
-        .skip((page - 1) * limit)
+    const productQuery = {
+      productName: { $regex: search, $options: "i" },
+      productCollection: { $in: categoryIds },
+      isActive: true,
+      productPrice: { $gte: minPrice, $lte: maxPrice }
+    };
 
-        const count = await productSchema.countDocuments({ productName: { $regex: search, $options: 'i' } });
+    let sortOption = {};
+    switch (sortBy) {
+      case 'priceLowToHigh':
+        sortOption = { productPrice: 1 };
+        break;
+      case 'priceHighToLow':
+        sortOption = { productPrice: -1 };
+        break;
+      case 'nameAsc':
+        sortOption = { productName: 1 };
+        break;
+      case 'nameDesc':
+        sortOption = { productName: -1 };
+        break;
+      default:
+        sortOption = { createdAt: -1 };
+    }
 
-        const wishlist = await wishlistSchema.findOne({ userID: userId });
+    const product = await productSchema.find(productQuery).populate('productCollection')
+      .sort(sortOption)
+      .limit(limit)
+      .skip((page - 1) * limit);
+
+    const count = await productSchema.countDocuments(productQuery);
 
     res.render('user/allproduct', {
       title: 'All Product',
-      product,
+      alertMessage: req.flash('errorMessage'),
       user: req.session.user,
+      product,
+      categories,
+      query: req.query,
       totalPages: Math.ceil(count / limit),
       currentPage: page,
       search,
-      limit,page,
-      wishlist
-    })
+      limit,
+      page,
+    });
   } catch (error) {
-    console.log(`error from All Products page rendering ${error}`)
+    console.log(`error in All Product rendering ${error}`);
+    res.status(500).send('An error occurred');
   }
-}
+};
+
+
 
 
 //--------------------------------------- Latest product Page ---------------------------------
@@ -184,4 +260,4 @@ const category = async (req, res) => {
 }
 
 
-module.exports = { home, allproduct, category , latestProduct }
+module.exports = { home, allproduct , category , latestProduct }

@@ -17,6 +17,15 @@
         display: flex;
         justify-content: center;
     }
+    .pagination {
+    display: flex;
+    list-style: none;
+    width: 80%;
+    justify-content: center;
+    background: #232323;
+    padding: 1.5rem;
+    border-radius: 10px;
+}
 </style>
 
 <%- include('navbar') %>
@@ -33,17 +42,8 @@
     <!-------------------------------------------- All Products ------------------------------------------------->
 
     <div class="product-container">
-        <div class="product-sort mb-3">
-            <select name="sort-box" class="sort-box" onchange="sortbyCategory('<%= title %>')">
-                <option selected>Sort By</option>
-                <option value="1">Product Name Aa - Zz</option>
-                <option value="2">Product Name Zz - Aa</option>
-                <option value="3">Price low - high</option>
-                <option value="4">Price high - low</option>
-                <option value="5">New arrival</option>
-            </select>
-        </div>
         <h2>Our Products</h2>
+        <%- include('filter') %>
         <div class="product-list-box container">
             <% product.forEach((product)=> { %>
                 <div class="product-box">
@@ -118,15 +118,3 @@
     </div>
 
     <%- include('footer') %>
-
-
-        <script>
-            function sortbyCategory(params) {
-                const sortBoxValue = document.getElementsByName('sort-box')[0].value
-                let location;
-                if (params) {
-                    location = `?sortby=${sortBoxValue}`
-                }
-                window.location.href = `/allproduct/${location}`
-            }
-        </script>
