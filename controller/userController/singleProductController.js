@@ -47,9 +47,17 @@ const singleOrder = async (req, res) => {
         const addressIndex = parseInt(req.params.address);
         const paymentMode = parseInt(req.params.payment);
         const productId = req.params.id;
-
+        let couponDiscount = 0;
         let paymentId = "";
-        const { razorpay_payment_id, razorpay_order_id, razorpay_signature, payment_status } = req.body;
+
+        const { razorpay_payment_id, razorpay_order_id, razorpay_signature, payment_status, couponCode } = req.body;
+
+        if (couponCode) {
+            const coupon = await couponSchema.findOne({ code: couponCode });
+            if (coupon && coupon.isActive) {
+                couponDiscount = coupon.discountValue;
+            }
+        }
 
         if (paymentMode === 2) {
             paymentId = razorpay_payment_id;
@@ -88,6 +96,7 @@ const singleOrder = async (req, res) => {
             }],
             totalQuantity: 1,
             totalPrice: product.productPrice - product.productPrice * (product.productDiscount /100),
+            couponDiscount: couponDiscount,
             address: {
                 customer_name: userDetails.name,
                 customer_email: userDetails.email,

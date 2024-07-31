@@ -637,7 +637,7 @@
                         </table>
                     </div>
                     <div class="mt-4">
-                        <% if( cartDetails.payableAmount> 1000 ){ %>
+                        <% if( cartDetails.payableAmount > 1000 ){ %>
                             <div class="free-delivery">
                                 <i class="bi bi-shield-fill-check h3 ms-3"></i>
                                 <div class="flex-grow-1">
@@ -807,6 +807,7 @@
                             name: "Wuzzy's Toys",
                             order_id: data.orderID,
                             handler: function (response) {
+                                const couponCode = document.getElementById('couponCode').value.trim();
                                 const URL = `/place-order/${selectedAddressIndex}/${selectedPaymentMethod}`;
                                 fetch(URL, {
                                     method: "POST",
@@ -816,7 +817,8 @@
                                     body: JSON.stringify({
                                         razorpay_payment_id: response.razorpay_payment_id,
                                         razorpay_order_id: response.razorpay_order_id,
-                                        razorpay_signature: response.razorpay_signature
+                                        razorpay_signature: response.razorpay_signature,
+                                        couponCode: couponCode
                                     })
                                 }).then((res) => {
                                     if (res.redirected)
@@ -858,6 +860,7 @@
                         };
                         const rzp1 = new Razorpay(options);
                         rzp1.on('payment.failed', function (response) {
+                            const couponCode = document.getElementById('couponCode').value.trim();
                             const URL = `/place-order/${selectedAddressIndex}/${selectedPaymentMethod}`;
                             fetch(URL, {
                                 method: "POST",
@@ -868,7 +871,8 @@
                                     razorpay_payment_id: response.error.metadata.payment_id,
                                     razorpay_order_id: response.error.metadata.order_id,
                                     razorpay_signature: response.error.metadata.signature,
-                                    payment_status: "Pending"
+                                    payment_status: "Pending",
+                                    couponCode: couponCode
                                 })
                             })
                                 .then((res) => {
@@ -915,6 +919,7 @@
                 });
         }
         function placeOrder(addressIndex, paymentMethod) {
+            const couponCode = document.getElementById('couponCode').value.trim();
             const URL = `/place-order/${addressIndex}/${paymentMethod}`;
             fetch(URL, {
                 method: 'POST',
@@ -923,7 +928,8 @@
                 },
                 body: JSON.stringify({
                     addressIndex: addressIndex,
-                    paymentMode: paymentMethod
+                    paymentMode: paymentMethod,
+                    couponCode: couponCode
                 })
             })
                 .then(response => response.json())

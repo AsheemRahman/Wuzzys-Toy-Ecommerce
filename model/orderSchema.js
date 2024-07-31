@@ -71,9 +71,9 @@ const schema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    couponCode:{
-        type:String,
-        default: ''
+    couponDiscount:{
+        type: Number,
+        default: 0
     },
     orderStatus: {
         type: String,

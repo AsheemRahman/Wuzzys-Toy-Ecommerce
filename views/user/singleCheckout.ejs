@@ -806,6 +806,7 @@
                             name: "Wuzzy's Toys",
                             order_id: data.orderID,
                             handler: function (response) {
+                                const couponCode = document.getElementById('couponCode').value.trim();
                                 const URL = `/singleOrder/${productId}/${selectedAddressIndex}/${selectedPaymentMethod}`;
                                 fetch(URL, {
                                     method: "POST",
@@ -815,7 +816,8 @@
                                     body: JSON.stringify({
                                         razorpay_payment_id: response.razorpay_payment_id,
                                         razorpay_order_id: response.razorpay_order_id,
-                                        razorpay_signature: response.razorpay_signature
+                                        razorpay_signature: response.razorpay_signature,
+                                        couponCode: couponCode
                                     })
                                 }).then((res) => {
                                     if (res.redirected)
@@ -857,6 +859,7 @@
                         };
                         const rzp1 = new Razorpay(options);
                         rzp1.on('payment.failed', function (response) {
+                            const couponCode = document.getElementById('couponCode').value.trim();
                             const URL = `/place-order/${selectedAddressIndex}/${selectedPaymentMethod}`;
                             fetch(URL, {
                                 method: "POST",
@@ -867,7 +870,8 @@
                                     razorpay_payment_id: response.error.metadata.payment_id,
                                     razorpay_order_id: response.error.metadata.order_id,
                                     razorpay_signature: response.error.metadata.signature,
-                                    payment_status: "Pending"
+                                    payment_status: "Pending",
+                                    couponCode: couponCode
                                 })
                             })
                                 .then((res) => {
@@ -881,7 +885,7 @@
                                 })
                                 .then(data => {
                                     if (data.success) {
-                                        window.location.href = "/failed-order";
+                                        
                                     } else {
                                         Swal.fire({
                                             icon: "error",
@@ -914,6 +918,7 @@
                 });
         }
         function placeOrder(addressIndex, paymentMethod , productId) {
+            const couponCode = document.getElementById('couponCode').value.trim();
             const URL = `/singleOrder/${productId}/${addressIndex}/${paymentMethod}`;
             fetch(URL, {
                 method: 'POST',
@@ -923,7 +928,8 @@
                 body: JSON.stringify({
                     addressIndex: addressIndex,
                     paymentMode: paymentMethod,
-                    productId : productId
+                    productId : productId,
+                    couponCode: couponCode
                 })
             })
                 .then(response => response.json())
