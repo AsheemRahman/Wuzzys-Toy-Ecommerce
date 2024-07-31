@@ -742,6 +742,7 @@
         let selectedPaymentMethod = null;
 
         const orderPlacementBtn = document.getElementById('place-order-btn');
+        const totalNum = orderPlacementBtn.getAttribute('data-amount');
         let totalAmount = orderPlacementBtn.getAttribute('data-amount');
         const username = orderPlacementBtn.getAttribute('data-username');
         const email = orderPlacementBtn.getAttribute('data-email');
@@ -954,6 +955,8 @@
                 });
         }
         //-------------------------- coupon managemnet --------------------------------
+        let originalTotalAmount = totalNum
+
         async function applyCoupon() {
             const couponCode = document.getElementById('couponCode').value.trim();
             if (!couponCode) {
@@ -985,10 +988,20 @@
             }
         }
 
+        function removeCoupon() {
+            // Reset the order summary to the original amount
+            updateOrderSummary(originalTotalAmount , 0);
+
+            // Hide the coupon badge and clear the coupon code input
+            const couponBadge = document.getElementById('couponBadge');
+            couponBadge.style.display = 'none';
+            document.getElementById('couponCode').value = '';
+        }
+
         function updateOrderSummary(newPayableAmount, couponDiscount) {
             // Update the payable amount in the order summary
             const payableAmountElement = document.querySelector('th.total-payable-amount');
-            payableAmountElement.innerText = newPayableAmount.toFixed(2);
+            payableAmountElement.innerText = newPayableAmount;
 
             const couponRow = document.querySelector('.coupon-row');
             if (couponDiscount > 0) {
@@ -1008,12 +1021,6 @@
             const appliedCouponCode = document.getElementById('appliedCouponCode');
             couponBadge.style.display = 'block';
             appliedCouponCode.innerText = couponCode;
-        }
-
-        function removeCoupon() {
-            document.getElementById('couponCode').value = '';
-            document.getElementById('couponBadge').style.display = 'none';
-            location.reload();
         }
 
         function showError(message) {
