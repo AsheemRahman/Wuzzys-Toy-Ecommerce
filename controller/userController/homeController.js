@@ -33,8 +33,11 @@ const allproduct = async (req, res) => {
     const search = req.query.search || "";
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 12;
+    const userId = req.session.user
 
     const categories = await categorySchema.find({ isActive: true });
+
+    const wishlist = await wishlistSchema.findOne({userID : userId})
 
     // Extract category names if provided
     let selectedCategories = req.query.productCategory
@@ -88,9 +91,9 @@ const allproduct = async (req, res) => {
       query: req.query,
       totalPages: Math.ceil(count / limit),
       currentPage: page,
+      wishlist,
       search,
-      limit,
-      page,
+      limit,page,
     });
   } catch (error) {
     console.log(`error in All Product rendering ${error}`);
