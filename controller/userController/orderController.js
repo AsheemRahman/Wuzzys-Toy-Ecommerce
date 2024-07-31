@@ -51,7 +51,7 @@ const cancelOrder = async (req, res) => {
                 userWallet.balance = (userWallet.balance || 0) + order.totalPrice;
                 userWallet.transaction.push({
                     wallet_amount: order.totalPrice,
-                    order_id: orderId,
+                    order_id: order.order_id,
                     transactionType: 'Credited',
                     transaction_date: new Date()
                 });
@@ -62,7 +62,7 @@ const cancelOrder = async (req, res) => {
                     balance: order.totalPrice,
                     transaction: [{
                         wallet_amount: order.totalPrice,
-                        order_id: orderId,
+                        order_id: order.order_id,
                         transactionType: 'Credited',
                         transaction_date: new Date()
                     }]
@@ -110,7 +110,7 @@ const orderDetail = async (req,res) =>{
 
 const returnOrder = async (req, res) => {
     try {
-        const { orderId, returnReason } = req.body;
+        const { orderId , returnReason } = req.body;
 
         if (!orderId || !returnReason) {
             return res.status(400).json({ status: 'error', message: 'Order ID and return reason are required' });
@@ -136,7 +136,7 @@ const returnOrder = async (req, res) => {
                 userWallet.balance = (userWallet.balance || 0) + order.totalPrice;
                 userWallet.transaction.push({
                     wallet_amount: order.totalPrice,
-                    order_id: orderId,
+                    order_id:  order.order_id,
                     transactionType: 'Credited',
                     transaction_date: new Date()
                 });
@@ -147,7 +147,7 @@ const returnOrder = async (req, res) => {
                     balance: order.totalPrice,
                     transaction: [{
                         wallet_amount: order.totalPrice,
-                        order_id: orderId,
+                        order_id: order.order_id,
                         transactionType: 'Credited',
                         transaction_date: new Date()
                     }]
