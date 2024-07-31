@@ -111,6 +111,7 @@ const placeOrder = async (req, res) => {
             products: products,
             totalQuantity: totalQuantity,
             totalPrice: cartItems.payableAmount,
+            couponCode : couponCode,
             couponDiscount: couponDiscount,
             address: {
                 customer_name: userDetails.name,
@@ -352,7 +353,6 @@ const coupon = async (req, res) => {
     try {
         const couponName = req.body.couponCode;
         const userId = req.session.user;
-        
 
         if (!userId) {
             req.flash('error', "User is not found, please login again");
@@ -366,6 +366,14 @@ const coupon = async (req, res) => {
 
         if (!coupon.isActive || coupon.expiryDate < new Date()) {
             return res.status(400).json({ error: "Coupon expired" });
+        }
+
+        // check if coupon already used
+        const Used  = await orderSchema.findOne({customer_id:userId,couponCode:couponName,orderStatus: { $in: ['Delivered', 'Shipped'] }})
+
+        // if already used return an error
+        if(Used){
+            return res.status(404).json({ error: "Coupon Already Used" });
         }
 
         const cart = await cartSchema.findOne({ userId });
