@@ -16,7 +16,7 @@ const salePage =async (req,res)=>{
             {$group: {_id: null,total: { $sum: "$totalQuantity" }}}]);
 
         const productCount = product.length > 0 ? product[0].total : 0;
-        res.render('admin/salesReport',{title:"Sales Report" , Revenue , productCount , orderCount })
+        res.render('admin/salesreport',{title:"Sales Report" , Revenue , productCount , orderCount })
     }catch(error){
         console.log(`error while render sale report ${error}`)
     }
