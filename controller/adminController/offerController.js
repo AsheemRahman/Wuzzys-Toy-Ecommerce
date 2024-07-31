@@ -232,23 +232,54 @@ const offerStatus = async (req,res)=>{
 
 //-------------------------- delete offer ----------------------------
 
-const deleteOffer = async (req,res)=>{
+const deleteOffer = async (req, res) => {
     try {
-        const offerId = req.params.id
-        const offer = await offerSchema.findByIdAndDelete(offerId)
+        const offerId = req.params.id;
+        
+        // Find the offer and get its referenceId and offerType
+        const offer = await offerSchema.findById(offerId);
+        
+        if (offer) {
+            // Delete the offer
+            await offerSchema.findByIdAndDelete(offerId);
 
-        if(offer != null){
-            req.flash('success','Offer successfully deleted'),
-            res.redirect('/admin/offer')
-        }else{
-            req.flash('error','Offer unable to delete'),
-            res.redirect('/admin/offer')
+            // Update products based on the offerType
+            if (offer.offerType === 'category') {
+                const category = await categorySchema.findById(offer.referenceId);
+                if (category) {
+                    const allProducts = await productSchema.find({ productCollection: category.collectionName });
+                    const bulkOperations = allProducts.map(product => ({
+                        updateOne: {
+                            filter: { _id: product._id },
+                            update: { productDiscount: 0 },
+                        },
+                    }));
+
+                    if (bulkOperations.length > 0) {
+                        await productSchema.bulkWrite(bulkOperations);
+                    }
+                }
+            } else if (offer.offerType === 'product') {
+                const product = await productSchema.findById(offer.referenceId);
+                if (product) {
+                    product.productDiscount = 0;
+                    await product.save();
+                }
+            }
+
+            req.flash('success', 'Offer successfully deleted');
+        } else {
+            req.flash('error', 'Offer not found');
         }
-    } catch (error) {
-        console.log(`error from deleteOffer ${error}`)
-    }
 
+        res.redirect('/admin/offer');
+    } catch (error) {
+        console.log(`Error from deleteOffer: ${error}`);
+        req.flash('error', 'An error occurred while deleting the offer');
+        res.redirect('/admin/offer');
+    }
 }
+
 
 
 module.exports= {
