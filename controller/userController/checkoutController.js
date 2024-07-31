@@ -343,6 +343,7 @@ const coupon = async (req, res) => {
     try {
         const couponName = req.body.couponCode;
         const userId = req.session.user;
+        
 
         if (!userId) {
             req.flash('error', "User is not found, please login again");
@@ -380,6 +381,13 @@ const coupon = async (req, res) => {
 
         cart.payableAmount = discountedTotal;
         await cart.save();
+
+        await orderSchema.findOneAndUpdate(
+            { customer_id: userId },
+            { $set: { couponCode: couponName } },
+            { upsert: true }
+        );
+
         res.status(200).json({ total: discountedTotal, couponDiscount });
     } catch (err) {
         console.log(`Error in apply coupon: ${err}`);

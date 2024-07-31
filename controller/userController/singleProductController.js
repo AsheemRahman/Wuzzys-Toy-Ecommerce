@@ -171,6 +171,12 @@ const coupon = async (req, res) => {
             discountedTotal = total - discountAmount;
         };
 
+        await orderSchema.findOneAndUpdate(
+            { customer_id: userId },
+            { $set: { couponCode: couponName } },
+            { upsert: true }
+        );
+
         res.status(200).json({ total: discountedTotal, couponDiscount });
     } catch (err) {
         console.log(`Error in apply coupon: ${err}`);

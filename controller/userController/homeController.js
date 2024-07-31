@@ -24,55 +24,7 @@ const home = async (req, res) => {
 
 //--------------------------------------- All Produccts Page ---------------------------------
 
-// const allproduct = async (req, res) => {
-//   try {
-//     const sortby = req.query.sortby || "";
-//     const search = req.query.search || "";
-//     const page = parseInt(req.query.page) || 1;
-//     const limit = parseInt(req.query.limit) || 12;
-//     const userId = req.session.user
 
-//     let sort="";
-//     if(sortby){
-//         switch(sortby){
-//           case '1': sort = {productName: 1}
-//                   break;
-//           case '2': sort = {productName: -1}
-//                   break;
-//           case '3': sort = {productPrice: 1}
-//                   break;
-//           case '4': sort = {productPrice: -1}
-//                   break;
-//           case '5': sort = {createdAt: -1}
-//                   break;
-//       }
-//     }else{
-//       sort={createdAt:-1}
-//     }
-
-//     const product = await productSchema.find({ productName: { $regex: search, $options: 'i' }, isActive: true})
-//         .sort(sort)
-//         .limit(limit)
-//         .skip((page - 1) * limit)
-
-//         const count = await productSchema.countDocuments({ productName: { $regex: search, $options: 'i' } });
-
-//         const wishlist = await wishlistSchema.findOne({ userID: userId });
-
-//     res.render('user/allproduct', {
-//       title: 'All Product',
-//       product,
-//       user: req.session.user,
-//       totalPages: Math.ceil(count / limit),
-//       currentPage: page,
-//       search,
-//       limit,page,
-//       wishlist
-//     })
-//   } catch (error) {
-//     console.log(`error from All Products page rendering ${error}`)
-//   }
-// }
 const allproduct = async (req, res) => {
   try {
     const minPrice = parseInt(req.query.minPrice) || 0;
