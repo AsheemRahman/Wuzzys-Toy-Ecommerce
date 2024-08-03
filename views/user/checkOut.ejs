@@ -637,7 +637,7 @@
                         </table>
                     </div>
                     <div class="mt-4">
-                        <% if( cartDetails.payableAmount > 1000 ){ %>
+                        <% if( cartDetails.payableAmount> 1000 ){ %>
                             <div class="free-delivery">
                                 <i class="bi bi-shield-fill-check h3 ms-3"></i>
                                 <div class="flex-grow-1">
@@ -990,7 +990,7 @@
 
         function removeCoupon() {
             // Reset the order summary to the original amount
-            updateOrderSummary(originalTotalAmount , 0);
+            updateOrderSummary(originalTotalAmount, 0);
 
             // Hide the coupon badge and clear the coupon code input
             const couponBadge = document.getElementById('couponBadge');

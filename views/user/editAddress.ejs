@@ -122,10 +122,12 @@
                     const phoneRe = /^\d{10}$/;
                     return phoneRe.test(phone);
                 }
+
                 function validatePincode(pincode) {
                     const pincodeRe = /^\d{6}$/;
                     return pincodeRe.test(pincode);
                 }
+                
                 editaddress.addEventListener('submit', (e) => {
                     e.preventDefault();
                     if (building.value.trim() === "" || !isNaN(building.value)) {
