@@ -29,6 +29,13 @@ const checkout = async (req, res) => {
         if (items.length === 0) {
             return res.redirect('/cart');
         }
+        
+        cartDetails.items.forEach((item) => {
+            if(item.productId.isActive != true){
+                req.flash("error","Product is not Available , Remove product From cart")
+                res.redirect("/cart")
+            }
+        })
 
         let wallet = await walletSchema.findOne({ userID: userId });
 

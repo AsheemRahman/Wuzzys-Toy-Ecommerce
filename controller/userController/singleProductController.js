@@ -26,6 +26,14 @@ const  Checkout = async (req,res)=>{
             wallet = { balance: 0, transaction: [] };
         }
         const product = await productSchema.findById(productId)
+
+        if(product.productQuantity <= 0){
+            req.flash("error", "Product is out of Stock " )
+            res.redirect('/home')
+        }else if (product.isActive !== true ){
+            req.flash("error","Product is not Available right now")
+            res.redirect("home")
+        }
         
         res.render('user/singleCheckout', {
             title: 'Checkout',
@@ -35,7 +43,7 @@ const  Checkout = async (req,res)=>{
             wallet
         });
     }catch(error){
-        console.error(`Error while rendering the checkout page: ${err}`);
+        console.error(`Error while rendering the checkout page: ${error}`);
         res.status(500).send('An error occurred while processing your request');
     }
 }
