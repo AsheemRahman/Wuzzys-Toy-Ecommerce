@@ -1,4 +1,16 @@
 <style>
+    .sidebar {
+        width: 300px;
+        margin: 20px;
+        background-color: #232323;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+    }
+
     .main-content {
         color: #1a1a1a;
         flex-grow: 1;
@@ -207,54 +219,53 @@
                     </div>
                 </div>
             </div>
-
-            <!-- best seller -->
-            
-
         </div>
     </div>
+    
+    <!-- best seller -->
+    <%- include ('bestSelling') %>
 
-    <%- include('footer') %>
+        <%- include('footer') %>
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            function createChart(ctx, type, data, label) {
-                return new Chart(ctx, {
-                    type: type,
-                    data: {
-                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                        datasets: [{
-                            label: label,
-                            data: data,
-                            backgroundColor: '#D5D2FF',
-                            borderColor: '#2b0a5a',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                function createChart(ctx, type, data, label) {
+                    return new Chart(ctx, {
+                        type: type,
+                        data: {
+                            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                            datasets: [{
+                                label: label,
+                                data: data,
+                                backgroundColor: '#D5D2FF',
+                                borderColor: '#2b0a5a',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
                             }
                         }
-                    }
-                });
-            }
-            // Fetch data from backend and update charts
-            async function fetchDataAndRenderCharts() {
-                try {
-                    const response = await fetch('/admin/charts');
-                    const data = await response.json();
-
-                    // Create charts with fetched data
-                    createChart(document.getElementById('ordersChart'), 'line', data.salesData, 'Total Sales Count');
-                    createChart(document.getElementById('revenueChart'), 'bar', data.revenueData, 'Total Revenue');
-                    createChart(document.getElementById('productsChart'), 'polarArea', data.productsData, 'Total Products Sold');
-                } catch (error) {
-                    console.error('Error fetching data:', error);
+                    });
                 }
-            }
+                // Fetch data from backend and update charts
+                async function fetchDataAndRenderCharts() {
+                    try {
+                        const response = await fetch('/admin/charts');
+                        const data = await response.json();
 
-            // Initial data fetch and rendering
-            fetchDataAndRenderCharts();
-        </script>
+                        // Create charts with fetched data
+                        createChart(document.getElementById('ordersChart'), 'line', data.salesData, 'Total Sales Count');
+                        createChart(document.getElementById('revenueChart'), 'bar', data.revenueData, 'Total Revenue');
+                        createChart(document.getElementById('productsChart'), 'polarArea', data.productsData, 'Total Products Sold');
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
+                    }
+                }
+
+                // Initial data fetch and rendering
+                fetchDataAndRenderCharts();
+            </script>
