@@ -7,8 +7,6 @@ Welcome to the Wuzzy Toys repository! This project is a complete e-commerce appl
 - [Technologies](#technologies)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 - User registration and authentication
