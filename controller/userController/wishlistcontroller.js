@@ -91,6 +91,7 @@ const deleteWishlist = async (req, res) => {
     }
 };
 
+
 // ------------------------------ count of cart and wishlist -----------------------------
 
 const getCounts = async (req, res) => {
