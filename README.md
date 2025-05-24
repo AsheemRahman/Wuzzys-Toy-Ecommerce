@@ -24,9 +24,6 @@ Welcome to the Wuzzy Toys repository! This project is a complete e-commerce appl
 - **Frontend**: HTML, CSS
 - **Other Tools**: Mongoose (for MongoDB object modeling), Bootstrap (for responsive design)
 
-## Installation
-
-
 ## Usage
 User Flow:
 * Sign up or log in to your account.
